@@ -72,6 +72,100 @@ enum {
 	
 	IMG_SPLAT_MASK,
 	
+	IMG_INGREDIENTS_BASE_SAUCE,
+	
+	IMG_INGREDIENTS_HOLDER_A_1,
+	IMG_INGREDIENTS_HOLDER_A_2,
+	IMG_INGREDIENTS_HOLDER_A_3,
+	IMG_INGREDIENTS_HOLDER_B,
+	
+	IMG_SAUCE,
+	IMG_HOT_SAUCE,
+	IMG_CHOCOLATE,
+	IMG_PINK_ICING,
+	
+	IMG_SPLAT_SAUCE_1,
+	IMG_SPLAT_SAUCE_2,
+	IMG_SPLAT_SAUCE_3,
+	IMG_SPLAT_SAUCE_4,
+	IMG_SPLAT_SAUCE_5,
+	IMG_SPLAT_SAUCE_6,
+	IMG_SPLAT_SAUCE_7,
+	IMG_SPLAT_SAUCE_8,
+	IMG_SPLAT_SAUCE_9,
+	IMG_SPLAT_SAUCE_10,
+	IMG_SPLAT_SAUCE_11,
+	IMG_SPLAT_SAUCE_12,
+	IMG_SPLAT_SAUCE_13,
+	IMG_SPLAT_SAUCE_14,
+	IMG_SPLAT_SAUCE_15,
+	IMG_SPLAT_SAUCE_16,
+	IMG_SPLAT_SAUCE_17,
+	IMG_SPLAT_SAUCE_18,
+	IMG_SPLAT_SAUCE_19,
+	IMG_SPLAT_SAUCE_20,
+	IMG_SPLAT_SAUCE_21,
+	IMG_SPLAT_SAUCE_22,
+	IMG_SPLAT_SAUCE_23,
+	IMG_SPLAT_SAUCE_24,
+	IMG_SPLAT_SAUCE_25,
+	IMG_SPLAT_SAUCE_26,
+	IMG_SPLAT_SAUCE_27,
+	IMG_SPLAT_SAUCE_28,
+	IMG_SPLAT_SAUCE_29,
+	IMG_SPLAT_SAUCE_30,
+	IMG_SPLAT_SAUCE_31,
+	IMG_SPLAT_SAUCE_32,
+	IMG_SPLAT_SAUCE_33,
+	IMG_SPLAT_SAUCE_34,
+	IMG_SPLAT_SAUCE_35,
+	IMG_SPLAT_SAUCE_36,
+	IMG_SPLAT_SAUCE_37,
+	IMG_SPLAT_SAUCE_38,
+	IMG_SPLAT_SAUCE_39,
+	IMG_SPLAT_SAUCE_40,
+	
+	IMG_SPLAT_HOT_1,
+	IMG_SPLAT_HOT_2,
+	IMG_SPLAT_HOT_3,
+	IMG_SPLAT_HOT_4,
+	IMG_SPLAT_HOT_5,
+	IMG_SPLAT_HOT_6,
+	IMG_SPLAT_HOT_7,
+	IMG_SPLAT_HOT_8,
+	IMG_SPLAT_HOT_9,
+	IMG_SPLAT_HOT_10,
+	IMG_SPLAT_HOT_11,
+	IMG_SPLAT_HOT_12,
+	IMG_SPLAT_HOT_13,
+	IMG_SPLAT_HOT_14,
+	IMG_SPLAT_HOT_15,
+	IMG_SPLAT_HOT_16,
+	IMG_SPLAT_HOT_17,
+	IMG_SPLAT_HOT_18,
+	IMG_SPLAT_HOT_19,
+	IMG_SPLAT_HOT_20,
+	IMG_SPLAT_HOT_21,
+	IMG_SPLAT_HOT_22,
+	IMG_SPLAT_HOT_23,
+	IMG_SPLAT_HOT_24,
+	IMG_SPLAT_HOT_25,
+	IMG_SPLAT_HOT_26,
+	IMG_SPLAT_HOT_27,
+	IMG_SPLAT_HOT_28,
+	IMG_SPLAT_HOT_29,
+	IMG_SPLAT_HOT_30,
+	IMG_SPLAT_HOT_31,
+	IMG_SPLAT_HOT_32,
+	IMG_SPLAT_HOT_33,
+	IMG_SPLAT_HOT_34,
+	IMG_SPLAT_HOT_35,
+	IMG_SPLAT_HOT_36,
+	IMG_SPLAT_HOT_37,
+	IMG_SPLAT_HOT_38,
+	IMG_SPLAT_HOT_39,
+	IMG_SPLAT_HOT_40,
+	
 	IMG_SPLAT_CHOCO_1,
 	IMG_SPLAT_CHOCO_2,
 	IMG_SPLAT_CHOCO_3,
@@ -113,6 +207,47 @@ enum {
 	IMG_SPLAT_CHOCO_39,
 	IMG_SPLAT_CHOCO_40,
 	
+	IMG_SPLAT_PINK_1,
+	IMG_SPLAT_PINK_2,
+	IMG_SPLAT_PINK_3,
+	IMG_SPLAT_PINK_4,
+	IMG_SPLAT_PINK_5,
+	IMG_SPLAT_PINK_6,
+	IMG_SPLAT_PINK_7,
+	IMG_SPLAT_PINK_8,
+	IMG_SPLAT_PINK_9,
+	IMG_SPLAT_PINK_10,
+	IMG_SPLAT_PINK_11,
+	IMG_SPLAT_PINK_12,
+	IMG_SPLAT_PINK_13,
+	IMG_SPLAT_PINK_14,
+	IMG_SPLAT_PINK_15,
+	IMG_SPLAT_PINK_16,
+	IMG_SPLAT_PINK_17,
+	IMG_SPLAT_PINK_18,
+	IMG_SPLAT_PINK_19,
+	IMG_SPLAT_PINK_20,
+	IMG_SPLAT_PINK_21,
+	IMG_SPLAT_PINK_22,
+	IMG_SPLAT_PINK_23,
+	IMG_SPLAT_PINK_24,
+	IMG_SPLAT_PINK_25,
+	IMG_SPLAT_PINK_26,
+	IMG_SPLAT_PINK_27,
+	IMG_SPLAT_PINK_28,
+	IMG_SPLAT_PINK_29,
+	IMG_SPLAT_PINK_30,
+	IMG_SPLAT_PINK_31,
+	IMG_SPLAT_PINK_32,
+	IMG_SPLAT_PINK_33,
+	IMG_SPLAT_PINK_34,
+	IMG_SPLAT_PINK_35,
+	IMG_SPLAT_PINK_36,
+	IMG_SPLAT_PINK_37,
+	IMG_SPLAT_PINK_38,
+	IMG_SPLAT_PINK_39,
+	IMG_SPLAT_PINK_40,
+	
 	NUM_IMAGES
 };
 
@@ -131,6 +266,98 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/pizza_shadow.png",
 	
 	GAMEDATA_DIR "images/splat_mask.png",
+	
+	GAMEDATA_DIR "images/base_sauces.png",
+	GAMEDATA_DIR "images/holder_a_1.png",
+	GAMEDATA_DIR "images/holder_a_2.png",
+	GAMEDATA_DIR "images/holder_a_3.png",
+	GAMEDATA_DIR "images/holder_b.png",
+	GAMEDATA_DIR "images/sauce.png",
+	GAMEDATA_DIR "images/hot_sauce.png",
+	GAMEDATA_DIR "images/chocolate.png",
+	GAMEDATA_DIR "images/pink_icing.png",
+	
+	GAMEDATA_DIR "images/splat_sauce_01.png",
+	GAMEDATA_DIR "images/splat_sauce_02.png",
+	GAMEDATA_DIR "images/splat_sauce_03.png",
+	GAMEDATA_DIR "images/splat_sauce_04.png",
+	GAMEDATA_DIR "images/splat_sauce_05.png",
+	GAMEDATA_DIR "images/splat_sauce_06.png",
+	GAMEDATA_DIR "images/splat_sauce_07.png",
+	GAMEDATA_DIR "images/splat_sauce_08.png",
+	GAMEDATA_DIR "images/splat_sauce_09.png",
+	GAMEDATA_DIR "images/splat_sauce_10.png",
+	GAMEDATA_DIR "images/splat_sauce_11.png",
+	GAMEDATA_DIR "images/splat_sauce_12.png",
+	GAMEDATA_DIR "images/splat_sauce_13.png",
+	GAMEDATA_DIR "images/splat_sauce_14.png",
+	GAMEDATA_DIR "images/splat_sauce_15.png",
+	GAMEDATA_DIR "images/splat_sauce_16.png",
+	GAMEDATA_DIR "images/splat_sauce_17.png",
+	GAMEDATA_DIR "images/splat_sauce_18.png",
+	GAMEDATA_DIR "images/splat_sauce_19.png",
+	GAMEDATA_DIR "images/splat_sauce_20.png",
+	GAMEDATA_DIR "images/splat_sauce_21.png",
+	GAMEDATA_DIR "images/splat_sauce_22.png",
+	GAMEDATA_DIR "images/splat_sauce_23.png",
+	GAMEDATA_DIR "images/splat_sauce_24.png",
+	GAMEDATA_DIR "images/splat_sauce_25.png",
+	GAMEDATA_DIR "images/splat_sauce_26.png",
+	GAMEDATA_DIR "images/splat_sauce_27.png",
+	GAMEDATA_DIR "images/splat_sauce_28.png",
+	GAMEDATA_DIR "images/splat_sauce_29.png",
+	GAMEDATA_DIR "images/splat_sauce_30.png",
+	GAMEDATA_DIR "images/splat_sauce_31.png",
+	GAMEDATA_DIR "images/splat_sauce_32.png",
+	GAMEDATA_DIR "images/splat_sauce_33.png",
+	GAMEDATA_DIR "images/splat_sauce_34.png",
+	GAMEDATA_DIR "images/splat_sauce_35.png",
+	GAMEDATA_DIR "images/splat_sauce_36.png",
+	GAMEDATA_DIR "images/splat_sauce_37.png",
+	GAMEDATA_DIR "images/splat_sauce_38.png",
+	GAMEDATA_DIR "images/splat_sauce_39.png",
+	GAMEDATA_DIR "images/splat_sauce_40.png",
+	
+	GAMEDATA_DIR "images/splat_hot_01.png",
+	GAMEDATA_DIR "images/splat_hot_02.png",
+	GAMEDATA_DIR "images/splat_hot_03.png",
+	GAMEDATA_DIR "images/splat_hot_04.png",
+	GAMEDATA_DIR "images/splat_hot_05.png",
+	GAMEDATA_DIR "images/splat_hot_06.png",
+	GAMEDATA_DIR "images/splat_hot_07.png",
+	GAMEDATA_DIR "images/splat_hot_08.png",
+	GAMEDATA_DIR "images/splat_hot_09.png",
+	GAMEDATA_DIR "images/splat_hot_10.png",
+	GAMEDATA_DIR "images/splat_hot_11.png",
+	GAMEDATA_DIR "images/splat_hot_12.png",
+	GAMEDATA_DIR "images/splat_hot_13.png",
+	GAMEDATA_DIR "images/splat_hot_14.png",
+	GAMEDATA_DIR "images/splat_hot_15.png",
+	GAMEDATA_DIR "images/splat_hot_16.png",
+	GAMEDATA_DIR "images/splat_hot_17.png",
+	GAMEDATA_DIR "images/splat_hot_18.png",
+	GAMEDATA_DIR "images/splat_hot_19.png",
+	GAMEDATA_DIR "images/splat_hot_20.png",
+	GAMEDATA_DIR "images/splat_hot_21.png",
+	GAMEDATA_DIR "images/splat_hot_22.png",
+	GAMEDATA_DIR "images/splat_hot_23.png",
+	GAMEDATA_DIR "images/splat_hot_24.png",
+	GAMEDATA_DIR "images/splat_hot_25.png",
+	GAMEDATA_DIR "images/splat_hot_26.png",
+	GAMEDATA_DIR "images/splat_hot_27.png",
+	GAMEDATA_DIR "images/splat_hot_28.png",
+	GAMEDATA_DIR "images/splat_hot_29.png",
+	GAMEDATA_DIR "images/splat_hot_30.png",
+	GAMEDATA_DIR "images/splat_hot_31.png",
+	GAMEDATA_DIR "images/splat_hot_32.png",
+	GAMEDATA_DIR "images/splat_hot_33.png",
+	GAMEDATA_DIR "images/splat_hot_34.png",
+	GAMEDATA_DIR "images/splat_hot_35.png",
+	GAMEDATA_DIR "images/splat_hot_36.png",
+	GAMEDATA_DIR "images/splat_hot_37.png",
+	GAMEDATA_DIR "images/splat_hot_38.png",
+	GAMEDATA_DIR "images/splat_hot_39.png",
+	GAMEDATA_DIR "images/splat_hot_40.png",
 	
 	GAMEDATA_DIR "images/splat_choco_01.png",
 	GAMEDATA_DIR "images/splat_choco_02.png",
@@ -171,10 +398,49 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/splat_choco_37.png",
 	GAMEDATA_DIR "images/splat_choco_38.png",
 	GAMEDATA_DIR "images/splat_choco_39.png",
-	GAMEDATA_DIR "images/splat_choco_40.png"
+	GAMEDATA_DIR "images/splat_choco_40.png",
+	
+	GAMEDATA_DIR "images/splat_pink_01.png",
+	GAMEDATA_DIR "images/splat_pink_02.png",
+	GAMEDATA_DIR "images/splat_pink_03.png",
+	GAMEDATA_DIR "images/splat_pink_04.png",
+	GAMEDATA_DIR "images/splat_pink_05.png",
+	GAMEDATA_DIR "images/splat_pink_06.png",
+	GAMEDATA_DIR "images/splat_pink_07.png",
+	GAMEDATA_DIR "images/splat_pink_08.png",
+	GAMEDATA_DIR "images/splat_pink_09.png",
+	GAMEDATA_DIR "images/splat_pink_10.png",
+	GAMEDATA_DIR "images/splat_pink_11.png",
+	GAMEDATA_DIR "images/splat_pink_12.png",
+	GAMEDATA_DIR "images/splat_pink_13.png",
+	GAMEDATA_DIR "images/splat_pink_14.png",
+	GAMEDATA_DIR "images/splat_pink_15.png",
+	GAMEDATA_DIR "images/splat_pink_16.png",
+	GAMEDATA_DIR "images/splat_pink_17.png",
+	GAMEDATA_DIR "images/splat_pink_18.png",
+	GAMEDATA_DIR "images/splat_pink_19.png",
+	GAMEDATA_DIR "images/splat_pink_20.png",
+	GAMEDATA_DIR "images/splat_pink_21.png",
+	GAMEDATA_DIR "images/splat_pink_22.png",
+	GAMEDATA_DIR "images/splat_pink_23.png",
+	GAMEDATA_DIR "images/splat_pink_24.png",
+	GAMEDATA_DIR "images/splat_pink_25.png",
+	GAMEDATA_DIR "images/splat_pink_26.png",
+	GAMEDATA_DIR "images/splat_pink_27.png",
+	GAMEDATA_DIR "images/splat_pink_28.png",
+	GAMEDATA_DIR "images/splat_pink_29.png",
+	GAMEDATA_DIR "images/splat_pink_30.png",
+	GAMEDATA_DIR "images/splat_pink_31.png",
+	GAMEDATA_DIR "images/splat_pink_32.png",
+	GAMEDATA_DIR "images/splat_pink_33.png",
+	GAMEDATA_DIR "images/splat_pink_34.png",
+	GAMEDATA_DIR "images/splat_pink_35.png",
+	GAMEDATA_DIR "images/splat_pink_36.png",
+	GAMEDATA_DIR "images/splat_pink_37.png",
+	GAMEDATA_DIR "images/splat_pink_38.png",
+	GAMEDATA_DIR "images/splat_pink_39.png",
+	GAMEDATA_DIR "images/splat_pink_40.png"
 };
-
-/* TODO: Listar aquí los automátas */
 
 /* Codigos de salida */
 enum {
@@ -183,7 +449,7 @@ enum {
 	GAME_QUIT
 };
 
-/* Listar las salas */
+/* Listar las salsas */
 enum {
 	SAUCE_NONE = 0,
 	SAUCE_NORMAL,
@@ -208,7 +474,7 @@ typedef struct {
 } Splat;
 
 /* Prototipos de función */
-int game_loop (void);
+int game_loop (int candy_mode);
 void setup (void);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *p);
@@ -218,18 +484,22 @@ SDL_Surface * screen;
 SDL_Surface * images [NUM_IMAGES];
 
 int main (int argc, char *argv[]) {
+	int r;
+	
+	r = 0;
+	if (argc > 1) r = 1;
 	
 	setup ();
 	
 	do {
-		if (game_loop () == GAME_QUIT) break;
+		if (game_loop (r) == GAME_QUIT) break;
 	} while (1 == 0);
 	
 	SDL_Quit ();
 	return EXIT_SUCCESS;
 }
 
-int game_loop (void) {
+int game_loop (int candy_mode) {
 	int done = 0;
 	SDL_Event event;
 	SDLKey key;
@@ -241,12 +511,15 @@ int game_loop (void) {
 	
 	Pizza pizza;
 	Splat splats[300];
-	int num_splats = 0;
+	int splat_queue_start = 0, splat_queue_end = 0;
 	int g;
 	int pizzaspeed = 1, conveyorbelt = 0;
 	int image, splat_image;
+	int sauce_state, sauce_timer;
+	int hand;
+	SDL_Surface *splat_surface, *temp_surface;
 	
-	SDL_Surface *splat_surface;
+	sauce_state = SAUCE_NONE;
 	
 	splat_surface = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 	SDL_SetAlpha (images[IMG_SPLAT_MASK], 0, 0);
@@ -267,7 +540,19 @@ int game_loop (void) {
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
 				case SDL_MOUSEBUTTONDOWN:
-					if (event.button.button == SDL_BUTTON_LEFT) mousedown = TRUE;
+					if (event.button.button == SDL_BUTTON_LEFT) {
+						if (event.button.x >= 40 && event.button.x < 100 && event.button.y >= 144 && event.button.y < 267) {
+							hand = (candy_mode ? SAUCE_CHOCOLATE : SAUCE_NORMAL);
+							mousedown = TRUE;
+							sauce_state = SAUCE_NORMAL;
+							sauce_timer = 0;
+						} else if (event.button.x >= 101 && event.button.x < 161 && event.button.y >= 144 && event.button.y < 267) {
+							hand = (candy_mode ? SAUCE_PINK : SAUCE_HOT);
+							mousedown = TRUE;
+							sauce_state = SAUCE_HOT;
+							sauce_timer = 0;
+						}
+					}
 					break;
 				case SDL_MOUSEBUTTONUP:
 					if (event.button.button == SDL_BUTTON_LEFT) mousedown = FALSE;
@@ -293,6 +578,233 @@ int game_loop (void) {
 		//pizzaspeed++;
 		
 		SDL_BlitSurface (images[IMG_BACKGROUND], NULL, screen, NULL);
+		
+		/* Dibujar las salsas */
+		rect.x = 11;
+		rect.y = 225;
+		rect.w = images[IMG_INGREDIENTS_BASE_SAUCE]->w;
+		rect.h = images[IMG_INGREDIENTS_BASE_SAUCE]->h;
+		
+		SDL_BlitSurface (images[IMG_INGREDIENTS_BASE_SAUCE], NULL, screen, &rect);
+		
+		if (sauce_state == SAUCE_NONE || sauce_state == SAUCE_HOT) {
+			rect.x = 15;
+			rect.y = 179;
+			rect.w = images[IMG_INGREDIENTS_HOLDER_A_1]->w;
+			rect.h = images[IMG_INGREDIENTS_HOLDER_A_1]->h;
+			
+			SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_1], NULL, screen, &rect);
+			
+			rect.x = 54;
+			if (candy_mode) {
+				rect.y = 143;
+				rect.w = images[IMG_CHOCOLATE]->w;
+				rect.h = images[IMG_CHOCOLATE]->h;
+			
+				SDL_BlitSurface (images[IMG_CHOCOLATE], NULL, screen, &rect);
+			} else {
+				rect.y = 140;
+				rect.w = images[IMG_SAUCE]->w;
+				rect.h = images[IMG_SAUCE]->h;
+			
+				SDL_BlitSurface (images[IMG_SAUCE], NULL, screen, &rect);
+			}
+			
+			rect.x = 53;
+			rect.y = 183;
+			rect.w = images[IMG_INGREDIENTS_HOLDER_A_2]->w;
+			rect.h = images[IMG_INGREDIENTS_HOLDER_A_2]->h;
+			
+			SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_2], NULL, screen, &rect);
+		} else {
+			/* Ejecutar la animación que hace que la salsa aparezca */
+			switch (sauce_timer) {
+				case 0:
+					rect.x = 15;
+					rect.y = 179;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_1]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_1]->h;
+			
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_1], NULL, screen, &rect);
+					
+					rect.x = 53;
+					rect.y = 183;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_2]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_2]->h;
+			
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_2], NULL, screen, &rect);
+					break;
+				case 1:
+					rect.x = 19;
+					rect.y = 162;
+					
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_3]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_3]->h;
+					
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_3], NULL, screen, &rect);
+					break;
+				case 2:
+					rect.x = 19;
+					rect.y = 190;
+					
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_3]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_3]->h;
+					
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_3], NULL, screen, &rect);
+					break;
+				case 3:
+					rect.x = 19;
+					rect.y = 211;
+					
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_3]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_3]->h;
+					
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_3], NULL, screen, &rect);
+					break;
+				case 7:
+					rect.x = 15;
+					rect.y = 243;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_1]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_1]->h;
+			
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_1], NULL, screen, &rect);
+			
+					rect.x = 54;
+					if (candy_mode) {
+						rect.y = 210;
+						rect.w = images[IMG_CHOCOLATE]->w;
+						rect.h = images[IMG_CHOCOLATE]->h;
+			
+						SDL_BlitSurface (images[IMG_CHOCOLATE], NULL, screen, &rect);
+					} else {
+						rect.y = 207;
+						rect.w = images[IMG_SAUCE]->w;
+						rect.h = images[IMG_SAUCE]->h;
+			
+						SDL_BlitSurface (images[IMG_SAUCE], NULL, screen, &rect);
+					}
+			
+					rect.x = 53;
+					rect.y = 250;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_2]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_2]->h;
+			
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_2], NULL, screen, &rect);
+					break;
+				case 8:
+					rect.x = 15;
+					rect.y = 175;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_1]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_1]->h;
+		
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_1], NULL, screen, &rect);
+		
+					rect.x = 54;
+					if (candy_mode) {
+						rect.y = 139;
+						rect.w = images[IMG_CHOCOLATE]->w;
+						rect.h = images[IMG_CHOCOLATE]->h;
+		
+						SDL_BlitSurface (images[IMG_CHOCOLATE], NULL, screen, &rect);
+					} else {
+						rect.y = 136;
+						rect.w = images[IMG_SAUCE]->w;
+						rect.h = images[IMG_SAUCE]->h;
+		
+						SDL_BlitSurface (images[IMG_SAUCE], NULL, screen, &rect);
+					}
+		
+					rect.x = 53;
+					rect.y = 179;
+					rect.w = images[IMG_INGREDIENTS_HOLDER_A_2]->w;
+					rect.h = images[IMG_INGREDIENTS_HOLDER_A_2]->h;
+		
+					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_2], NULL, screen, &rect);
+					break;
+			}
+			
+			sauce_timer++;
+			if (sauce_timer == 9) sauce_state = SAUCE_NONE;
+		}
+		
+		if (sauce_state == SAUCE_NONE || sauce_state == SAUCE_NORMAL) {
+			rect.x = 147;
+			rect.y = 151;
+			rect.w = images[IMG_INGREDIENTS_HOLDER_B]->w;
+			rect.h = images[IMG_INGREDIENTS_HOLDER_B]->h;
+			
+			SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_B], NULL, screen, &rect);
+			
+			if (candy_mode) {
+				rect.x = 117;
+				rect.y = 114;
+				
+				rect.w = images[IMG_PINK_ICING]->w;
+				rect.h = images[IMG_PINK_ICING]->h;
+			
+				SDL_BlitSurface (images[IMG_PINK_ICING], NULL, screen, &rect);
+			} else {
+				rect.x = 104;
+				rect.y = 139;
+				rect.w = images[IMG_HOT_SAUCE]->w;
+				rect.h = images[IMG_HOT_SAUCE]->h;
+			
+				SDL_BlitSurface (images[IMG_HOT_SAUCE], NULL, screen, &rect);
+			}
+		} else {
+			/* Ejecutar la animación que hace que la salsa aparezca */
+			rect.w = images[IMG_INGREDIENTS_HOLDER_B]->w;
+			rect.h = images[IMG_INGREDIENTS_HOLDER_B]->h;
+			rect.x = 147;
+			
+			switch (sauce_timer) {
+				case 0:
+					rect.y = 151;
+					break;
+				case 1:
+					rect.y = 147;
+					break;
+				case 2:
+					rect.y = 180;
+					break;
+				case 3:
+					rect.y = 248;
+					break;
+				case 6:
+					rect.y = 260;
+					break;
+				case 7:
+					rect.y = 203;
+					break;
+				case 8:
+					rect.y = 147;
+					break;
+			}
+			
+			if (sauce_timer != 4 && sauce_timer != 5) {
+				SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_B], NULL, screen, &rect);
+			}
+			
+			if (sauce_timer > 5 && sauce_timer < 9) {
+				if (candy_mode) {
+					rect.x -= 30;
+					rect.y -= 37;
+					
+					rect.w = images[IMG_PINK_ICING]->w;
+					rect.h = images[IMG_PINK_ICING]->h;
+					SDL_BlitSurface (images[IMG_PINK_ICING], NULL, screen, &rect);
+				} else {
+					rect.x -= 43;
+					rect.y -= 12;
+					
+					rect.w = images[IMG_HOT_SAUCE]->w;
+					rect.h = images[IMG_HOT_SAUCE]->h;
+					SDL_BlitSurface (images[IMG_HOT_SAUCE], NULL, screen, &rect);
+				}
+			}
+			sauce_timer++;
+			if (sauce_timer == 9) sauce_state = SAUCE_NONE;
+		}
 		
 		/* Dibujar la cinta de pizzas que se mueve */
 		rect.w = images[IMG_CONVEYORBELT]->w;
@@ -320,26 +832,49 @@ int game_loop (void) {
 		
 			if (mousedown && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
 				/* if (!not sauce placed) { */
-				/* FIXME: Eliminar la otra salsa */
-				splats[num_splats].x = handposx - 31 - pizza.x;
-				splats[num_splats].y = handposy - 36 - pizza.y;
-				splats[num_splats].frame = 0;
-				splats[num_splats].rand = RANDOM (4);
-				splats[num_splats].type = SAUCE_CHOCOLATE;
+				if (splat_queue_start != splat_queue_end) {
+					/* Revisar si el splat que hay es de otra salsa */
+					if (splats[splat_queue_start].type != hand) {
+						splat_queue_start = splat_queue_end = 0;
+					}
+				}
+				
+				/* Si está lleno, eliminar el primer splat */
+				if (splat_queue_start == (splat_queue_end + 1) % 300) {
+					splat_queue_start = (splat_queue_start + 1) % 300;
+				}
+				
+				temp_surface = images[IMG_SPLAT_SAUCE_1 + (SAUCE_NORMAL - 1) * 40];
+				splats[splat_queue_end].x = handposx - (temp_surface->w / 2) - pizza.x;
+				splats[splat_queue_end].y = handposy - (temp_surface->h / 2) - pizza.y;
+				splats[splat_queue_end].frame = 0;
+				splats[splat_queue_end].rand = RANDOM (4);
+				splats[splat_queue_end].type = hand;
 			
-				num_splats++;
+				splat_queue_end = (splat_queue_end + 1) % 300;
 			}
 		
-			if (num_splats > 0) {
-				if (splats[0].type == SAUCE_CHOCOLATE) {
-					image = IMG_SPLAT_CHOCO_1;
+			if (splat_queue_end != splat_queue_start) {
+				switch (splats[0].type) {
+					case SAUCE_NORMAL:
+						image = IMG_SPLAT_SAUCE_1;
+						break;
+					case SAUCE_HOT:
+						image = IMG_SPLAT_HOT_1;
+						break;
+					case SAUCE_CHOCOLATE:
+						image = IMG_SPLAT_CHOCO_1;
+						break;
+					case SAUCE_PINK:
+						image = IMG_SPLAT_PINK_1;
+						break;
 				}
 				SDL_BlitSurface (images[IMG_SPLAT_MASK], NULL, splat_surface, NULL);
 				SDL_BlitSurface (images[IMG_PIZZA_BASE_1], NULL, splat_surface, NULL);
 			
 				rect.w = images[image]->w;
 				rect.h = images[image]->h;
-				for (g = 0; g < num_splats; g++) {
+				for (g = splat_queue_start; g != splat_queue_end; g = (g + 1) % 300) {
 					splat_image = image + (splats[g].rand * 10) + splats[g].frame;
 					rect.x = splats[g].x;
 					rect.y = splats[g].y;
