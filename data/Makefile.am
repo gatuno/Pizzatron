@@ -7,7 +7,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/pizza_base_3.png \
 	images/pizza_base_4.png \
 	images/pizza_base_5.png \
-	images/pizza_candy.png \
+	images/pizza_sprinkles.png \
 	images/pizza_cheese.png \
 	images/pizza_shadow.png \
 	images/splat_mask.png \
@@ -179,5 +179,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/holder_b.png \
 	images/hot_sauce.png \
 	images/pink_icing.png \
-	images/sauce.png
+	images/sauce.png \
+	images/cheese_box.png \
+	images/sprinkle_box.png
 

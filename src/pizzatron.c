@@ -65,8 +65,8 @@ enum {
 	IMG_PIZZA_BASE_4,
 	IMG_PIZZA_BASE_5,
 	
-	IMG_PIZZA_CANDY,
 	IMG_PIZZA_CHEESE,
+	IMG_PIZZA_SPRINKLES,
 	
 	IMG_PIZZA_SHADOW,
 	
@@ -83,6 +83,9 @@ enum {
 	IMG_HOT_SAUCE,
 	IMG_CHOCOLATE,
 	IMG_PINK_ICING,
+	
+	IMG_CHEESE_BOX,
+	IMG_SPRINKLES_BOX,
 	
 	IMG_SPLAT_SAUCE_1,
 	IMG_SPLAT_SAUCE_2,
@@ -261,8 +264,8 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/pizza_base_4.png",
 	GAMEDATA_DIR "images/pizza_base_5.png",
 	
-	GAMEDATA_DIR "images/pizza_candy.png",
 	GAMEDATA_DIR "images/pizza_cheese.png",
+	GAMEDATA_DIR "images/pizza_sprinkles.png",
 	GAMEDATA_DIR "images/pizza_shadow.png",
 	
 	GAMEDATA_DIR "images/splat_mask.png",
@@ -276,6 +279,9 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/hot_sauce.png",
 	GAMEDATA_DIR "images/chocolate.png",
 	GAMEDATA_DIR "images/pink_icing.png",
+	
+	GAMEDATA_DIR "images/cheese_box.png",
+	GAMEDATA_DIR "images/sprinkle_box.png",
 	
 	GAMEDATA_DIR "images/splat_sauce_01.png",
 	GAMEDATA_DIR "images/splat_sauce_02.png",
@@ -449,13 +455,16 @@ enum {
 	GAME_QUIT
 };
 
-/* Listar las salsas */
+/* Listar los ingredientes */
 enum {
-	SAUCE_NONE = 0,
+	NONE = 0,
 	SAUCE_NORMAL,
 	SAUCE_HOT,
 	SAUCE_CHOCOLATE,
-	SAUCE_PINK
+	SAUCE_PINK,
+	
+	CHEESE,
+	SPRINKLES
 };
 
 /* Estructuras */
@@ -512,17 +521,23 @@ int game_loop (int candy_mode) {
 	Pizza pizza;
 	Splat splats[300];
 	int splat_queue_start = 0, splat_queue_end = 0;
-	int g;
-	int pizzaspeed = 1, conveyorbelt = 0;
+	int g, h, i;
+	int pizzaspeed, handicap = 0, conveyorbelt = 0;
 	int image, splat_image;
 	int sauce_state, sauce_timer;
 	int hand;
-	SDL_Surface *splat_surface, *temp_surface;
+	Uint8 alpha, rgb_r, rgb_g, rgb_b;
+	Uint32 *pixel;
+	int midleft, left, midright, right, top, bottom;
 	
-	sauce_state = SAUCE_NONE;
+	SDL_Surface *splat_surface, *splat_surface2, *temp_surface;
+	
+	sauce_state = NONE;
 	
 	splat_surface = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	splat_surface2 = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 	SDL_SetAlpha (images[IMG_SPLAT_MASK], 0, 0);
+	
 	SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
 	
 	SDL_GetMouseState (&handposx, &handposy);
@@ -551,11 +566,20 @@ int game_loop (int candy_mode) {
 							mousedown = TRUE;
 							sauce_state = SAUCE_HOT;
 							sauce_timer = 0;
+						} else if (event.button.x >= 184 && event.button.x < 348 && event.button.y >= 214 && event.button.y < 274) {
+							hand = (candy_mode ? SPRINKLES : CHEESE);
+							mousedown = TRUE;
 						}
 					}
 					break;
 				case SDL_MOUSEBUTTONUP:
-					if (event.button.button == SDL_BUTTON_LEFT) mousedown = FALSE;
+					if (event.button.button == SDL_BUTTON_LEFT) {
+						mousedown = FALSE;
+						
+						if ((hand == SPRINKLES || hand == CHEESE) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+							pizza.cheese_placed = hand;
+						}
+					}
 					break;
 				case SDL_KEYDOWN:
 					
@@ -587,7 +611,7 @@ int game_loop (int candy_mode) {
 		
 		SDL_BlitSurface (images[IMG_INGREDIENTS_BASE_SAUCE], NULL, screen, &rect);
 		
-		if (sauce_state == SAUCE_NONE || sauce_state == SAUCE_HOT) {
+		if (sauce_state == NONE || sauce_state == SAUCE_HOT) {
 			rect.x = 15;
 			rect.y = 179;
 			rect.w = images[IMG_INGREDIENTS_HOLDER_A_1]->w;
@@ -724,10 +748,10 @@ int game_loop (int candy_mode) {
 			}
 			
 			sauce_timer++;
-			if (sauce_timer == 9) sauce_state = SAUCE_NONE;
+			if (sauce_timer == 9) sauce_state = NONE;
 		}
 		
-		if (sauce_state == SAUCE_NONE || sauce_state == SAUCE_NORMAL) {
+		if (sauce_state == NONE || sauce_state == SAUCE_NORMAL) {
 			rect.x = 147;
 			rect.y = 151;
 			rect.w = images[IMG_INGREDIENTS_HOLDER_B]->w;
@@ -803,7 +827,77 @@ int game_loop (int candy_mode) {
 				}
 			}
 			sauce_timer++;
-			if (sauce_timer == 9) sauce_state = SAUCE_NONE;
+			if (sauce_timer == 9) sauce_state = NONE;
+		}
+		
+		/* Dibujar la caja de queso o sprinkles */
+		rect.x = 188;
+		rect.y = 187;
+		rect.w = images[IMG_CHEESE_BOX]->w;
+		rect.h = images[IMG_CHEESE_BOX]->h;
+		
+		if (candy_mode) {
+			SDL_BlitSurface (images[IMG_SPRINKLES_BOX], NULL, screen, &rect);
+		} else {
+			SDL_BlitSurface (images[IMG_CHEESE_BOX], NULL, screen, &rect);
+		}
+		
+		if (splat_queue_end < splat_queue_start) {
+			image = splat_queue_end + 300 - splat_queue_start;
+		} else {
+			image = splat_queue_end - splat_queue_start;
+		}
+		
+		//printf ("Cant de splats: %i\n", image);
+		
+		if (handicap <= -2) {
+			if (candy_mode) {
+				pizzaspeed = 2;
+			} else {
+				pizzaspeed = 1;
+			}
+		} else if (handicap <= -1) {
+			if (candy_mode) {
+				pizzaspeed = 3;
+			} else {
+				pizzaspeed = 2;
+			}
+		} else if (handicap <= 4) {
+			if (candy_mode) {
+				pizzaspeed = 4;
+			} else {
+				pizzaspeed = 3;
+			}
+		} else if (handicap <= 8) {
+			if (candy_mode) {
+				pizzaspeed = 5;
+			} else {
+				pizzaspeed = 4;
+			}
+		} else if (handicap <= 13) {
+			if (candy_mode) {
+				pizzaspeed = 6;
+			} else {
+				pizzaspeed = 5;
+			}
+		} else if (handicap <= 19) {
+			if (candy_mode) {
+				pizzaspeed = 7;
+			} else {
+				pizzaspeed = 6;
+			}
+		} else if (handicap <= 26) {
+			if (candy_mode) {
+				pizzaspeed = 8;
+			} else {
+				pizzaspeed = 7;
+			}
+		} else if (handicap <= 34) {
+			if (candy_mode) {
+				pizzaspeed = 9;
+			} else {
+				pizzaspeed = 8;
+			}
 		}
 		
 		/* Dibujar la cinta de pizzas que se mueve */
@@ -826,81 +920,173 @@ int game_loop (int candy_mode) {
 			pizza.x += pizzaspeed;
 			rect.x = pizza.x;
 			rect.y = pizza.y;
-			rect.w = images[IMG_PIZZA_BASE_1]->w;
-			rect.h = images[IMG_PIZZA_BASE_1]->h;
-			SDL_BlitSurface (images[IMG_PIZZA_BASE_1], NULL, screen, &rect);
+			image = IMG_PIZZA_BASE_1 + (pizza.sauce_placed - NONE);
+			rect.w = images[image]->w;
+			rect.h = images[image]->h;
+			SDL_BlitSurface (images[image], NULL, screen, &rect);
 		
-			if (mousedown && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
-				/* if (!not sauce placed) { */
-				if (splat_queue_start != splat_queue_end) {
-					/* Revisar si el splat que hay es de otra salsa */
-					if (splats[splat_queue_start].type != hand) {
-						splat_queue_start = splat_queue_end = 0;
+			if (hand >= SAUCE_NORMAL && hand <= SAUCE_PINK && mousedown && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+				if (pizza.sauce_placed != hand) {
+					if (splat_queue_start != splat_queue_end) {
+						/* Revisar si el splat que hay es de otra salsa */
+						if (splats[splat_queue_start].type != hand) {
+							splat_queue_start = splat_queue_end = 0;
+							pizza.sauce_placed = NONE;
+						}
 					}
+					
+					/* Si está lleno, eliminar el primer splat */
+					if (splat_queue_start == (splat_queue_end + 1) % 300) {
+						splat_queue_start = (splat_queue_start + 1) % 300;
+					}
+					
+					temp_surface = images[IMG_SPLAT_SAUCE_1 + (hand - SAUCE_NORMAL) * 40];
+					splats[splat_queue_end].x = handposx - (temp_surface->w / 2) - pizza.x;
+					splats[splat_queue_end].y = handposy - (temp_surface->h / 2) - pizza.y;
+					splats[splat_queue_end].frame = 0;
+					splats[splat_queue_end].rand = RANDOM (4);
+					splats[splat_queue_end].type = hand;
+					
+					splat_queue_end = (splat_queue_end + 1) % 300;
 				}
-				
-				/* Si está lleno, eliminar el primer splat */
-				if (splat_queue_start == (splat_queue_end + 1) % 300) {
-					splat_queue_start = (splat_queue_start + 1) % 300;
-				}
-				
-				temp_surface = images[IMG_SPLAT_SAUCE_1 + (SAUCE_NORMAL - 1) * 40];
-				splats[splat_queue_end].x = handposx - (temp_surface->w / 2) - pizza.x;
-				splats[splat_queue_end].y = handposy - (temp_surface->h / 2) - pizza.y;
-				splats[splat_queue_end].frame = 0;
-				splats[splat_queue_end].rand = RANDOM (4);
-				splats[splat_queue_end].type = hand;
-			
-				splat_queue_end = (splat_queue_end + 1) % 300;
 			}
-		
-			if (splat_queue_end != splat_queue_start) {
-				switch (splats[0].type) {
-					case SAUCE_NORMAL:
-						image = IMG_SPLAT_SAUCE_1;
-						break;
-					case SAUCE_HOT:
-						image = IMG_SPLAT_HOT_1;
-						break;
-					case SAUCE_CHOCOLATE:
-						image = IMG_SPLAT_CHOCO_1;
-						break;
-					case SAUCE_PINK:
-						image = IMG_SPLAT_PINK_1;
-						break;
-				}
-				SDL_BlitSurface (images[IMG_SPLAT_MASK], NULL, splat_surface, NULL);
-				SDL_BlitSurface (images[IMG_PIZZA_BASE_1], NULL, splat_surface, NULL);
 			
+			/* Dibujar los splats */
+			if (splat_queue_end != splat_queue_start) {
+				image = IMG_SPLAT_SAUCE_1 + (splats[splat_queue_start].type - SAUCE_NORMAL) * 40;
+				SDL_BlitSurface (images[IMG_SPLAT_MASK], NULL, splat_surface, NULL);
+				SDL_BlitSurface (images[IMG_PIZZA_BASE_1 + pizza.sauce_placed], NULL, splat_surface, NULL);
+				
+				SDL_FillRect (splat_surface2, NULL, SDL_MapRGBA (splat_surface2->format, 0, 0, 0, SDL_ALPHA_OPAQUE));
+				
 				rect.w = images[image]->w;
 				rect.h = images[image]->h;
 				for (g = splat_queue_start; g != splat_queue_end; g = (g + 1) % 300) {
 					splat_image = image + (splats[g].rand * 10) + splats[g].frame;
 					rect.x = splats[g].x;
 					rect.y = splats[g].y;
-				
+					
+					h = rect.x;
+					i = rect.y;
+					
 					SDL_BlitSurface (images[splat_image], NULL, splat_surface, &rect);
-				
+					rect.x = h;
+					rect.y = i;
+					SDL_BlitSurface (images[splat_image], NULL, splat_surface2, &rect);
+					
 					if (splats[g].frame < 9) {
 						splats[g].frame++;
 					}
+					
 				}
-			
+				
 				rect.x = pizza.x;
 				rect.y = pizza.y;
 				rect.w = splat_surface->w;
 				rect.h = splat_surface->h;
 				SDL_BlitSurface (splat_surface, NULL, screen, &rect);
+				
+				/* Revisar si la salsa está cubierta completamente */
+				/* Left Part */
+				pixel = splat_surface2->pixels + (81 * splat_surface2->pitch) + (34 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("left, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					left = FALSE;
+				} else {
+					left = TRUE;
+				}
+				
+				/* Mid Left Part */
+				pixel = splat_surface2->pixels + (81 * splat_surface2->pitch) + (104 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("midleft, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					midleft = FALSE;
+				} else {
+					midleft = TRUE;
+				}
+				
+				/* Mid Right Part */
+				pixel = splat_surface2->pixels + (81 * splat_surface2->pitch) + (144 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("midright, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					midright = FALSE;
+				} else {
+					midright = TRUE;
+				}
+				
+				/* Right Part */
+				pixel = splat_surface2->pixels + (81 * splat_surface2->pitch) + (214 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("right, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					right = FALSE;
+				} else {
+					right = TRUE;
+				}
+				
+				/* Top Part */
+				pixel = splat_surface2->pixels + (31 * splat_surface2->pitch) + (124 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("top, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					top = FALSE;
+				} else {
+					top = TRUE;
+				}
+				
+				/* Bottom Part */
+				pixel = splat_surface2->pixels + (131 * splat_surface2->pitch) + (124 * splat_surface2->format->BytesPerPixel);
+				
+				SDL_GetRGBA (*pixel, splat_surface2->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+				//printf ("bottom, Colores del pixel: %i, %i, %i\n", rgb_r, rgb_g, rgb_b);
+				if (rgb_r == rgb_g && rgb_g == rgb_b && rgb_b == 0) {
+					/* Si sigue negro, no ha sido cubierta la parte de la pizza */
+					bottom = FALSE;
+				} else {
+					bottom = TRUE;
+				}
+				
+				if (left && midleft && midright && right && bottom && top) {
+					pizza.sauce_placed = splats[splat_queue_start].type;
+				}
 			}
-		
+			
 			rect.x = pizza.x;
 			rect.y = pizza.y;
+			
 			rect.w = images[IMG_PIZZA_SHADOW]->w;
 			rect.h = images[IMG_PIZZA_SHADOW]->h;
 			SDL_BlitSurface (images[IMG_PIZZA_SHADOW], NULL, screen, &rect);
+			
+			if (pizza.cheese_placed != NONE) {
+				rect.x = pizza.x;
+				rect.y = pizza.y;
+				rect.w = images[IMG_PIZZA_CHEESE]->w;
+				rect.h = images[IMG_PIZZA_CHEESE]->h;
+				
+				if (pizza.cheese_placed == CHEESE) {
+					SDL_BlitSurface (images[IMG_PIZZA_CHEESE], NULL, screen, &rect);
+				} else {
+					SDL_BlitSurface (images[IMG_PIZZA_SPRINKLES], NULL, screen, &rect);
+				}
+			}
 		} else {
 			/* En caso contrario, acomodar una nueva pizza y una nueva orden */
 			place_pizza_and_order (&pizza);
+			splat_queue_start = splat_queue_end = 0;
 		}
 		
 		SDL_Flip (screen);
@@ -971,7 +1157,7 @@ void setup (void) {
 void place_pizza_and_order (Pizza *p) {
 	p->y = 293;
 	p->x = -366;
-	p->sauce_placed = p->cheese_placed = FALSE;
+	p->sauce_placed = p->cheese_placed = NONE;
 	
 	p->topping[0] = p->topping[1] = p->topping[2] = p->topping[3] = 0;
 }
