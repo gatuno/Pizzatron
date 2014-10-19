@@ -522,7 +522,7 @@ int game_loop (int candy_mode) {
 	Splat splats[300];
 	int splat_queue_start = 0, splat_queue_end = 0;
 	int g, h, i;
-	int pizzaspeed, handicap = 0, conveyorbelt = 0;
+	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
 	int image, splat_image;
 	int sauce_state, sauce_timer;
 	int hand;
@@ -548,6 +548,7 @@ int game_loop (int candy_mode) {
 	mousedown = FALSE;
 	
 	place_pizza_and_order (&pizza);
+	speedboost = 0;
 	
 	do {
 		last_time = SDL_GetTicks ();
@@ -848,9 +849,9 @@ int game_loop (int candy_mode) {
 			image = splat_queue_end - splat_queue_start;
 		}
 		
-		//printf ("Cant de splats: %i\n", image);
-		
-		if (handicap <= -2) {
+		if (image > 190) {
+			pizzaspeed++;
+		} else if (handicap <= -2) {
 			if (candy_mode) {
 				pizzaspeed = 2;
 			} else {
@@ -904,7 +905,7 @@ int game_loop (int candy_mode) {
 		rect.w = images[IMG_CONVEYORBELT]->w;
 		rect.h = images[IMG_CONVEYORBELT]->h;
 		rect.y = 293;
-		conveyorbelt = conveyorbelt + pizzaspeed;
+		conveyorbelt = conveyorbelt + pizzaspeed + speedboost;
 		if (conveyorbelt >= 100) {
 			conveyorbelt = 0;
 		}
@@ -917,7 +918,7 @@ int game_loop (int candy_mode) {
 		
 		if (pizza.x < 900) {
 			/* Pizza en escena, recoger ingredientes y dibujar */
-			pizza.x += pizzaspeed;
+			pizza.x += pizzaspeed + speedboost;
 			rect.x = pizza.x;
 			rect.y = pizza.y;
 			image = IMG_PIZZA_BASE_1 + (pizza.sauce_placed - NONE);
@@ -945,6 +946,7 @@ int game_loop (int candy_mode) {
 					splats[splat_queue_end].y = handposy - (temp_surface->h / 2) - pizza.y;
 					splats[splat_queue_end].frame = 0;
 					splats[splat_queue_end].rand = RANDOM (4);
+					
 					splats[splat_queue_end].type = hand;
 					
 					splat_queue_end = (splat_queue_end + 1) % 300;
@@ -963,11 +965,8 @@ int game_loop (int candy_mode) {
 				rect.h = images[image]->h;
 				for (g = splat_queue_start; g != splat_queue_end; g = (g + 1) % 300) {
 					splat_image = image + (splats[g].rand * 10) + splats[g].frame;
-					rect.x = splats[g].x;
-					rect.y = splats[g].y;
-					
-					h = rect.x;
-					i = rect.y;
+					h = rect.x = splats[g].x;
+					i = rect.y = splats[g].y;
 					
 					SDL_BlitSurface (images[splat_image], NULL, splat_surface, &rect);
 					rect.x = h;
@@ -1087,6 +1086,7 @@ int game_loop (int candy_mode) {
 			/* En caso contrario, acomodar una nueva pizza y una nueva orden */
 			place_pizza_and_order (&pizza);
 			splat_queue_start = splat_queue_end = 0;
+			speedboost = 0;
 		}
 		
 		SDL_Flip (screen);
@@ -1095,6 +1095,9 @@ int game_loop (int candy_mode) {
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
 		
 	} while (!done);
+	
+	SDL_FreeSurface (splat_surface);
+	SDL_FreeSurface (splat_surface2);
 	
 	return done;
 }
