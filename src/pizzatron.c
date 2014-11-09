@@ -87,169 +87,10 @@ enum {
 	IMG_CHEESE_BOX,
 	IMG_SPRINKLES_BOX,
 	
-	IMG_SPLAT_SAUCE_1,
-	IMG_SPLAT_SAUCE_2,
-	IMG_SPLAT_SAUCE_3,
-	IMG_SPLAT_SAUCE_4,
-	IMG_SPLAT_SAUCE_5,
-	IMG_SPLAT_SAUCE_6,
-	IMG_SPLAT_SAUCE_7,
-	IMG_SPLAT_SAUCE_8,
-	IMG_SPLAT_SAUCE_9,
-	IMG_SPLAT_SAUCE_10,
-	IMG_SPLAT_SAUCE_11,
-	IMG_SPLAT_SAUCE_12,
-	IMG_SPLAT_SAUCE_13,
-	IMG_SPLAT_SAUCE_14,
-	IMG_SPLAT_SAUCE_15,
-	IMG_SPLAT_SAUCE_16,
-	IMG_SPLAT_SAUCE_17,
-	IMG_SPLAT_SAUCE_18,
-	IMG_SPLAT_SAUCE_19,
-	IMG_SPLAT_SAUCE_20,
-	IMG_SPLAT_SAUCE_21,
-	IMG_SPLAT_SAUCE_22,
-	IMG_SPLAT_SAUCE_23,
-	IMG_SPLAT_SAUCE_24,
-	IMG_SPLAT_SAUCE_25,
-	IMG_SPLAT_SAUCE_26,
-	IMG_SPLAT_SAUCE_27,
-	IMG_SPLAT_SAUCE_28,
-	IMG_SPLAT_SAUCE_29,
-	IMG_SPLAT_SAUCE_30,
-	IMG_SPLAT_SAUCE_31,
-	IMG_SPLAT_SAUCE_32,
-	IMG_SPLAT_SAUCE_33,
-	IMG_SPLAT_SAUCE_34,
-	IMG_SPLAT_SAUCE_35,
-	IMG_SPLAT_SAUCE_36,
-	IMG_SPLAT_SAUCE_37,
-	IMG_SPLAT_SAUCE_38,
-	IMG_SPLAT_SAUCE_39,
-	IMG_SPLAT_SAUCE_40,
-	
-	IMG_SPLAT_HOT_1,
-	IMG_SPLAT_HOT_2,
-	IMG_SPLAT_HOT_3,
-	IMG_SPLAT_HOT_4,
-	IMG_SPLAT_HOT_5,
-	IMG_SPLAT_HOT_6,
-	IMG_SPLAT_HOT_7,
-	IMG_SPLAT_HOT_8,
-	IMG_SPLAT_HOT_9,
-	IMG_SPLAT_HOT_10,
-	IMG_SPLAT_HOT_11,
-	IMG_SPLAT_HOT_12,
-	IMG_SPLAT_HOT_13,
-	IMG_SPLAT_HOT_14,
-	IMG_SPLAT_HOT_15,
-	IMG_SPLAT_HOT_16,
-	IMG_SPLAT_HOT_17,
-	IMG_SPLAT_HOT_18,
-	IMG_SPLAT_HOT_19,
-	IMG_SPLAT_HOT_20,
-	IMG_SPLAT_HOT_21,
-	IMG_SPLAT_HOT_22,
-	IMG_SPLAT_HOT_23,
-	IMG_SPLAT_HOT_24,
-	IMG_SPLAT_HOT_25,
-	IMG_SPLAT_HOT_26,
-	IMG_SPLAT_HOT_27,
-	IMG_SPLAT_HOT_28,
-	IMG_SPLAT_HOT_29,
-	IMG_SPLAT_HOT_30,
-	IMG_SPLAT_HOT_31,
-	IMG_SPLAT_HOT_32,
-	IMG_SPLAT_HOT_33,
-	IMG_SPLAT_HOT_34,
-	IMG_SPLAT_HOT_35,
-	IMG_SPLAT_HOT_36,
-	IMG_SPLAT_HOT_37,
-	IMG_SPLAT_HOT_38,
-	IMG_SPLAT_HOT_39,
-	IMG_SPLAT_HOT_40,
-	
-	IMG_SPLAT_CHOCO_1,
-	IMG_SPLAT_CHOCO_2,
-	IMG_SPLAT_CHOCO_3,
-	IMG_SPLAT_CHOCO_4,
-	IMG_SPLAT_CHOCO_5,
-	IMG_SPLAT_CHOCO_6,
-	IMG_SPLAT_CHOCO_7,
-	IMG_SPLAT_CHOCO_8,
-	IMG_SPLAT_CHOCO_9,
-	IMG_SPLAT_CHOCO_10,
-	IMG_SPLAT_CHOCO_11,
-	IMG_SPLAT_CHOCO_12,
-	IMG_SPLAT_CHOCO_13,
-	IMG_SPLAT_CHOCO_14,
-	IMG_SPLAT_CHOCO_15,
-	IMG_SPLAT_CHOCO_16,
-	IMG_SPLAT_CHOCO_17,
-	IMG_SPLAT_CHOCO_18,
-	IMG_SPLAT_CHOCO_19,
-	IMG_SPLAT_CHOCO_20,
-	IMG_SPLAT_CHOCO_21,
-	IMG_SPLAT_CHOCO_22,
-	IMG_SPLAT_CHOCO_23,
-	IMG_SPLAT_CHOCO_24,
-	IMG_SPLAT_CHOCO_25,
-	IMG_SPLAT_CHOCO_26,
-	IMG_SPLAT_CHOCO_27,
-	IMG_SPLAT_CHOCO_28,
-	IMG_SPLAT_CHOCO_29,
-	IMG_SPLAT_CHOCO_30,
-	IMG_SPLAT_CHOCO_31,
-	IMG_SPLAT_CHOCO_32,
-	IMG_SPLAT_CHOCO_33,
-	IMG_SPLAT_CHOCO_34,
-	IMG_SPLAT_CHOCO_35,
-	IMG_SPLAT_CHOCO_36,
-	IMG_SPLAT_CHOCO_37,
-	IMG_SPLAT_CHOCO_38,
-	IMG_SPLAT_CHOCO_39,
-	IMG_SPLAT_CHOCO_40,
-	
-	IMG_SPLAT_PINK_1,
-	IMG_SPLAT_PINK_2,
-	IMG_SPLAT_PINK_3,
-	IMG_SPLAT_PINK_4,
-	IMG_SPLAT_PINK_5,
-	IMG_SPLAT_PINK_6,
-	IMG_SPLAT_PINK_7,
-	IMG_SPLAT_PINK_8,
-	IMG_SPLAT_PINK_9,
-	IMG_SPLAT_PINK_10,
-	IMG_SPLAT_PINK_11,
-	IMG_SPLAT_PINK_12,
-	IMG_SPLAT_PINK_13,
-	IMG_SPLAT_PINK_14,
-	IMG_SPLAT_PINK_15,
-	IMG_SPLAT_PINK_16,
-	IMG_SPLAT_PINK_17,
-	IMG_SPLAT_PINK_18,
-	IMG_SPLAT_PINK_19,
-	IMG_SPLAT_PINK_20,
-	IMG_SPLAT_PINK_21,
-	IMG_SPLAT_PINK_22,
-	IMG_SPLAT_PINK_23,
-	IMG_SPLAT_PINK_24,
-	IMG_SPLAT_PINK_25,
-	IMG_SPLAT_PINK_26,
-	IMG_SPLAT_PINK_27,
-	IMG_SPLAT_PINK_28,
-	IMG_SPLAT_PINK_29,
-	IMG_SPLAT_PINK_30,
-	IMG_SPLAT_PINK_31,
-	IMG_SPLAT_PINK_32,
-	IMG_SPLAT_PINK_33,
-	IMG_SPLAT_PINK_34,
-	IMG_SPLAT_PINK_35,
-	IMG_SPLAT_PINK_36,
-	IMG_SPLAT_PINK_37,
-	IMG_SPLAT_PINK_38,
-	IMG_SPLAT_PINK_39,
-	IMG_SPLAT_PINK_40,
+	IMG_SPLAT_SAUCE,
+	IMG_SPLAT_HOT,
+	IMG_SPLAT_CHOCO,
+	IMG_SPLAT_PINK,
 	
 	NUM_IMAGES
 };
@@ -283,169 +124,10 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/cheese_box.png",
 	GAMEDATA_DIR "images/sprinkle_box.png",
 	
-	GAMEDATA_DIR "images/splat_sauce_01.png",
-	GAMEDATA_DIR "images/splat_sauce_02.png",
-	GAMEDATA_DIR "images/splat_sauce_03.png",
-	GAMEDATA_DIR "images/splat_sauce_04.png",
-	GAMEDATA_DIR "images/splat_sauce_05.png",
-	GAMEDATA_DIR "images/splat_sauce_06.png",
-	GAMEDATA_DIR "images/splat_sauce_07.png",
-	GAMEDATA_DIR "images/splat_sauce_08.png",
-	GAMEDATA_DIR "images/splat_sauce_09.png",
-	GAMEDATA_DIR "images/splat_sauce_10.png",
-	GAMEDATA_DIR "images/splat_sauce_11.png",
-	GAMEDATA_DIR "images/splat_sauce_12.png",
-	GAMEDATA_DIR "images/splat_sauce_13.png",
-	GAMEDATA_DIR "images/splat_sauce_14.png",
-	GAMEDATA_DIR "images/splat_sauce_15.png",
-	GAMEDATA_DIR "images/splat_sauce_16.png",
-	GAMEDATA_DIR "images/splat_sauce_17.png",
-	GAMEDATA_DIR "images/splat_sauce_18.png",
-	GAMEDATA_DIR "images/splat_sauce_19.png",
-	GAMEDATA_DIR "images/splat_sauce_20.png",
-	GAMEDATA_DIR "images/splat_sauce_21.png",
-	GAMEDATA_DIR "images/splat_sauce_22.png",
-	GAMEDATA_DIR "images/splat_sauce_23.png",
-	GAMEDATA_DIR "images/splat_sauce_24.png",
-	GAMEDATA_DIR "images/splat_sauce_25.png",
-	GAMEDATA_DIR "images/splat_sauce_26.png",
-	GAMEDATA_DIR "images/splat_sauce_27.png",
-	GAMEDATA_DIR "images/splat_sauce_28.png",
-	GAMEDATA_DIR "images/splat_sauce_29.png",
-	GAMEDATA_DIR "images/splat_sauce_30.png",
-	GAMEDATA_DIR "images/splat_sauce_31.png",
-	GAMEDATA_DIR "images/splat_sauce_32.png",
-	GAMEDATA_DIR "images/splat_sauce_33.png",
-	GAMEDATA_DIR "images/splat_sauce_34.png",
-	GAMEDATA_DIR "images/splat_sauce_35.png",
-	GAMEDATA_DIR "images/splat_sauce_36.png",
-	GAMEDATA_DIR "images/splat_sauce_37.png",
-	GAMEDATA_DIR "images/splat_sauce_38.png",
-	GAMEDATA_DIR "images/splat_sauce_39.png",
-	GAMEDATA_DIR "images/splat_sauce_40.png",
-	
-	GAMEDATA_DIR "images/splat_hot_01.png",
-	GAMEDATA_DIR "images/splat_hot_02.png",
-	GAMEDATA_DIR "images/splat_hot_03.png",
-	GAMEDATA_DIR "images/splat_hot_04.png",
-	GAMEDATA_DIR "images/splat_hot_05.png",
-	GAMEDATA_DIR "images/splat_hot_06.png",
-	GAMEDATA_DIR "images/splat_hot_07.png",
-	GAMEDATA_DIR "images/splat_hot_08.png",
-	GAMEDATA_DIR "images/splat_hot_09.png",
-	GAMEDATA_DIR "images/splat_hot_10.png",
-	GAMEDATA_DIR "images/splat_hot_11.png",
-	GAMEDATA_DIR "images/splat_hot_12.png",
-	GAMEDATA_DIR "images/splat_hot_13.png",
-	GAMEDATA_DIR "images/splat_hot_14.png",
-	GAMEDATA_DIR "images/splat_hot_15.png",
-	GAMEDATA_DIR "images/splat_hot_16.png",
-	GAMEDATA_DIR "images/splat_hot_17.png",
-	GAMEDATA_DIR "images/splat_hot_18.png",
-	GAMEDATA_DIR "images/splat_hot_19.png",
-	GAMEDATA_DIR "images/splat_hot_20.png",
-	GAMEDATA_DIR "images/splat_hot_21.png",
-	GAMEDATA_DIR "images/splat_hot_22.png",
-	GAMEDATA_DIR "images/splat_hot_23.png",
-	GAMEDATA_DIR "images/splat_hot_24.png",
-	GAMEDATA_DIR "images/splat_hot_25.png",
-	GAMEDATA_DIR "images/splat_hot_26.png",
-	GAMEDATA_DIR "images/splat_hot_27.png",
-	GAMEDATA_DIR "images/splat_hot_28.png",
-	GAMEDATA_DIR "images/splat_hot_29.png",
-	GAMEDATA_DIR "images/splat_hot_30.png",
-	GAMEDATA_DIR "images/splat_hot_31.png",
-	GAMEDATA_DIR "images/splat_hot_32.png",
-	GAMEDATA_DIR "images/splat_hot_33.png",
-	GAMEDATA_DIR "images/splat_hot_34.png",
-	GAMEDATA_DIR "images/splat_hot_35.png",
-	GAMEDATA_DIR "images/splat_hot_36.png",
-	GAMEDATA_DIR "images/splat_hot_37.png",
-	GAMEDATA_DIR "images/splat_hot_38.png",
-	GAMEDATA_DIR "images/splat_hot_39.png",
-	GAMEDATA_DIR "images/splat_hot_40.png",
-	
-	GAMEDATA_DIR "images/splat_choco_01.png",
-	GAMEDATA_DIR "images/splat_choco_02.png",
-	GAMEDATA_DIR "images/splat_choco_03.png",
-	GAMEDATA_DIR "images/splat_choco_04.png",
-	GAMEDATA_DIR "images/splat_choco_05.png",
-	GAMEDATA_DIR "images/splat_choco_06.png",
-	GAMEDATA_DIR "images/splat_choco_07.png",
-	GAMEDATA_DIR "images/splat_choco_08.png",
-	GAMEDATA_DIR "images/splat_choco_09.png",
-	GAMEDATA_DIR "images/splat_choco_10.png",
-	GAMEDATA_DIR "images/splat_choco_11.png",
-	GAMEDATA_DIR "images/splat_choco_12.png",
-	GAMEDATA_DIR "images/splat_choco_13.png",
-	GAMEDATA_DIR "images/splat_choco_14.png",
-	GAMEDATA_DIR "images/splat_choco_15.png",
-	GAMEDATA_DIR "images/splat_choco_16.png",
-	GAMEDATA_DIR "images/splat_choco_17.png",
-	GAMEDATA_DIR "images/splat_choco_18.png",
-	GAMEDATA_DIR "images/splat_choco_19.png",
-	GAMEDATA_DIR "images/splat_choco_20.png",
-	GAMEDATA_DIR "images/splat_choco_21.png",
-	GAMEDATA_DIR "images/splat_choco_22.png",
-	GAMEDATA_DIR "images/splat_choco_23.png",
-	GAMEDATA_DIR "images/splat_choco_24.png",
-	GAMEDATA_DIR "images/splat_choco_25.png",
-	GAMEDATA_DIR "images/splat_choco_26.png",
-	GAMEDATA_DIR "images/splat_choco_27.png",
-	GAMEDATA_DIR "images/splat_choco_28.png",
-	GAMEDATA_DIR "images/splat_choco_29.png",
-	GAMEDATA_DIR "images/splat_choco_30.png",
-	GAMEDATA_DIR "images/splat_choco_31.png",
-	GAMEDATA_DIR "images/splat_choco_32.png",
-	GAMEDATA_DIR "images/splat_choco_33.png",
-	GAMEDATA_DIR "images/splat_choco_34.png",
-	GAMEDATA_DIR "images/splat_choco_35.png",
-	GAMEDATA_DIR "images/splat_choco_36.png",
-	GAMEDATA_DIR "images/splat_choco_37.png",
-	GAMEDATA_DIR "images/splat_choco_38.png",
-	GAMEDATA_DIR "images/splat_choco_39.png",
-	GAMEDATA_DIR "images/splat_choco_40.png",
-	
-	GAMEDATA_DIR "images/splat_pink_01.png",
-	GAMEDATA_DIR "images/splat_pink_02.png",
-	GAMEDATA_DIR "images/splat_pink_03.png",
-	GAMEDATA_DIR "images/splat_pink_04.png",
-	GAMEDATA_DIR "images/splat_pink_05.png",
-	GAMEDATA_DIR "images/splat_pink_06.png",
-	GAMEDATA_DIR "images/splat_pink_07.png",
-	GAMEDATA_DIR "images/splat_pink_08.png",
-	GAMEDATA_DIR "images/splat_pink_09.png",
-	GAMEDATA_DIR "images/splat_pink_10.png",
-	GAMEDATA_DIR "images/splat_pink_11.png",
-	GAMEDATA_DIR "images/splat_pink_12.png",
-	GAMEDATA_DIR "images/splat_pink_13.png",
-	GAMEDATA_DIR "images/splat_pink_14.png",
-	GAMEDATA_DIR "images/splat_pink_15.png",
-	GAMEDATA_DIR "images/splat_pink_16.png",
-	GAMEDATA_DIR "images/splat_pink_17.png",
-	GAMEDATA_DIR "images/splat_pink_18.png",
-	GAMEDATA_DIR "images/splat_pink_19.png",
-	GAMEDATA_DIR "images/splat_pink_20.png",
-	GAMEDATA_DIR "images/splat_pink_21.png",
-	GAMEDATA_DIR "images/splat_pink_22.png",
-	GAMEDATA_DIR "images/splat_pink_23.png",
-	GAMEDATA_DIR "images/splat_pink_24.png",
-	GAMEDATA_DIR "images/splat_pink_25.png",
-	GAMEDATA_DIR "images/splat_pink_26.png",
-	GAMEDATA_DIR "images/splat_pink_27.png",
-	GAMEDATA_DIR "images/splat_pink_28.png",
-	GAMEDATA_DIR "images/splat_pink_29.png",
-	GAMEDATA_DIR "images/splat_pink_30.png",
-	GAMEDATA_DIR "images/splat_pink_31.png",
-	GAMEDATA_DIR "images/splat_pink_32.png",
-	GAMEDATA_DIR "images/splat_pink_33.png",
-	GAMEDATA_DIR "images/splat_pink_34.png",
-	GAMEDATA_DIR "images/splat_pink_35.png",
-	GAMEDATA_DIR "images/splat_pink_36.png",
-	GAMEDATA_DIR "images/splat_pink_37.png",
-	GAMEDATA_DIR "images/splat_pink_38.png",
-	GAMEDATA_DIR "images/splat_pink_39.png",
-	GAMEDATA_DIR "images/splat_pink_40.png"
+	GAMEDATA_DIR "images/splat_sauce.png",
+	GAMEDATA_DIR "images/splat_hot.png",
+	GAMEDATA_DIR "images/splat_choco.png",
+	GAMEDATA_DIR "images/splat_pink.png"
 };
 
 /* Codigos de salida */
@@ -513,7 +195,7 @@ int game_loop (int candy_mode) {
 	SDL_Event event;
 	SDLKey key;
 	Uint32 last_time, now_time;
-	SDL_Rect rect;
+	SDL_Rect rect, rect2;
 	
 	int handposx2, handposx1, handposx, handposy2, handposy1, handposy; /* Para calcular los desplazamientos del mouse */
 	int mousedown;
@@ -523,14 +205,14 @@ int game_loop (int candy_mode) {
 	int splat_queue_start = 0, splat_queue_end = 0;
 	int g, h, i;
 	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
-	int image, splat_image;
+	int image;
 	int sauce_state, sauce_timer;
 	int hand;
 	Uint8 alpha, rgb_r, rgb_g, rgb_b;
 	Uint32 *pixel;
 	int midleft, left, midright, right, top, bottom;
 	
-	SDL_Surface *splat_surface, *splat_surface2, *temp_surface;
+	SDL_Surface *splat_surface, *splat_surface2;
 	
 	sauce_state = NONE;
 	
@@ -941,9 +623,9 @@ int game_loop (int candy_mode) {
 						splat_queue_start = (splat_queue_start + 1) % 300;
 					}
 					
-					temp_surface = images[IMG_SPLAT_SAUCE_1 + (hand - SAUCE_NORMAL) * 40];
-					splats[splat_queue_end].x = handposx - (temp_surface->w / 2) - pizza.x;
-					splats[splat_queue_end].y = handposy - (temp_surface->h / 2) - pizza.y;
+					image = IMG_SPLAT_SAUCE + (hand - SAUCE_NORMAL);
+					splats[splat_queue_end].x = handposx - (images[image]->w / 20) - pizza.x;
+					splats[splat_queue_end].y = handposy - (images[image]->h / 8) - pizza.y;
 					splats[splat_queue_end].frame = 0;
 					splats[splat_queue_end].rand = RANDOM (4);
 					
@@ -955,7 +637,7 @@ int game_loop (int candy_mode) {
 			
 			/* Dibujar los splats */
 			if (splat_queue_end != splat_queue_start) {
-				image = IMG_SPLAT_SAUCE_1 + (splats[splat_queue_start].type - SAUCE_NORMAL) * 40;
+				image = IMG_SPLAT_SAUCE + (splats[splat_queue_start].type - SAUCE_NORMAL);
 				SDL_BlitSurface (images[IMG_SPLAT_MASK], NULL, splat_surface, NULL);
 				SDL_BlitSurface (images[IMG_PIZZA_BASE_1 + pizza.sauce_placed], NULL, splat_surface, NULL);
 				
@@ -964,14 +646,18 @@ int game_loop (int candy_mode) {
 				rect.w = images[image]->w;
 				rect.h = images[image]->h;
 				for (g = splat_queue_start; g != splat_queue_end; g = (g + 1) % 300) {
-					splat_image = image + (splats[g].rand * 10) + splats[g].frame;
+					rect2.h = images[image]->h / 4;
+					rect2.w = images[image]->w / 10;
+					rect2.x = splats[g].frame * rect2.w;
+					rect2.y = splats[g].rand * rect2.h;
+					
 					h = rect.x = splats[g].x;
 					i = rect.y = splats[g].y;
 					
-					SDL_BlitSurface (images[splat_image], NULL, splat_surface, &rect);
+					SDL_BlitSurface (images[image], &rect2, splat_surface, &rect);
 					rect.x = h;
 					rect.y = i;
-					SDL_BlitSurface (images[splat_image], NULL, splat_surface2, &rect);
+					SDL_BlitSurface (images[image], &rect2, splat_surface2, &rect);
 					
 					if (splats[g].frame < 9) {
 						splats[g].frame++;
