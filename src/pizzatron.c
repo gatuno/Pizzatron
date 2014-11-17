@@ -87,6 +87,16 @@ enum {
 	IMG_CHEESE_BOX,
 	IMG_SPRINKLES_BOX,
 	
+	IMG_TOPPING_1_BOX,
+	IMG_TOPPING_2_BOX,
+	IMG_TOPPING_3_BOX,
+	IMG_TOPPING_4_BOX,
+	IMG_TOPPING_5_BOX,
+	IMG_TOPPING_6_BOX,
+	IMG_TOPPING_7_BOX,
+	IMG_TOPPING_8_BOX,
+	
+	
 	IMG_SPLAT_SAUCE,
 	IMG_SPLAT_HOT,
 	IMG_SPLAT_CHOCO,
@@ -125,6 +135,56 @@ enum {
 	IMG_CHEESE_HAND,
 	IMG_SPRINKLES_HAND,
 	
+	IMG_HAND_TOPPING_1_1,
+	IMG_HAND_TOPPING_1_2,
+	IMG_HAND_TOPPING_1_3,
+	IMG_HAND_TOPPING_2_1,
+	IMG_HAND_TOPPING_2_2,
+	IMG_HAND_TOPPING_2_3,
+	IMG_HAND_TOPPING_3_1,
+	IMG_HAND_TOPPING_3_2,
+	IMG_HAND_TOPPING_3_3,
+	IMG_HAND_TOPPING_4_1,
+	IMG_HAND_TOPPING_4_2,
+	IMG_HAND_TOPPING_4_3,
+	IMG_HAND_TOPPING_5_1,
+	IMG_HAND_TOPPING_5_2,
+	IMG_HAND_TOPPING_5_3,
+	IMG_HAND_TOPPING_6_1,
+	IMG_HAND_TOPPING_6_2,
+	IMG_HAND_TOPPING_6_3,
+	IMG_HAND_TOPPING_7_1,
+	IMG_HAND_TOPPING_7_2,
+	IMG_HAND_TOPPING_7_3,
+	IMG_HAND_TOPPING_8_1,
+	IMG_HAND_TOPPING_8_2,
+	IMG_HAND_TOPPING_8_3,
+	
+	IMG_TOPPING_1_1,
+	IMG_TOPPING_1_2,
+	IMG_TOPPING_1_3,
+	IMG_TOPPING_2_1,
+	IMG_TOPPING_2_2,
+	IMG_TOPPING_2_3,
+	IMG_TOPPING_3_1,
+	IMG_TOPPING_3_2,
+	IMG_TOPPING_3_3,
+	IMG_TOPPING_4_1,
+	IMG_TOPPING_4_2,
+	IMG_TOPPING_4_3,
+	IMG_TOPPING_5_1,
+	IMG_TOPPING_5_2,
+	IMG_TOPPING_5_3,
+	IMG_TOPPING_6_1,
+	IMG_TOPPING_6_2,
+	IMG_TOPPING_6_3,
+	IMG_TOPPING_7_1,
+	IMG_TOPPING_7_2,
+	IMG_TOPPING_7_3,
+	IMG_TOPPING_8_1,
+	IMG_TOPPING_8_2,
+	IMG_TOPPING_8_3,
+	
 	NUM_IMAGES
 };
 
@@ -156,6 +216,14 @@ const char *images_names[NUM_IMAGES] = {
 	
 	GAMEDATA_DIR "images/cheese_box.png",
 	GAMEDATA_DIR "images/sprinkle_box.png",
+	GAMEDATA_DIR "images/topping_1_box.png",
+	GAMEDATA_DIR "images/topping_2_box.png",
+	GAMEDATA_DIR "images/topping_3_box.png",
+	GAMEDATA_DIR "images/topping_4_box.png",
+	GAMEDATA_DIR "images/topping_5_box.png",
+	GAMEDATA_DIR "images/topping_6_box.png",
+	GAMEDATA_DIR "images/topping_7_box.png",
+	GAMEDATA_DIR "images/topping_8_box.png",
 	
 	GAMEDATA_DIR "images/splat_sauce.png",
 	GAMEDATA_DIR "images/splat_hot.png",
@@ -190,7 +258,56 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/pink_icing_squash_06.png",
 	
 	GAMEDATA_DIR "images/cheese_hand.png",
-	GAMEDATA_DIR "images/sprinkles_hand.png"
+	GAMEDATA_DIR "images/sprinkles_hand.png",
+	
+	GAMEDATA_DIR "images/hand_topping_1_1.png",
+	GAMEDATA_DIR "images/hand_topping_1_2.png",
+	GAMEDATA_DIR "images/hand_topping_1_3.png",
+	GAMEDATA_DIR "images/hand_topping_2_1.png",
+	GAMEDATA_DIR "images/hand_topping_2_2.png",
+	GAMEDATA_DIR "images/hand_topping_2_3.png",
+	GAMEDATA_DIR "images/hand_topping_3_1.png",
+	GAMEDATA_DIR "images/hand_topping_3_2.png",
+	GAMEDATA_DIR "images/hand_topping_3_3.png",
+	GAMEDATA_DIR "images/hand_topping_4_1.png",
+	GAMEDATA_DIR "images/hand_topping_4_2.png",
+	GAMEDATA_DIR "images/hand_topping_4_3.png",
+	GAMEDATA_DIR "images/hand_topping_5_1.png",
+	GAMEDATA_DIR "images/hand_topping_5_2.png",
+	GAMEDATA_DIR "images/hand_topping_5_3.png",
+	GAMEDATA_DIR "images/hand_topping_6_1.png",
+	GAMEDATA_DIR "images/hand_topping_6_2.png",
+	GAMEDATA_DIR "images/hand_topping_6_3.png",
+	GAMEDATA_DIR "images/hand_topping_7_1.png",
+	GAMEDATA_DIR "images/hand_topping_7_2.png",
+	GAMEDATA_DIR "images/hand_topping_7_3.png",
+	GAMEDATA_DIR "images/hand_topping_8_1.png",
+	GAMEDATA_DIR "images/hand_topping_8_2.png",
+	GAMEDATA_DIR "images/hand_topping_8_3.png",
+	GAMEDATA_DIR "images/topping_1_1.png",
+	GAMEDATA_DIR "images/topping_1_2.png",
+	GAMEDATA_DIR "images/topping_1_3.png",
+	GAMEDATA_DIR "images/topping_2_1.png",
+	GAMEDATA_DIR "images/topping_2_2.png",
+	GAMEDATA_DIR "images/topping_2_3.png",
+	GAMEDATA_DIR "images/topping_3_1.png",
+	GAMEDATA_DIR "images/topping_3_2.png",
+	GAMEDATA_DIR "images/topping_3_3.png",
+	GAMEDATA_DIR "images/topping_4_1.png",
+	GAMEDATA_DIR "images/topping_4_2.png",
+	GAMEDATA_DIR "images/topping_4_3.png",
+	GAMEDATA_DIR "images/topping_5_1.png",
+	GAMEDATA_DIR "images/topping_5_2.png",
+	GAMEDATA_DIR "images/topping_5_3.png",
+	GAMEDATA_DIR "images/topping_6_1.png",
+	GAMEDATA_DIR "images/topping_6_2.png",
+	GAMEDATA_DIR "images/topping_6_3.png",
+	GAMEDATA_DIR "images/topping_7_1.png",
+	GAMEDATA_DIR "images/topping_7_2.png",
+	GAMEDATA_DIR "images/topping_7_3.png",
+	GAMEDATA_DIR "images/topping_8_1.png",
+	GAMEDATA_DIR "images/topping_8_2.png",
+	GAMEDATA_DIR "images/topping_8_3.png"
 };
 
 /* Codigos de salida */
@@ -209,7 +326,16 @@ enum {
 	SAUCE_PINK,
 	
 	CHEESE,
-	SPRINKLES
+	SPRINKLES,
+	
+	TOPPING_1,
+	TOPPING_2,
+	TOPPING_3,
+	TOPPING_4,
+	TOPPING_5,
+	TOPPING_6,
+	TOPPING_7,
+	TOPPING_8
 };
 
 /* Estructuras */
@@ -226,6 +352,12 @@ typedef struct {
 	int rand;
 	int type;
 } Splat;
+
+typedef struct {
+	int x, y;
+	int type;
+	int frame;
+} Topping;
 
 /* Prototipos de función */
 int game_loop (int candy_mode);
@@ -265,6 +397,8 @@ int game_loop (int candy_mode) {
 	
 	Pizza pizza;
 	Splat splats[300];
+	Topping toppings[20];
+	int topping_count = 0;
 	int splat_queue_start = 0, splat_queue_end = 0;
 	int g, h, i;
 	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
@@ -316,6 +450,22 @@ int game_loop (int candy_mode) {
 						} else if (event.button.x >= 184 && event.button.x < 348 && event.button.y >= 214 && event.button.y < 274) {
 							hand = (candy_mode ? SPRINKLES : CHEESE);
 							mousedown = TRUE;
+						} else if (event.button.x >= 349 && event.button.x < 451 && event.button.y >= 207 && event.button.y < 274) {
+							hand = (candy_mode ? TOPPING_5 : TOPPING_1);
+							hand_frame = RANDOM(3);
+							mousedown = TRUE;
+						} else if (event.button.x >= 451 && event.button.x < 553 && event.button.y >= 207 && event.button.y < 274) {
+							hand = (candy_mode ? TOPPING_6 : TOPPING_2);
+							hand_frame = RANDOM(3);
+							mousedown = TRUE;
+						} else if (event.button.x >= 553 && event.button.x < 655 && event.button.y >= 207 && event.button.y < 274) {
+							hand = (candy_mode ? TOPPING_7 : TOPPING_3);
+							hand_frame = RANDOM(3);
+							mousedown = TRUE;
+						} else if (event.button.x >= 655 && event.button.x < 757 && event.button.y >= 207 && event.button.y < 274) {
+							hand = (candy_mode ? TOPPING_8 : TOPPING_4);
+							hand_frame = RANDOM(3);
+							mousedown = TRUE;
 						}
 					}
 					break;
@@ -325,6 +475,20 @@ int game_loop (int candy_mode) {
 						
 						if ((hand == SPRINKLES || hand == CHEESE) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
 							pizza.cheese_placed = hand;
+						} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+							toppings[topping_count].type = hand - TOPPING_1;
+							toppings[topping_count].frame = hand_frame;
+							image = IMG_TOPPING_1_1 + (hand - TOPPING_1) * 3 + hand_frame;
+							toppings[topping_count].x = handposx - (images[image]->w / 2) - pizza.x;
+							toppings[topping_count].y = handposy - (images[image]->h / 2) - pizza.y;
+							
+							pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+							
+							SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+							if (alpha != 0) {
+								topping_count++;
+							}
+							hand = NONE;
 						}
 					}
 					break;
@@ -590,12 +754,73 @@ int game_loop (int candy_mode) {
 			SDL_BlitSurface (images[IMG_CHEESE_BOX], NULL, screen, &rect);
 		}
 		
+		/* Dibujar las cajas de ingredientes */
+		if (candy_mode) {
+			rect.x = 349;
+			rect.y = 273 - images[IMG_TOPPING_5_BOX]->h;
+			rect.w = images[IMG_TOPPING_5_BOX]->w;
+			rect.h = images[IMG_TOPPING_5_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_5_BOX], NULL, screen, &rect);
+			
+			rect.x = 451;
+			rect.y = 273 - images[IMG_TOPPING_6_BOX]->h;
+			rect.w = images[IMG_TOPPING_6_BOX]->w;
+			rect.h = images[IMG_TOPPING_6_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_6_BOX], NULL, screen, &rect);
+			
+			rect.x = 553;
+			rect.y = 273 - images[IMG_TOPPING_7_BOX]->h;
+			rect.w = images[IMG_TOPPING_7_BOX]->w;
+			rect.h = images[IMG_TOPPING_7_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_7_BOX], NULL, screen, &rect);
+			
+			rect.x = 655;
+			rect.y = 273 - images[IMG_TOPPING_8_BOX]->h;
+			rect.w = images[IMG_TOPPING_8_BOX]->w;
+			rect.h = images[IMG_TOPPING_8_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_8_BOX], NULL, screen, &rect);
+		} else {
+			rect.x = 349;
+			rect.y = 273 - images[IMG_TOPPING_1_BOX]->h;
+			rect.w = images[IMG_TOPPING_1_BOX]->w;
+			rect.h = images[IMG_TOPPING_1_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_1_BOX], NULL, screen, &rect);
+			
+			rect.x = 451;
+			rect.y = 273 - images[IMG_TOPPING_2_BOX]->h;
+			rect.w = images[IMG_TOPPING_2_BOX]->w;
+			rect.h = images[IMG_TOPPING_2_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_2_BOX], NULL, screen, &rect);
+			
+			rect.x = 553;
+			rect.y = 273 - images[IMG_TOPPING_3_BOX]->h;
+			rect.w = images[IMG_TOPPING_3_BOX]->w;
+			rect.h = images[IMG_TOPPING_3_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_3_BOX], NULL, screen, &rect);
+			
+			rect.x = 655;
+			rect.y = 273 - images[IMG_TOPPING_4_BOX]->h;
+			rect.w = images[IMG_TOPPING_4_BOX]->w;
+			rect.h = images[IMG_TOPPING_4_BOX]->h;
+			
+			SDL_BlitSurface (images[IMG_TOPPING_4_BOX], NULL, screen, &rect);
+		}
+		
+		/* Calcular la cantidad de splats */
 		if (splat_queue_end < splat_queue_start) {
 			image = splat_queue_end + 300 - splat_queue_start;
 		} else {
 			image = splat_queue_end - splat_queue_start;
 		}
 		
+		/* Si la cantidad de splats se desborda, acelerar la pizza */
 		if (image > 190) {
 			pizzaspeed++;
 		} else if (handicap <= -2) {
@@ -832,11 +1057,22 @@ int game_loop (int candy_mode) {
 					SDL_BlitSurface (images[IMG_PIZZA_SPRINKLES], NULL, screen, &rect);
 				}
 			}
+			
+			for (g = 0; g < topping_count; g++) {
+				image = IMG_TOPPING_1_1 + (toppings[g].type * 3) + toppings[g].frame;
+				rect.x = pizza.x + toppings[g].x;
+				rect.y = pizza.y + toppings[g].y;
+				rect.w = images[image]->w;
+				rect.h = images[image]->h;
+				
+				SDL_BlitSurface (images[image], NULL, screen, &rect);
+			}
 		} else {
 			/* En caso contrario, acomodar una nueva pizza y una nueva orden */
 			place_pizza_and_order (&pizza);
 			splat_queue_start = splat_queue_end = 0;
 			speedboost = 0;
+			topping_count = 0;
 		}
 		
 		if (mousedown) {
@@ -885,6 +1121,14 @@ int game_loop (int candy_mode) {
 				rect.h = images[IMG_SPRINKLES_HAND]->h;
 			
 				SDL_BlitSurface (images[IMG_SPRINKLES_HAND], NULL, screen, &rect);
+			} else if (hand >= TOPPING_1 && hand <= TOPPING_8) {
+				image = IMG_HAND_TOPPING_1_1 + ((hand - TOPPING_1) * 3) + hand_frame;
+				rect.x = handposx - images[image]->w / 2;
+				rect.y = handposy - images[image]->h / 2;
+				rect.w = images[image]->w;
+				rect.h = images[image]->h;
+				
+				SDL_BlitSurface (images[image], NULL, screen, &rect);
 			}
 		}
 		

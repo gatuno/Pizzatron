@@ -53,5 +53,61 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/cheese_box.png \
 	images/cheese_hand.png \
 	images/sprinkle_box.png \
-	images/sprinkles_hand.png
+	images/sprinkles_hand.png \
+	images/hand_topping_1_1.png \
+	images/hand_topping_1_2.png \
+	images/hand_topping_1_3.png \
+	images/hand_topping_2_1.png \
+	images/hand_topping_2_2.png \
+	images/hand_topping_2_3.png \
+	images/hand_topping_3_1.png \
+	images/hand_topping_3_2.png \
+	images/hand_topping_3_3.png \
+	images/hand_topping_4_1.png \
+	images/hand_topping_4_2.png \
+	images/hand_topping_4_3.png \
+	images/hand_topping_5_1.png \
+	images/hand_topping_5_2.png \
+	images/hand_topping_5_3.png \
+	images/hand_topping_6_1.png \
+	images/hand_topping_6_2.png \
+	images/hand_topping_6_3.png \
+	images/hand_topping_7_1.png \
+	images/hand_topping_7_2.png \
+	images/hand_topping_7_3.png \
+	images/hand_topping_8_1.png \
+	images/hand_topping_8_2.png \
+	images/hand_topping_8_3.png \
+	images/topping_1_1.png \
+	images/topping_1_2.png \
+	images/topping_1_3.png \
+	images/topping_2_1.png \
+	images/topping_2_2.png \
+	images/topping_2_3.png \
+	images/topping_3_1.png \
+	images/topping_3_2.png \
+	images/topping_3_3.png \
+	images/topping_4_1.png \
+	images/topping_4_2.png \
+	images/topping_4_3.png \
+	images/topping_5_1.png \
+	images/topping_5_2.png \
+	images/topping_5_3.png \
+	images/topping_6_1.png \
+	images/topping_6_2.png \
+	images/topping_6_3.png \
+	images/topping_7_1.png \
+	images/topping_7_2.png \
+	images/topping_7_3.png \
+	images/topping_8_1.png \
+	images/topping_8_2.png \
+	images/topping_8_3.png \
+	images/topping_1_box.png \
+	images/topping_2_box.png \
+	images/topping_3_box.png \
+	images/topping_4_box.png \
+	images/topping_5_box.png \
+	images/topping_6_box.png \
+	images/topping_7_box.png \
+	images/topping_8_box.png
 
