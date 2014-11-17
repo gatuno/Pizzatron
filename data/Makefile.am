@@ -109,5 +109,33 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/topping_5_box.png \
 	images/topping_6_box.png \
 	images/topping_7_box.png \
-	images/topping_8_box.png
+	images/topping_8_box.png \
+	images/overflow_chocolate_1.png \
+	images/overflow_chocolate_2.png \
+	images/overflow_chocolate_3.png \
+	images/overflow_chocolate_4.png \
+	images/overflow_chocolate_5.png \
+	images/overflow_chocolate_6.png \
+	images/overflow_chocolate_7.png \
+	images/overflow_hot_1.png \
+	images/overflow_hot_2.png \
+	images/overflow_hot_3.png \
+	images/overflow_hot_4.png \
+	images/overflow_hot_5.png \
+	images/overflow_hot_6.png \
+	images/overflow_hot_7.png \
+	images/overflow_pink_1.png \
+	images/overflow_pink_2.png \
+	images/overflow_pink_3.png \
+	images/overflow_pink_4.png \
+	images/overflow_pink_5.png \
+	images/overflow_pink_6.png \
+	images/overflow_pink_7.png \
+	images/overflow_sauce_1.png \
+	images/overflow_sauce_2.png \
+	images/overflow_sauce_3.png \
+	images/overflow_sauce_4.png \
+	images/overflow_sauce_5.png \
+	images/overflow_sauce_6.png \
+	images/overflow_sauce_7.png
 
