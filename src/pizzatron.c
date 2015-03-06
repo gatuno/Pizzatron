@@ -664,6 +664,27 @@ int game_loop (int candy_mode) {
 		
 		SDL_BlitSurface (images[IMG_BACKGROUND], NULL, screen, NULL);
 		
+		/* Borrar la vieja pizza de la comanda */
+		rect.x = 401;
+		rect.y = 51;
+		rect.w = images[IMG_ORDER_PIZZA_CHEESE]->w;
+		rect.h = images[IMG_ORDER_PIZZA_CHEESE]->h;
+		
+		image = pizza.sauce_requested - SAUCE_NORMAL + IMG_ORDER_PIZZA_CHEESE;
+		SDL_BlitSurface (images[image], NULL, screen, &rect);
+		
+		rect.x = 391;
+		rect.y = 106;
+		rect.w = images[IMG_ORDER_TOPPING_1]->w;
+		rect.h = images[IMG_ORDER_TOPPING_1]->h;
+		
+		image = IMG_ORDER_TOPPING_1 + (orden / 2) - 1;
+		if (candy_mode) image += 11;
+		
+		if (orden > 1) {
+			SDL_BlitSurface (images[image], NULL, screen, &rect);
+		}
+		
 		/* Dibujar las salsas */
 		rect.x = 11;
 		rect.y = 225;
