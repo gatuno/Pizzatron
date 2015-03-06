@@ -217,6 +217,35 @@ enum {
 	IMG_PIZZA_OVERFLOW_PINK_6,
 	IMG_PIZZA_OVERFLOW_PINK_7,
 	
+	IMG_ORDER_PIZZA_CHEESE,
+	IMG_ORDER_PIZZA_HOT,
+	IMG_ORDER_PIZZA_CHOCO,
+	IMG_ORDER_PIZZA_PINK,
+	
+	IMG_ORDER_TOPPING_1,
+	IMG_ORDER_TOPPING_2,
+	IMG_ORDER_TOPPING_3,
+	IMG_ORDER_TOPPING_4,
+	IMG_ORDER_TOPPING_5,
+	IMG_ORDER_TOPPING_6,
+	IMG_ORDER_TOPPING_7,
+	IMG_ORDER_TOPPING_8,
+	IMG_ORDER_TOPPING_9,
+	IMG_ORDER_TOPPING_10,
+	IMG_ORDER_TOPPING_11,
+	
+	IMG_ORDER_CANDY_TOPPING_1,
+	IMG_ORDER_CANDY_TOPPING_2,
+	IMG_ORDER_CANDY_TOPPING_3,
+	IMG_ORDER_CANDY_TOPPING_4,
+	IMG_ORDER_CANDY_TOPPING_5,
+	IMG_ORDER_CANDY_TOPPING_6,
+	IMG_ORDER_CANDY_TOPPING_7,
+	IMG_ORDER_CANDY_TOPPING_8,
+	IMG_ORDER_CANDY_TOPPING_9,
+	IMG_ORDER_CANDY_TOPPING_10,
+	IMG_ORDER_CANDY_TOPPING_11,
+	
 	NUM_IMAGES
 };
 
@@ -368,7 +397,36 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/overflow_pink_4.png",
 	GAMEDATA_DIR "images/overflow_pink_5.png",
 	GAMEDATA_DIR "images/overflow_pink_6.png",
-	GAMEDATA_DIR "images/overflow_pink_7.png"
+	GAMEDATA_DIR "images/overflow_pink_7.png",
+	
+	GAMEDATA_DIR "images/order_pizza_cheese.png",
+	GAMEDATA_DIR "images/order_pizza_hot.png",
+	GAMEDATA_DIR "images/order_pizza_choco.png",
+	GAMEDATA_DIR "images/order_pizza_pink.png",
+	
+	GAMEDATA_DIR "images/topping_1.png",
+	GAMEDATA_DIR "images/topping_2.png",
+	GAMEDATA_DIR "images/topping_3.png",
+	GAMEDATA_DIR "images/topping_4.png",
+	GAMEDATA_DIR "images/topping_5.png",
+	GAMEDATA_DIR "images/topping_6.png",
+	GAMEDATA_DIR "images/topping_7.png",
+	GAMEDATA_DIR "images/topping_8.png",
+	GAMEDATA_DIR "images/topping_9.png",
+	GAMEDATA_DIR "images/topping_10.png",
+	GAMEDATA_DIR "images/topping_11.png",
+	
+	GAMEDATA_DIR "images/candy_topping_1.png",
+	GAMEDATA_DIR "images/candy_topping_2.png",
+	GAMEDATA_DIR "images/candy_topping_3.png",
+	GAMEDATA_DIR "images/candy_topping_4.png",
+	GAMEDATA_DIR "images/candy_topping_5.png",
+	GAMEDATA_DIR "images/candy_topping_6.png",
+	GAMEDATA_DIR "images/candy_topping_7.png",
+	GAMEDATA_DIR "images/candy_topping_8.png",
+	GAMEDATA_DIR "images/candy_topping_9.png",
+	GAMEDATA_DIR "images/candy_topping_10.png",
+	GAMEDATA_DIR "images/candy_topping_11.png",
 };
 
 /* Codigos de salida */
@@ -405,6 +463,9 @@ typedef struct {
 	int sauce_placed;
 	int cheese_placed;
 	int topping[4];
+	
+	int sauce_requested;
+	int topping_requested[4];
 } Pizza;
 
 typedef struct {
@@ -424,7 +485,7 @@ typedef struct {
 int game_loop (int candy_mode);
 void setup (void);
 SDL_Surface * set_video_mode(unsigned);
-void place_pizza_and_order (Pizza *p);
+void place_pizza_and_order (Pizza *, int, int *, int *);
 
 /* Variables globales */
 SDL_Surface * screen;
@@ -469,7 +530,8 @@ int game_loop (int candy_mode) {
 	Uint8 alpha, rgb_r, rgb_g, rgb_b;
 	Uint32 *pixel;
 	int midleft, left, midright, right, top, bottom;
-	int hand_frame, pizza_overflow = -1;
+	int hand_frame, pizza_overflow = -1, perfect_pizza;
+	int pizzas_hechas = 0, orden;
 	
 	SDL_Surface *splat_surface, *splat_surface2;
 	
@@ -488,7 +550,11 @@ int game_loop (int candy_mode) {
 	
 	mousedown = FALSE;
 	
-	place_pizza_and_order (&pizza);
+	pizza.y = 293;
+	pizza.x = -366;
+	pizza.sauce_placed = pizza.cheese_placed = NONE;
+	pizza.topping[0] = pizza.topping[1] = pizza.topping[2] = pizza.topping[3] = 0;
+	place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
 	speedboost = 0;
 	
 	do {
@@ -553,6 +619,7 @@ int game_loop (int candy_mode) {
 							SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
 							if (alpha != 0) {
 								topping_count++;
+								pizza.topping[(hand - TOPPING_1) % 4]++;
 							}
 							hand = NONE;
 						}
@@ -576,7 +643,24 @@ int game_loop (int candy_mode) {
 		
 		SDL_GetMouseState (&handposx, &handposy);
 		
-		//pizzaspeed++;
+		perfect_pizza = TRUE;
+		//printf ("Pizza = {%i, %i, %i, %i}, Requested = {%i, %i, %i, %i}\n", pizza.topping[0], pizza.topping[1], pizza.topping[2], pizza.topping[3], pizza.topping_requested[0], pizza.topping_requested[1], pizza.topping_requested[2], pizza.topping_requested[3]);
+		for (g = 0; g < 4; g++) {
+			if (pizza.topping_requested[g] == 0 && pizza.topping[g] > 0) {
+				perfect_pizza = FALSE;
+				speedboost++;
+			} else if (pizza.topping_requested[g] > pizza.topping[g]) {
+				perfect_pizza = FALSE;
+			}
+		}
+		
+		if (pizza.cheese_placed == NONE || pizza.sauce_requested != pizza.sauce_placed) {
+			perfect_pizza = FALSE;
+		}
+		
+		if (perfect_pizza) {
+			speedboost++;
+		}
 		
 		SDL_BlitSurface (images[IMG_BACKGROUND], NULL, screen, NULL);
 		
@@ -1165,8 +1249,15 @@ int game_loop (int candy_mode) {
 				}
 			}
 		} else {
-			/* En caso contrario, acomodar una nueva pizza y una nueva orden */
-			place_pizza_and_order (&pizza);
+			if (perfect_pizza) {
+				/* En caso contrario, acomodar una nueva pizza y una nueva orden */
+				place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
+				pizzas_hechas++;
+			}
+			pizza.y = 293;
+			pizza.x = -366;
+			pizza.sauce_placed = pizza.cheese_placed = NONE;
+			pizza.topping[0] = pizza.topping[1] = pizza.topping[2] = pizza.topping[3] = 0;
 			splat_queue_start = splat_queue_end = 0;
 			speedboost = 0;
 			topping_count = 0;
@@ -1298,11 +1389,76 @@ void setup (void) {
 	srand (SDL_GetTicks ());
 }
 
-void place_pizza_and_order (Pizza *p) {
-	p->y = 293;
-	p->x = -366;
-	p->sauce_placed = p->cheese_placed = NONE;
+void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *orden) {
+	int posibles;
 	
-	p->topping[0] = p->topping[1] = p->topping[2] = p->topping[3] = 0;
+	if (candy_mode) {
+		posibles = 24;
+	} else {
+		posibles = *pizzas_hechas + 1;
+		if (posibles > 24) posibles = 24;
+	}
+	
+	p->topping_requested[0] = p->topping_requested[1] = p->topping_requested[2] = p->topping_requested[3] = 0;
+	
+	printf ("Posibles combinaciones: %i\n", posibles);
+	*orden = ((int) (((float) posibles) * rand () / (RAND_MAX + 1.0)));
+	printf ("Orden: %i\n", *orden);
+	
+	p->sauce_requested = candy_mode ? SAUCE_CHOCOLATE : SAUCE_NORMAL;
+	
+	if (*orden % 2 == 1) {
+		p->sauce_requested = candy_mode ? SAUCE_PINK : SAUCE_HOT;
+	}
+	
+	printf ("Salsa: %i, SAUCE_NORMAL = %i\n", p->sauce_requested, SAUCE_NORMAL);
+	switch (*orden) {
+		case 2:
+		case 3:
+			p->topping_requested[0] = 5;
+			break;
+		case 4:
+		case 5:
+			p->topping_requested[1] = 5;
+			break;
+		case 6:
+		case 7:
+			p->topping_requested[2] = 5;
+			break;
+		case 8:
+		case 9:
+			p->topping_requested[3] = 5;
+			break;
+		case 10:
+		case 11:
+			p->topping_requested[0] = p->topping_requested[1] = 2;
+			break;
+		case 12:
+		case 13:
+			p->topping_requested[2] = p->topping_requested[3] = 2;
+			break;
+		case 14:
+		case 15:
+			p->topping_requested[0] = p->topping_requested[2] = 2;
+			break;
+		case 16:
+		case 17:
+			p->topping_requested[1] = p->topping_requested[3] = 2;
+			break;
+		case 18:
+		case 19:
+			p->topping_requested[0] = p->topping_requested[3] = 2;
+			break;
+		case 20:
+		case 21:
+			p->topping_requested[1] = p->topping_requested[2] = 2;
+			break;
+		case 22:
+		case 23:
+			p->topping_requested[0] = p->topping_requested[1] = p->topping_requested[2] = p->topping_requested[3] = 1;
+			break;
+	}
+	
+	printf ("Toppings_requested[4] = {%i, %i, %i, %i};\n", p->topping_requested[0], p->topping_requested[1], p->topping_requested[2], p->topping_requested[3]);
 }
 
