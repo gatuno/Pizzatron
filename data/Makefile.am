@@ -163,4 +163,5 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/topping_8.png \
 	images/topping_9.png \
 	images/topping_10.png \
-	images/topping_11.png
+	images/topping_11.png \
+	images/checked.png

@@ -246,6 +246,8 @@ enum {
 	IMG_ORDER_CANDY_TOPPING_10,
 	IMG_ORDER_CANDY_TOPPING_11,
 	
+	IMG_CHECKED,
+	
 	NUM_IMAGES
 };
 
@@ -427,6 +429,8 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/candy_topping_9.png",
 	GAMEDATA_DIR "images/candy_topping_10.png",
 	GAMEDATA_DIR "images/candy_topping_11.png",
+	
+	GAMEDATA_DIR "images/checked.png"
 };
 
 /* Codigos de salida */
@@ -531,7 +535,7 @@ int game_loop (int candy_mode) {
 	Uint32 *pixel;
 	int midleft, left, midright, right, top, bottom;
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
-	int pizzas_hechas = 0, orden;
+	int pizzas_hechas = 0, orden, pizzas_consecutivas;
 	
 	SDL_Surface *splat_surface, *splat_surface2;
 	
@@ -556,6 +560,7 @@ int game_loop (int candy_mode) {
 	pizza.topping[0] = pizza.topping[1] = pizza.topping[2] = pizza.topping[3] = 0;
 	place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
 	speedboost = 0;
+	pizzas_consecutivas = 0;
 	
 	do {
 		last_time = SDL_GetTicks ();
@@ -683,6 +688,25 @@ int game_loop (int candy_mode) {
 		
 		if (orden > 1) {
 			SDL_BlitSurface (images[image], NULL, screen, &rect);
+		}
+		
+		/* Dibujar las palomitas */
+		if (pizza.cheese_placed != NONE) {
+			rect.x = 524;
+			rect.y = 50;
+			rect.w = images[IMG_CHECKED]->w;
+			rect.h = images[IMG_CHECKED]->h;
+			
+			SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+		}
+		
+		if (pizza.sauce_placed == pizza.sauce_requested) {
+			rect.x = 524;
+			rect.y = 72;
+			rect.w = images[IMG_CHECKED]->w;
+			rect.h = images[IMG_CHECKED]->h;
+			
+			SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
 		}
 		
 		/* Dibujar las salsas */
@@ -1274,6 +1298,11 @@ int game_loop (int candy_mode) {
 				/* En caso contrario, acomodar una nueva pizza y una nueva orden */
 				place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
 				pizzas_hechas++;
+				pizzas_consecutivas++;
+				handicap++;
+			} else {
+				pizzas_consecutivas = 0;
+				handicap--;
 			}
 			pizza.y = 293;
 			pizza.x = -366;
