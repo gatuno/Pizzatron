@@ -490,6 +490,7 @@ int game_loop (int candy_mode);
 void setup (void);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
+void dibujar_comanda (Pizza *, int, int);
 
 /* Variables globales */
 SDL_Surface * screen;
@@ -518,7 +519,7 @@ int game_loop (int candy_mode) {
 	Uint32 last_time, now_time;
 	SDL_Rect rect, rect2;
 	
-	int handposx2, handposx1, handposx, handposy2, handposy1, handposy; /* Para calcular los desplazamientos del mouse */
+	int handposx, handposy; /* Para calcular los desplazamientos del mouse */
 	int mousedown;
 	
 	Pizza pizza;
@@ -526,7 +527,7 @@ int game_loop (int candy_mode) {
 	Topping toppings[20];
 	int topping_count = 0;
 	int splat_queue_start = 0, splat_queue_end = 0;
-	int g, h, i;
+	int g;
 	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
 	int image;
 	int sauce_state, sauce_timer;
@@ -548,9 +549,6 @@ int game_loop (int candy_mode) {
 	SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
 	
 	SDL_GetMouseState (&handposx, &handposy);
-	
-	handposx2 = handposx1 = handposx;
-	handposy2 = handposy1 = handposy;
 	
 	mousedown = FALSE;
 	
@@ -640,14 +638,9 @@ int game_loop (int candy_mode) {
 			}
 		}
 		
-		handposy2 = handposy1;
-		handposy1 = handposy;
-		
-		handposx2 = handposx1;
-		handposx1 = handposx;
-		
 		SDL_GetMouseState (&handposx, &handposy);
 		
+		/* Considerar la pizza perfecta hasta que se compruebe lo contrario */
 		perfect_pizza = TRUE;
 		//printf ("Pizza = {%i, %i, %i, %i}, Requested = {%i, %i, %i, %i}\n", pizza.topping[0], pizza.topping[1], pizza.topping[2], pizza.topping[3], pizza.topping_requested[0], pizza.topping_requested[1], pizza.topping_requested[2], pizza.topping_requested[3]);
 		for (g = 0; g < 4; g++) {
@@ -659,55 +652,20 @@ int game_loop (int candy_mode) {
 			}
 		}
 		
+		/* Si no han puesto el queso, o la salsa correcta, no es perfecta */
 		if (pizza.cheese_placed == NONE || pizza.sauce_requested != pizza.sauce_placed) {
 			perfect_pizza = FALSE;
 		}
 		
+		/* Si ya es perfecta, quitarla de la banda */
 		if (perfect_pizza) {
 			speedboost++;
 		}
 		
+		/* Borrar todo */
 		SDL_BlitSurface (images[IMG_BACKGROUND], NULL, screen, NULL);
 		
-		/* Borrar la vieja pizza de la comanda */
-		rect.x = 401;
-		rect.y = 51;
-		rect.w = images[IMG_ORDER_PIZZA_CHEESE]->w;
-		rect.h = images[IMG_ORDER_PIZZA_CHEESE]->h;
-		
-		image = pizza.sauce_requested - SAUCE_NORMAL + IMG_ORDER_PIZZA_CHEESE;
-		SDL_BlitSurface (images[image], NULL, screen, &rect);
-		
-		rect.x = 391;
-		rect.y = 106;
-		rect.w = images[IMG_ORDER_TOPPING_1]->w;
-		rect.h = images[IMG_ORDER_TOPPING_1]->h;
-		
-		image = IMG_ORDER_TOPPING_1 + (orden / 2) - 1;
-		if (candy_mode) image += 11;
-		
-		if (orden > 1) {
-			SDL_BlitSurface (images[image], NULL, screen, &rect);
-		}
-		
-		/* Dibujar las palomitas */
-		if (pizza.cheese_placed != NONE) {
-			rect.x = 524;
-			rect.y = 50;
-			rect.w = images[IMG_CHECKED]->w;
-			rect.h = images[IMG_CHECKED]->h;
-			
-			SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
-		}
-		
-		if (pizza.sauce_placed == pizza.sauce_requested) {
-			rect.x = 524;
-			rect.y = 72;
-			rect.w = images[IMG_CHECKED]->w;
-			rect.h = images[IMG_CHECKED]->h;
-			
-			SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
-		}
+		dibujar_comanda (&pizza, orden, candy_mode);
 		
 		/* Dibujar las salsas */
 		rect.x = 11;
@@ -1144,12 +1102,12 @@ int game_loop (int candy_mode) {
 					rect2.x = splats[g].frame * rect2.w;
 					rect2.y = splats[g].rand * rect2.h;
 					
-					h = rect.x = splats[g].x;
-					i = rect.y = splats[g].y;
+					rect.x = splats[g].x;
+					rect.y = splats[g].y;
 					
 					SDL_BlitSurface (images[image], &rect2, splat_surface, &rect);
-					rect.x = h;
-					rect.y = i;
+					rect.x = splats[g].x;
+					rect.y = splats[g].y;
 					SDL_BlitSurface (images[image], &rect2, splat_surface2, &rect);
 					
 					if (splats[g].frame < 9) {
@@ -1512,3 +1470,75 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 	printf ("Toppings_requested[4] = {%i, %i, %i, %i};\n", p->topping_requested[0], p->topping_requested[1], p->topping_requested[2], p->topping_requested[3]);
 }
 
+void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
+	SDL_Rect rect;
+	int g;
+	
+	/* Dibujar la pizza correcta en la comanda */
+	rect.x = 401;
+	rect.y = 51;
+	rect.w = images[IMG_ORDER_PIZZA_CHEESE]->w;
+	rect.h = images[IMG_ORDER_PIZZA_CHEESE]->h;
+	
+	g = pizza->sauce_requested - SAUCE_NORMAL + IMG_ORDER_PIZZA_CHEESE;
+	SDL_BlitSurface (images[g], NULL, screen, &rect);
+	
+	/* Dibujar los ingredientes abajo, en la comanda */
+	if (orden > 1) {
+		rect.x = 391;
+		rect.y = 106;
+		rect.w = images[IMG_ORDER_TOPPING_1]->w;
+		rect.h = images[IMG_ORDER_TOPPING_1]->h;
+	
+		g = IMG_ORDER_TOPPING_1 + (orden / 2) - 1;
+		if (candy_mode) g += 11;
+		SDL_BlitSurface (images[g], NULL, screen, &rect);
+	}
+	
+	/* Dibujar las palomitas */
+	if (pizza->cheese_placed != NONE) {
+		rect.x = 524;
+		rect.y = 50;
+		rect.w = images[IMG_CHECKED]->w;
+		rect.h = images[IMG_CHECKED]->h;
+		
+		SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+	}
+	
+	/* Palomita para la salsa */
+	if (pizza->sauce_placed == pizza->sauce_requested) {
+		rect.x = 524;
+		rect.y = 72;
+		rect.w = images[IMG_CHECKED]->w;
+		rect.h = images[IMG_CHECKED]->h;
+		
+		SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+	}
+	
+	/* Palomitas para los ingredientes */
+	if (orden > 1 && orden < 22) {
+		/* Ordenes con uno o dos ingredientes */
+		rect.y = 119;
+		rect.x = 524;
+		rect.w = images[IMG_CHECKED]->w;
+		rect.h = images[IMG_CHECKED]->h;
+		for (g = 0; g < 4; g++) {
+			if (pizza->topping_requested[g] != 0 && pizza->topping[g] >= pizza->topping_requested[g]) {
+				SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+				rect.y = 139;
+			}
+		}
+	} else if (orden >= 22) {
+		/* Ordenes con 4 ingredientes */
+		rect.x = 524;
+		rect.w = images[IMG_CHECKED]->w;
+		rect.h = images[IMG_CHECKED]->h;
+		for (g = 0; g < 4; g++) {
+			if (pizza->topping_requested[g] != 0 && pizza->topping[g] >= pizza->topping_requested[g]) {
+				rect.y = 92 + (g * 18);
+				
+				SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+			}
+		}
+	}
+}
