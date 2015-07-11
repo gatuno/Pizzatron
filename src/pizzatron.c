@@ -32,6 +32,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -51,6 +52,18 @@
 
 #ifndef TRUE
 #define TRUE !FALSE
+#endif
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+#define RMASK 0xff000000
+#define GMASK 0x00ff0000
+#define BMASK 0x0000ff00
+#define AMASK 0x000000ff
+#else
+#define RMASK 0x000000ff
+#define GMASK 0x0000ff00
+#define BMASK 0x00ff0000
+#define AMASK 0xff000000
 #endif
 
 /* Enumerar las imágenes */
@@ -433,6 +446,22 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/checked.png"
 };
 
+enum {
+	IMG_INTRO_NEW_BACKGROUND,
+	IMG_INTRO_NEW_PENGUIN,
+	IMG_INTRO_NEW_TOP,
+	IMG_INTRO_NEW_CANDY,
+	
+	NUM_INTRO_NEW_IMAGES
+};
+
+const char *images_intro_new_names [] = {
+	GAMEDATA_DIR "images/intro_new_background.png",
+	GAMEDATA_DIR "images/intro_new_penguin.png",
+	GAMEDATA_DIR "images/intro_new_top.png",
+	GAMEDATA_DIR "images/intro_new_candy_lever.png"
+};
+
 /* Codigos de salida */
 enum {
 	GAME_NONE = 0, /* No usado */
@@ -461,6 +490,27 @@ enum {
 	TOPPING_8
 };
 
+const SDL_Color penguin_colors[18] = {
+	{0, 51, 102},
+	{51, 51, 51},
+	{206, 0, 0},
+	{255, 204, 0},
+	{0, 153, 0},
+	{153, 102, 0},
+	{255, 49, 156},
+	{99, 0, 156},
+	{0, 156, 204},
+	{255, 102, 0},
+	{0, 102, 0},
+	{255, 99, 99},
+	{139, 227, 3},
+	{28, 150, 163},
+	{240, 240, 216},
+	{174, 159, 200},
+	{128, 33, 75},
+	{46, 71, 170}
+};
+
 /* Estructuras */
 typedef struct {
 	int x, y;
@@ -486,7 +536,8 @@ typedef struct {
 } Topping;
 
 /* Prototipos de función */
-int game_loop (int candy_mode);
+int game_loop (void);
+int game_intro_new (void);
 void setup (void);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
@@ -495,27 +546,61 @@ void dibujar_comanda (Pizza *, int, int);
 /* Variables globales */
 SDL_Surface * screen;
 SDL_Surface * images [NUM_IMAGES];
+SDL_Surface * images_intro_new [NUM_INTRO_NEW_IMAGES];
+int candy_mode;
+int intro;
 
 int main (int argc, char *argv[]) {
-	int r;
-	
-	r = 0;
-	if (argc > 1) r = 1;
-	
 	setup ();
 	
+	candy_mode = 0;
+	
 	do {
-		if (game_loop (r) == GAME_QUIT) break;
+		if (intro == 1) {
+			if (game_intro_new () == GAME_QUIT) break;
+		}
+		if (game_loop () == GAME_QUIT) break;
 	} while (1 == 0);
 	
 	SDL_Quit ();
 	return EXIT_SUCCESS;
 }
 
-int game_loop (int candy_mode) {
+int game_intro_new (void) {
 	int done = 0;
 	SDL_Event event;
-	SDLKey key;
+	Uint32 last_time, now_time;
+	SDL_Rect rect;
+	
+	do {
+		last_time = SDL_GetTicks ();
+		
+		while (SDL_PollEvent(&event) > 0) {
+			switch (event.type) {
+				case SDL_QUIT:
+					/* Vamos a cerrar la aplicación */
+					done = GAME_QUIT;
+					break;
+				case SDL_KEYDOWN:
+					done = GAME_CONTINUE;
+					break;
+			}
+		}
+		
+		SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
+		
+		SDL_Flip (screen);
+		
+		now_time = SDL_GetTicks ();
+		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
+	} while (!done);
+	
+	return done;
+}
+
+int game_loop (void) {
+	int done = 0;
+	SDL_Event event;
 	Uint32 last_time, now_time;
 	SDL_Rect rect, rect2;
 	
@@ -1354,7 +1439,8 @@ SDL_Surface * set_video_mode (unsigned flags) {
 }
 
 void setup (void) {
-	SDL_Surface * image;
+	SDL_Surface *image, *color, *image2;
+	SDL_Rect rect;
 	int g;
 	
 	/* Inicializar el Video SDL */
@@ -1394,7 +1480,91 @@ void setup (void) {
 		/* TODO: Mostrar la carga de porcentaje */
 	}
 	
-	srand (SDL_GetTicks ());
+	srand ((unsigned int) getpid ());
+	
+	intro = ((int) (2.0 * rand () / (RAND_MAX + 1.0)));
+	
+	intro = 1;
+	if (intro == 0) {
+		/* Cargar el viejo intro */
+	} else {
+		/* Cargar el nuevo intro */
+		
+		image2 = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_PENGUIN]);
+		
+		if (image2 == NULL) {
+			fprintf (stderr,
+				"Failed to load data file:\n"
+				"%s\n"
+				"The error returned by SDL is:\n"
+				"%s\n", images_intro_new_names [IMG_INTRO_NEW_PENGUIN], SDL_GetError());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		/* Pintar de un color aleatorio el pingüino */
+		g = RANDOM (18);
+		
+		color = SDL_CreateRGBSurface (SDL_SWSURFACE, image2->w, image2->h, 32, RMASK, GMASK, BMASK, AMASK);
+		SDL_FillRect (color, NULL, SDL_MapRGB (color->format, penguin_colors[g].r, penguin_colors[g].g, penguin_colors[g].b));
+		
+		/* Copiar el color sobre el pinguino */
+		SDL_BlitSurface (color, NULL, image2, NULL);
+		
+		SDL_FreeSurface (color);
+		
+		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_BACKGROUND]);
+		if (image == NULL) {
+			fprintf (stderr,
+				"Failed to load data file:\n"
+				"%s\n"
+				"The error returned by SDL is:\n"
+				"%s\n", images_intro_new_names [IMG_INTRO_NEW_BACKGROUND], SDL_GetError());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		/* Copiar el penguino al fondo */
+		rect.x = 417;
+		rect.y = 85;
+		rect.w = image2->w;
+		rect.h = image2->h;
+		
+		SDL_BlitSurface (image2, NULL, image, &rect);
+		
+		SDL_FreeSurface (image2);
+		
+		image2 = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_TOP]);
+		if (image2 == NULL) {
+			fprintf (stderr,
+				"Failed to load data file:\n"
+				"%s\n"
+				"The error returned by SDL is:\n"
+				"%s\n", images_intro_new_names [IMG_INTRO_NEW_TOP], SDL_GetError());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		/* Copiar el top al fondo */
+		SDL_BlitSurface (image2, NULL, image, NULL);
+		
+		SDL_FreeSurface (image2);
+		
+		images_intro_new [IMG_INTRO_NEW_BACKGROUND] = image;
+		
+		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_CANDY]);
+		if (image == NULL) {
+			fprintf (stderr,
+				"Failed to load data file:\n"
+				"%s\n"
+				"The error returned by SDL is:\n"
+				"%s\n", images_intro_new_names [IMG_INTRO_NEW_CANDY], SDL_GetError());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		images_intro_new [IMG_INTRO_NEW_CANDY] = image;
+	}
 }
 
 void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *orden) {

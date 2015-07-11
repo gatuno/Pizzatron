@@ -164,4 +164,9 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/topping_9.png \
 	images/topping_10.png \
 	images/topping_11.png \
-	images/checked.png
+	images/checked.png \
+	images/intro_new_background.png \
+	images/intro_new_penguin.png \
+	images/intro_new_top.png \
+	images/intro_new_candy_lever.png
+
