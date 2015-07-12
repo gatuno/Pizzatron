@@ -581,6 +581,19 @@ int game_intro_new (void) {
 					/* Vamos a cerrar la aplicación */
 					done = GAME_QUIT;
 					break;
+				case SDL_MOUSEBUTTONDOWN:
+					/* Motor de botones primero */
+					
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					if (candy_mode == 0 && event.button.x > 15 && event.button.x < 45 &&
+					    event.button.y > 284 && event.button.y < 304) {
+						candy_mode = 1;
+					} else if (candy_mode == 1 && event.button.x > 40 && event.button.x < 57 &&
+					    event.button.y > 263 && event.button.y < 294) {
+						candy_mode = 0;
+					}
+					break;
 				case SDL_KEYDOWN:
 					done = GAME_CONTINUE;
 					break;
@@ -588,6 +601,15 @@ int game_intro_new (void) {
 		}
 		
 		SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
+		
+		if (candy_mode) {
+			rect.x = 15;
+			rect.y = 264;
+			rect.w = images_intro_new [IMG_INTRO_NEW_CANDY]->w;
+			rect.h = images_intro_new [IMG_INTRO_NEW_CANDY]->h;
+			
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_CANDY], NULL, screen, &rect);
+		}
 		
 		SDL_Flip (screen);
 		
