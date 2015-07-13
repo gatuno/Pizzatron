@@ -455,11 +455,23 @@ enum {
 	NUM_INTRO_NEW_IMAGES
 };
 
-const char *images_intro_new_names [] = {
+const char *images_intro_new_names [NUM_INTRO_NEW_IMAGES] = {
 	GAMEDATA_DIR "images/intro_new_background.png",
 	GAMEDATA_DIR "images/intro_new_penguin.png",
 	GAMEDATA_DIR "images/intro_new_top.png",
 	GAMEDATA_DIR "images/intro_new_candy_lever.png"
+};
+
+enum {
+	IMG_INTRO_OLD_BACKGROUND,
+	IMG_INTRO_OLD_CANDY,
+	
+	NUM_INTRO_OLD_IMAGES
+};
+
+const char *images_intro_old_names [NUM_INTRO_OLD_IMAGES] = {
+	GAMEDATA_DIR "images/intro_old_background.png",
+	GAMEDATA_DIR "images/intro_old_candy_lever.png"
 };
 
 /* Codigos de salida */
@@ -537,6 +549,7 @@ typedef struct {
 
 /* Prototipos de función */
 int game_loop (void);
+int game_intro_old (void);
 int game_intro_new (void);
 void setup (void);
 SDL_Surface * set_video_mode(unsigned);
@@ -547,6 +560,7 @@ void dibujar_comanda (Pizza *, int, int);
 SDL_Surface * screen;
 SDL_Surface * images [NUM_IMAGES];
 SDL_Surface * images_intro_new [NUM_INTRO_NEW_IMAGES];
+SDL_Surface * images_intro_old [NUM_INTRO_OLD_IMAGES];
 int candy_mode;
 int intro;
 
@@ -558,6 +572,8 @@ int main (int argc, char *argv[]) {
 	do {
 		if (intro == 1) {
 			if (game_intro_new () == GAME_QUIT) break;
+		} else {
+			if (game_intro_old () == GAME_QUIT) break;
 		}
 		if (game_loop () == GAME_QUIT) break;
 	} while (1 == 0);
@@ -566,14 +582,93 @@ int main (int argc, char *argv[]) {
 	return EXIT_SUCCESS;
 }
 
+int game_intro_old (void) {
+	int done = 0;
+	SDL_Event event;
+	Uint32 last_time, now_time;
+	SDL_Rect rect;
+	SDL_Rect update_rects[6];
+	int num_rects;
+	
+	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
+	
+	/* TODO: Dibujar los botones */
+	
+	SDL_Flip (screen);
+	
+	do {
+		last_time = SDL_GetTicks ();
+		
+		num_rects = 0;
+		
+		while (SDL_PollEvent(&event) > 0) {
+			switch (event.type) {
+				case SDL_QUIT:
+					/* Vamos a cerrar la aplicación */
+					done = GAME_QUIT;
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					/* Motor de botones primero */
+					
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					if (candy_mode == 0 && event.button.x > 412 && event.button.x < 433 &&
+					    event.button.y > 423 && event.button.y < 441) {
+						candy_mode = 1;
+						
+						rect.x = 413;
+						rect.y = 408;
+						rect.w = images_intro_old [IMG_INTRO_OLD_CANDY]->w;
+						rect.h = images_intro_old [IMG_INTRO_OLD_CANDY]->h;
+			
+						SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_CANDY], NULL, screen, &rect);
+						update_rects[num_rects++] = rect;
+					} else if (candy_mode == 1 && event.button.x > 528 && event.button.x < 548 &&
+					    event.button.y > 429 && event.button.y < 447) {
+						candy_mode = 0;
+						
+						rect.x = 413;
+						rect.y = 408;
+						rect.w = images_intro_old [IMG_INTRO_OLD_CANDY]->w;
+						rect.h = images_intro_old [IMG_INTRO_OLD_CANDY]->h;
+			
+						SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], &rect, screen, &rect);
+						update_rects[num_rects++] = rect;
+					}
+					break;
+				case SDL_KEYDOWN:
+					done = GAME_CONTINUE;
+					break;
+			}
+		}
+		/* TODO: Actualizar aquí los botones */
+		SDL_UpdateRects (screen, num_rects, update_rects);
+		
+		now_time = SDL_GetTicks ();
+		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
+	} while (!done);
+	
+	return done;
+}
+
 int game_intro_new (void) {
 	int done = 0;
 	SDL_Event event;
 	Uint32 last_time, now_time;
 	SDL_Rect rect;
+	SDL_Rect update_rects[6];
+	int num_rects;
+	
+	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
+	
+	/* TODO: Dibujar aquí los botones */
+	
+	SDL_Flip (screen);
 	
 	do {
 		last_time = SDL_GetTicks ();
+		
+		num_rects = 0;
 		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
@@ -589,9 +684,25 @@ int game_intro_new (void) {
 					if (candy_mode == 0 && event.button.x > 15 && event.button.x < 45 &&
 					    event.button.y > 284 && event.button.y < 304) {
 						candy_mode = 1;
+						
+						rect.x = 15;
+						rect.y = 264;
+						rect.w = images_intro_new [IMG_INTRO_NEW_CANDY]->w;
+						rect.h = images_intro_new [IMG_INTRO_NEW_CANDY]->h;
+			
+						SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_CANDY], NULL, screen, &rect);
+						update_rects[num_rects++] = rect;
 					} else if (candy_mode == 1 && event.button.x > 40 && event.button.x < 57 &&
 					    event.button.y > 263 && event.button.y < 294) {
 						candy_mode = 0;
+						
+						rect.x = 15;
+						rect.y = 264;
+						rect.w = images_intro_new [IMG_INTRO_NEW_CANDY]->w;
+						rect.h = images_intro_new [IMG_INTRO_NEW_CANDY]->h;
+			
+						SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], &rect, screen, &rect);
+						update_rects[num_rects++] = rect;
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -600,18 +711,8 @@ int game_intro_new (void) {
 			}
 		}
 		
-		SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
-		
-		if (candy_mode) {
-			rect.x = 15;
-			rect.y = 264;
-			rect.w = images_intro_new [IMG_INTRO_NEW_CANDY]->w;
-			rect.h = images_intro_new [IMG_INTRO_NEW_CANDY]->h;
-			
-			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_CANDY], NULL, screen, &rect);
-		}
-		
-		SDL_Flip (screen);
+		/* TODO: Actualizar aquí los botones */
+		SDL_UpdateRects (screen, num_rects, update_rects);
 		
 		now_time = SDL_GetTicks ();
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
@@ -1506,9 +1607,25 @@ void setup (void) {
 	
 	intro = ((int) (2.0 * rand () / (RAND_MAX + 1.0)));
 	
-	intro = 1;
 	if (intro == 0) {
 		/* Cargar el viejo intro */
+		/* La carga es muy simple, 2 imágenes */
+		for (g = 0; g < NUM_INTRO_OLD_IMAGES; g++) {
+			image = IMG_Load (images_intro_old_names[g]);
+		
+			if (image == NULL) {
+				fprintf (stderr,
+					"Failed to load data file:\n"
+					"%s\n"
+					"The error returned by SDL is:\n"
+					"%s\n", images_intro_old_names[g], SDL_GetError());
+				SDL_Quit ();
+				exit (1);
+			}
+		
+			images_intro_old[g] = image;
+			/* TODO: Mostrar la carga de porcentaje */
+		}
 	} else {
 		/* Cargar el nuevo intro */
 		
