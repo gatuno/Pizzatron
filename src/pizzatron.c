@@ -36,6 +36,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_ttf.h>
 
 #ifdef HAVE_CONFIG_H
 #include "config.h"
@@ -523,6 +524,55 @@ const SDL_Color penguin_colors[18] = {
 	{46, 71, 170}
 };
 
+/* Los textos */
+enum {
+	TEXT_PIZZA_ORDER_1,
+	TEXT_PIZZA_ORDER_2,
+	TEXT_PIZZA_ORDER_3,
+	TEXT_PIZZA_ORDER_4,
+	TEXT_PIZZA_ORDER_5,
+	TEXT_PIZZA_ORDER_6,
+	TEXT_PIZZA_ORDER_7,
+	TEXT_PIZZA_ORDER_8,
+	TEXT_PIZZA_ORDER_9,
+	TEXT_PIZZA_ORDER_10,
+	TEXT_PIZZA_ORDER_11,
+	TEXT_PIZZA_ORDER_12,
+	TEXT_PIZZA_ORDER_13,
+	TEXT_PIZZA_ORDER_14,
+	TEXT_PIZZA_ORDER_15,
+	TEXT_PIZZA_ORDER_16,
+	TEXT_PIZZA_ORDER_17,
+	TEXT_PIZZA_ORDER_18,
+	TEXT_PIZZA_ORDER_19,
+	TEXT_PIZZA_ORDER_20,
+	TEXT_PIZZA_ORDER_21,
+	TEXT_PIZZA_ORDER_22,
+	TEXT_PIZZA_ORDER_23,
+	TEXT_PIZZA_ORDER_24,
+	
+	TEXT_CHEESE_SPRINKLES,
+	TEXT_SAUCE_1,
+	TEXT_SAUCE_2,
+	
+	TEXT_5_TOPPING_1,
+	TEXT_5_TOPPING_2,
+	TEXT_5_TOPPING_3,
+	TEXT_5_TOPPING_4,
+	
+	TEXT_2_TOPPING_1,
+	TEXT_2_TOPPING_2,
+	TEXT_2_TOPPING_3,
+	TEXT_2_TOPPING_4,
+	
+	TEXT_1_TOPPING_1,
+	TEXT_1_TOPPING_2,
+	TEXT_1_TOPPING_3,
+	TEXT_1_TOPPING_4,
+	
+	NUM_TEXTS
+};
+
 /* Estructuras */
 typedef struct {
 	int x, y;
@@ -552,6 +602,7 @@ int game_loop (void);
 int game_intro_old (void);
 int game_intro_new (void);
 void setup (void);
+void setup_texts (void);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
 void dibujar_comanda (Pizza *, int, int);
@@ -561,8 +612,11 @@ SDL_Surface * screen;
 SDL_Surface * images [NUM_IMAGES];
 SDL_Surface * images_intro_new [NUM_INTRO_NEW_IMAGES];
 SDL_Surface * images_intro_old [NUM_INTRO_OLD_IMAGES];
+SDL_Surface * texts [NUM_TEXTS];
 int candy_mode;
 int intro;
+
+TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
 
 int main (int argc, char *argv[]) {
 	setup ();
@@ -575,6 +629,7 @@ int main (int argc, char *argv[]) {
 		} else {
 			if (game_intro_old () == GAME_QUIT) break;
 		}
+		setup_texts ();
 		if (game_loop () == GAME_QUIT) break;
 	} while (1 == 0);
 	
@@ -1704,6 +1759,138 @@ void setup (void) {
 		
 		images_intro_new [IMG_INTRO_NEW_CANDY] = image;
 	}
+	
+	/* Cargar las tipografias */
+	if (TTF_Init () < 0) {
+		fprintf (stderr,
+			"Error: Can't initialize the SDL TTF library\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	ttf10_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 10);
+	
+	if (!ttf10_burbank_bold) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	ttf12_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 12);
+	
+	if (!ttf12_burbank_bold) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+}
+
+void setup_texts (void) {
+	/* Renderizar todos los textos */
+	SDL_Color azul;
+	
+	azul.r = 0x01;
+	azul.g = 0x45;
+	azul.b = 0x87;
+	
+	if (candy_mode) {
+		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE SPRINKLE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK ICING SPRINKLE", azul);
+		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK CHOCOLATE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "JELLY BEAN PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK JELLY BEAN PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE-CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE-CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW JELLY PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW JELLY PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE MARSHMALLOW PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE MARSHMALLOW PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "JELLY CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK JELLY CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE JELLY PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE JELLY PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW CHIP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE SUGAR PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK SUGAR PIZZA", azul);
+		
+		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "SPRINKLES", azul);
+		
+		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "CHOCOLATE SAUCE", azul);
+		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "PINK ICING", azul);
+		
+		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 LIQUORICE", azul);
+		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 CHOCOLATE CHIPS", azul);
+		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 MARSHMALLOWS", azul);
+		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 JELLY BEANS", azul);
+		
+		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 LIQUORICE", azul);
+		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 CHOCOLATE CHIPS", azul);
+		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 MARSHMALLOWS", azul);
+		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 JELLY BEANS", azul);
+		
+		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 LIQUORICE", azul);
+		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 CHOCOLATE CHIP", azul);
+		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 MARSHMALLOW", azul);
+		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 JELLY BEAN", azul);
+	} else {
+		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHEESE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT CHEESE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SPICY SEAWEED PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SPICY SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FLAMETHROWER FISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED-SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED-SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH DISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT FISH DISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED-SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED-SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT FISH SHRIMP PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED FISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED FISH PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SHRIMP SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SHRIMP SQUID PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SUPREME PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SUPREME SIZZLE PIZZA", azul);
+		
+		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "CHEESE", azul);
+		
+		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "PIZZA SAUCE", azul);
+		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "HOT SAUCE", azul);
+		
+		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SEAWEED", azul);
+		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SHRIMP", azul);
+		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SQUID", azul);
+		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 FISH", azul);
+		
+		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SEAWEED", azul);
+		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SHRIMP", azul);
+		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SQUID", azul);
+		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 FISH", azul);
+		
+		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SEAWEED", azul);
+		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SHRIMP", azul);
+		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SQUID", azul);
+		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 FISH", azul);
+	}
 }
 
 void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *orden) {
@@ -1780,8 +1967,9 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 }
 
 void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
-	SDL_Rect rect;
+	SDL_Rect rect, rect2;
 	int g;
+	SDL_Surface *temp;
 	
 	/* Dibujar la pizza correcta en la comanda */
 	rect.x = 401;
@@ -1791,6 +1979,14 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
 	
 	g = pizza->sauce_requested - SAUCE_NORMAL + IMG_ORDER_PIZZA_CHEESE;
 	SDL_BlitSurface (images[g], NULL, screen, &rect);
+	
+	/* Dibujar el nombre de la pizza */
+	rect.x = 398;
+	rect.y = 18;
+	temp = texts[TEXT_PIZZA_ORDER_1 + orden];
+	rect.w = temp->w;
+	rect.h = temp->h;
+	SDL_BlitSurface (temp, NULL, screen, &rect);
 	
 	/* Dibujar los ingredientes abajo, en la comanda */
 	if (orden > 1) {
@@ -1814,6 +2010,14 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
 		SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
 	}
 	
+	/* Dibujar el texto */
+	rect.x = 544;
+	rect.y = 53;
+	rect.w = texts[TEXT_CHEESE_SPRINKLES]->w;
+	rect.h = texts[TEXT_CHEESE_SPRINKLES]->h;
+	
+	SDL_BlitSurface (texts[TEXT_CHEESE_SPRINKLES], NULL, screen, &rect);
+	
 	/* Palomita para la salsa */
 	if (pizza->sauce_placed == pizza->sauce_requested) {
 		rect.x = 524;
@@ -1824,6 +2028,19 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
 		SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
 	}
 	
+	/* Dibujar el texto de la salsa */
+	rect.x = 544;
+	rect.y = 75;
+	if (candy_mode) {
+		temp = texts[TEXT_SAUCE_1 + pizza->sauce_requested - SAUCE_CHOCOLATE];
+	} else {
+		temp = texts[TEXT_SAUCE_1 + pizza->sauce_requested - SAUCE_NORMAL];
+	}
+	rect.w = temp->w;
+	rect.h = temp->h;
+	
+	SDL_BlitSurface (temp, NULL, screen, &rect);
+	
 	/* Palomitas para los ingredientes */
 	if (orden > 1 && orden < 22) {
 		/* Ordenes con uno o dos ingredientes */
@@ -1831,10 +2048,28 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
 		rect.x = 524;
 		rect.w = images[IMG_CHECKED]->w;
 		rect.h = images[IMG_CHECKED]->h;
+		rect2.y = 121;
+		rect2.x = 544;
 		for (g = 0; g < 4; g++) {
 			if (pizza->topping_requested[g] != 0 && pizza->topping[g] >= pizza->topping_requested[g]) {
 				SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
+				
 				rect.y = 139;
+			}
+			
+			if (pizza->topping_requested[g] != 0) {
+				/* Dibujar el texto */
+				if (pizza->topping_requested[g] == 5) {
+					temp = texts[TEXT_5_TOPPING_1 + g];
+				} else {
+					temp = texts[TEXT_2_TOPPING_1 + g];
+				}
+				
+				rect2.w = temp->w;
+				rect2.h = temp->h;
+			
+				SDL_BlitSurface (temp, NULL, screen, &rect2);
+				rect2.y = 142;
 			}
 		}
 	} else if (orden >= 22) {
@@ -1842,12 +2077,24 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode) {
 		rect.x = 524;
 		rect.w = images[IMG_CHECKED]->w;
 		rect.h = images[IMG_CHECKED]->h;
+		
+		rect2.x = 544;
 		for (g = 0; g < 4; g++) {
+			
+			rect2.y = 95 + (g * 18);
+			
+			temp = texts[TEXT_1_TOPPING_1 + g];
+			
+			rect2.w = temp->w;
+			rect2.h = temp->h;
+			
+			SDL_BlitSurface (temp, NULL, screen, &rect2);
 			if (pizza->topping_requested[g] != 0 && pizza->topping[g] >= pizza->topping_requested[g]) {
 				rect.y = 92 + (g * 18);
 				
 				SDL_BlitSurface (images[IMG_CHECKED], NULL, screen, &rect);
 			}
+			
 		}
 	}
 }

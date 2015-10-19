@@ -170,5 +170,6 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/intro_new_top.png \
 	images/intro_new_candy_lever.png \
 	images/intro_old_background.png \
-	images/intro_old_candy_lever.png
+	images/intro_old_candy_lever.png \
+	burbanksb.ttf
 
