@@ -487,7 +487,17 @@ enum {
 	END_LAME = 0,
 	END_LOSE,
 	END_WIN,
-	END_PERFECT
+	END_PERFECT,
+	
+	NUM_ENDINGS
+};
+
+/* Nombres de los fondos finales */
+const char *images_end_names [NUM_ENDINGS] = {
+	GAMEDATA_DIR "images/ending_1.png",
+	GAMEDATA_DIR "images/ending_2.png",
+	GAMEDATA_DIR "images/ending_3.png",
+	GAMEDATA_DIR "images/ending_4.png"
 };
 
 /* Listar los ingredientes */
@@ -616,6 +626,7 @@ int game_intro_new (void);
 int game_end (int);
 void setup (void);
 void setup_texts (void);
+void setup_ending (int fin);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
 void dibujar_comanda (Pizza *, int, int, int, int, int);
@@ -625,6 +636,7 @@ SDL_Surface * screen;
 SDL_Surface * images [NUM_IMAGES];
 SDL_Surface * images_intro_new [NUM_INTRO_NEW_IMAGES];
 SDL_Surface * images_intro_old [NUM_INTRO_OLD_IMAGES];
+SDL_Surface * image_background_ending;
 SDL_Surface * texts [NUM_TEXTS];
 int candy_mode;
 int intro;
@@ -646,6 +658,7 @@ int main (int argc, char *argv[]) {
 		}
 		setup_texts ();
 		if (game_loop (&fin) == GAME_QUIT) break;
+		setup_ending (fin);
 		if (game_end (fin) == GAME_QUIT) break;
 	} while (1 == 0);
 	
@@ -1332,7 +1345,7 @@ int game_loop (int *fin) {
 			} else {
 				pizzaspeed = 7;
 			}
-		} else if (handicap <= 34) {
+		} else {
 			if (candy_mode) {
 				pizzaspeed = 9;
 			} else {
@@ -1645,8 +1658,32 @@ int game_loop (int *fin) {
 
 int game_end (int fin) {
 	int done = 0;
+	SDL_Event event;
+	Uint32 last_time, now_time;
+	SDL_Rect rect, rect2;
 	
-	done = GAME_CONTINUE;
+	/* Predibujar todo y renderizar */
+	SDL_BlitSurface (image_background_ending, NULL, screen, NULL);
+	
+	SDL_Flip (screen);
+	
+	do {
+		last_time = SDL_GetTicks ();
+		
+		while (SDL_PollEvent(&event) > 0) {
+			switch (event.type) {
+				case SDL_QUIT:
+					done = GAME_QUIT;
+					break;
+				case SDL_KEYDOWN:
+					done = GAME_CONTINUE;
+					break;
+			}
+		}
+		
+		now_time = SDL_GetTicks ();
+		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
+	} while (!done);
 	
 	printf ("Tipo de fin: %i\n", fin);
 	return done;
@@ -1955,6 +1992,24 @@ void setup_texts (void) {
 		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SQUID", azul);
 		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 FISH", azul);
 	}
+}
+
+void setup_ending (int fin) {
+	SDL_Surface *image;
+	
+	image = IMG_Load (images_end_names [fin]);
+		
+	if (image == NULL) {
+		fprintf (stderr,
+			"Failed to load data file:\n"
+			"%s\n"
+			"The error returned by SDL is:\n"
+			"%s\n", images_end_names [fin], SDL_GetError());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	image_background_ending = image;
 }
 
 void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *orden) {
