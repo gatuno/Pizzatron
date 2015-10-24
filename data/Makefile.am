@@ -1,6 +1,7 @@
 gamedatadir = $(pkgdatadir)/data
 
 nobase_dist_gamedata_DATA = images/background.png \
+	images/icon.png \
 	images/conveyorbelt.png \
 	images/pizza_base_1.png \
 	images/pizza_base_2.png \
@@ -179,3 +180,38 @@ nobase_dist_gamedata_DATA = images/background.png \
 	burbanksb.ttf \
 	burbankbgbk.ttf
 
+# Instalar los archivos .desktop e iconos
+applicationsdir = $(datadir)/applications
+applications_DATA = desktop/pizzatron.desktop
+
+icons24dir = $(datadir)/icons/hicolor/24x24/apps
+icons24_DATA = desktop/24x24/pizzatron.png
+
+icons32dir = $(datadir)/icons/hicolor/32x32/apps
+icons32_DATA = desktop/32x32/pizzatron.png
+
+icons48dir = $(datadir)/icons/hicolor/48x48/apps
+icons48_DATA = desktop/48x48/pizzatron.png
+
+icons64dir = $(datadir)/icons/hicolor/64x64/apps
+icons64_DATA = desktop/64x64/pizzatron.png
+
+icons128dir = $(datadir)/icons/hicolor/128x128/apps
+icons128_DATA = desktop/128x128/pizzatron.png
+
+icons256dir = $(datadir)/icons/hicolor/256x256/apps
+icons256_DATA = desktop/256x256/pizzatron.png
+
+# touch the toplevel icon directory as required by the icon theme spec
+install-data-hook:
+	touch $(DESTDIR)$(datadir)/icons/hicolor
+
+EXTRA_DIST = \
+	desktop/pizzatron.desktop \
+	desktop/24x24/pizzatron.png \
+	desktop/32x32/pizzatron.png \
+	desktop/48x48/pizzatron.png \
+	desktop/64x64/pizzatron.png \
+	desktop/128x128/pizzatron.png \
+	desktop/256x256/pizzatron.png \
+	pizzatron.ico

@@ -1772,6 +1772,13 @@ void setup (void) {
 		exit (1);
 	}
 	
+	image = IMG_Load (GAMEDATA_DIR "images/icon.png");
+	if (image) {
+		SDL_WM_SetIcon (image, NULL);
+		SDL_FreeSurface (image);
+	}
+	SDL_WM_SetCaption ("Pizzatron", "Pizzatron");
+	
 	/* Crear la pantalla de dibujado */
 	screen = set_video_mode (0);
 	
