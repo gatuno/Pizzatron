@@ -605,6 +605,8 @@ enum {
 	TEXT_TIP_30,
 	TEXT_TIP_35,
 	
+	TEXT_COINS,
+	
 	NUM_TEXTS
 };
 
@@ -654,7 +656,7 @@ void setup_texts (void);
 void setup_ending (int fin);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
-void dibujar_comanda (Pizza *, int, int, int, int, int);
+void dibujar_comanda (Pizza *, int, int, int, int, int, int);
 
 /* Variables globales */
 SDL_Surface * screen;
@@ -668,7 +670,7 @@ int intro; /* Cuál de los 2 intros se va a dibujar */
 int order_screen_timer;
 int order_screen_done;
 
-TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold, *ttf9_burbank_bold;
+TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold, *ttf9_burbank_bold, *ttf13_burbank_bold;
 
 int main (int argc, char *argv[]) {
 	int fin;
@@ -857,6 +859,9 @@ int game_loop (int *fin) {
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
 	int pizzas_hechas = 0, orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
 	
+	int score, tips;
+	score = tips = 0;
+	
 	SDL_Surface *splat_surface, *splat_surface2;
 	
 	sauce_state = NONE;
@@ -984,7 +989,7 @@ int game_loop (int *fin) {
 		/* Borrar todo */
 		SDL_BlitSurface (images[IMG_BACKGROUND], NULL, screen, NULL);
 		
-		dibujar_comanda (&pizza, orden, candy_mode, pizzas_hechas, 40 - ordenes_hechas, failures);
+		dibujar_comanda (&pizza, orden, candy_mode, pizzas_hechas, 40 - ordenes_hechas, failures, score + tips);
 		
 		/* Dibujar las salsas */
 		rect.x = 11;
@@ -1601,6 +1606,9 @@ int game_loop (int *fin) {
 					tips = tips + 10;
 				}
 				/* TODO: Revisar aquí por varias estampas */
+				score = score + 5;
+				if (candy_mode) score = score + 5;
+				
 			} else {
 				pizzas_consecutivas = 0;
 				failures++;
@@ -1940,7 +1948,18 @@ void setup (void) {
 	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS LEFT", negro);
 	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "MISTAKES", negro);
 	
-	TTF_CloseFont (temp);
+	ttf13_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 13);
+	
+	if (!ttf13_burbank_bold) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, "COINS", negro);
 	
 	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 38);
 	
@@ -2185,7 +2204,7 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 	}
 }
 
-void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas, int pizzas_left, int fallos) {
+void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas, int pizzas_left, int fallos, int coins) {
 	SDL_Rect rect, rect2;
 	int g;
 	SDL_Surface *temp;
@@ -2212,6 +2231,12 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	rect.w = texts[TEXT_MISTAKES]->w;
 	rect.h = texts[TEXT_MISTAKES]->h;
 	SDL_BlitSurface (texts[TEXT_MISTAKES], NULL, screen, &rect);
+	
+	rect.x = 657 - texts[TEXT_COINS]->w;
+	rect.y = 160;
+	rect.w = texts[TEXT_COINS]->w;
+	rect.h = texts[TEXT_COINS]->h;
+	SDL_BlitSurface (texts[TEXT_COINS], NULL, screen, &rect);
 	
 	sprintf (buffer, "%i", pizzas_hechas);
 	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
@@ -2240,7 +2265,14 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	SDL_BlitSurface (temp, NULL, screen, &rect);
 	SDL_FreeSurface (temp);
 	
-	/* TODO: Dibujar la cantidad de monedas */
+	sprintf (buffer, "%i", coins);
+	temp = TTF_RenderUTF8_Blended (ttf13_burbank_bold, buffer, negro);
+	rect.x = 688 - temp->w;
+	rect.y = 160;
+	rect.w = temp->w;
+	rect.h = temp->h;
+	SDL_BlitSurface (temp, NULL, screen, &rect);
+	SDL_FreeSurface (temp);
 	
 	if (order_screen_done != ORDER_SCREEN_NONE) {
 		rect.x = 401;
