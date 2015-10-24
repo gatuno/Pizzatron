@@ -175,5 +175,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/ending_2.png \
 	images/ending_3.png \
 	images/ending_4.png \
-	burbanksb.ttf
+	images/done.png \
+	burbanksb.ttf \
+	burbankbgbk.ttf
 

@@ -261,6 +261,7 @@ enum {
 	IMG_ORDER_CANDY_TOPPING_11,
 	
 	IMG_CHECKED,
+	IMG_DONE,
 	
 	NUM_IMAGES
 };
@@ -444,7 +445,8 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/candy_topping_10.png",
 	GAMEDATA_DIR "images/candy_topping_11.png",
 	
-	GAMEDATA_DIR "images/checked.png"
+	GAMEDATA_DIR "images/checked.png",
+	GAMEDATA_DIR "images/done.png"
 };
 
 enum {
@@ -592,9 +594,32 @@ enum {
 	TEXT_1_TOPPING_3,
 	TEXT_1_TOPPING_4,
 	
+	TEXT_DONE_LABEL,
+	
+	TEXT_5_COINS,
+	TEXT_10_COINS,
+	TEXT_TIP_10,
+	TEXT_TIP_15,
+	TEXT_TIP_20,
+	TEXT_TIP_25,
+	TEXT_TIP_30,
+	TEXT_TIP_35,
+	
 	NUM_TEXTS
 };
 
+/* Las posibles pantallas para el done screen */
+enum {
+	ORDER_SCREEN_NONE,
+	ORDER_SCREEN_DONE,
+	ORDER_SCREEN_TIP_10,
+	ORDER_SCREEN_TIP_15,
+	ORDER_SCREEN_TIP_20,
+	ORDER_SCREEN_TIP_25,
+	ORDER_SCREEN_TIP_30,
+	ORDER_SCREEN_TIP_35
+};
+	
 /* Estructuras */
 typedef struct {
 	int x, y;
@@ -639,7 +664,9 @@ SDL_Surface * images_intro_old [NUM_INTRO_OLD_IMAGES];
 SDL_Surface * image_background_ending;
 SDL_Surface * texts [NUM_TEXTS];
 int candy_mode;
-int intro;
+int intro; /* Cuál de los 2 intros se va a dibujar */
+int order_screen_timer;
+int order_screen_done;
 
 TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold, *ttf9_burbank_bold;
 
@@ -1551,6 +1578,28 @@ int game_loop (int *fin) {
 				pizzas_consecutivas++;
 				handicap++;
 				
+				/* Activar el mensaje de "hecho" */
+				order_screen_timer = 0;
+				order_screen_done = ORDER_SCREEN_DONE;
+				if (pizzas_consecutivas >= 30) {
+					order_screen_done = ORDER_SCREEN_TIP_35;
+					tips = tips + 35;
+				} else if (pizzas_consecutivas >= 25) {
+					order_screen_done = ORDER_SCREEN_TIP_30;
+					tips = tips + 30;
+				} else if (pizzas_consecutivas >= 20) {
+					order_screen_done = ORDER_SCREEN_TIP_25;
+					tips = tips + 25;
+				} else if (pizzas_consecutivas >= 15) {
+					order_screen_done = ORDER_SCREEN_TIP_20;
+					tips = tips + 20;
+				} else if (pizzas_consecutivas >= 10) {
+					order_screen_done = ORDER_SCREEN_TIP_15;
+					tips = tips + 15;
+				} else if (pizzas_consecutivas >= 5) {
+					order_screen_done = ORDER_SCREEN_TIP_10;
+					tips = tips + 10;
+				}
 				/* TODO: Revisar aquí por varias estampas */
 			} else {
 				pizzas_consecutivas = 0;
@@ -1685,7 +1734,6 @@ int game_end (int fin) {
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
 	} while (!done);
 	
-	printf ("Tipo de fin: %i\n", fin);
 	return done;
 }
 
@@ -1704,6 +1752,8 @@ void setup (void) {
 	SDL_Surface *image, *color, *image2;
 	SDL_Rect rect;
 	int g;
+	TTF_Font *temp;
+	SDL_Color negro;
 	
 	/* Inicializar el Video SDL */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -1885,6 +1935,65 @@ void setup (void) {
 		SDL_Quit ();
 		exit (1);
 	}
+	
+	texts[TEXT_PIZZAS_MADE] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS MADE", negro);
+	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS LEFT", negro);
+	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "MISTAKES", negro);
+	
+	TTF_CloseFont (temp);
+	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 38);
+	
+	if (!temp) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Big Regular'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	/* Utilizar esta fuente para pre-renderizar el texto de "pizza completa" */
+	negro.r = negro.g = negro.b = 0;
+	
+	texts[TEXT_DONE_LABEL] = TTF_RenderUTF8_Blended (temp, "DONE!", negro);
+	
+	TTF_CloseFont (temp);
+	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 20);
+	
+	if (!temp) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	texts[TEXT_5_COINS] = TTF_RenderUTF8_Blended (temp, "+5 COINS", negro);
+	texts[TEXT_10_COINS] = TTF_RenderUTF8_Blended (temp, "+10 COINS", negro);
+	
+	TTF_CloseFont (temp);
+	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 16);
+	
+	if (!temp) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	texts[TEXT_TIP_10] = TTF_RenderUTF8_Blended (temp, "+10 TIP!", negro);
+	texts[TEXT_TIP_15] = TTF_RenderUTF8_Blended (temp, "+15 TIP!", negro);
+	texts[TEXT_TIP_20] = TTF_RenderUTF8_Blended (temp, "+20 TIP!", negro);
+	texts[TEXT_TIP_25] = TTF_RenderUTF8_Blended (temp, "+25 TIP!", negro);
+	texts[TEXT_TIP_30] = TTF_RenderUTF8_Blended (temp, "+30 TIP!", negro);
+	texts[TEXT_TIP_35] = TTF_RenderUTF8_Blended (temp, "+35 TIP!", negro);
+	
+	TTF_CloseFont (temp);
 }
 
 void setup_texts (void) {
@@ -1896,10 +2005,6 @@ void setup_texts (void) {
 	azul.b = 0x87;
 	
 	negro.r = negro.g = negro.b = 0;
-	
-	texts[TEXT_PIZZAS_MADE] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS MADE", negro);
-	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS LEFT", negro);
-	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "MISTAKES", negro);
 	
 	if (candy_mode) {
 		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE SPRINKLE PIZZA", azul);
@@ -2024,9 +2129,7 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 	
 	p->topping_requested[0] = p->topping_requested[1] = p->topping_requested[2] = p->topping_requested[3] = 0;
 	
-	printf ("Posibles combinaciones: %i\n", posibles);
 	*orden = ((int) (((float) posibles) * rand () / (RAND_MAX + 1.0)));
-	printf ("Orden: %i\n", *orden);
 	
 	p->sauce_requested = candy_mode ? SAUCE_CHOCOLATE : SAUCE_NORMAL;
 	
@@ -2034,7 +2137,6 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 		p->sauce_requested = candy_mode ? SAUCE_PINK : SAUCE_HOT;
 	}
 	
-	printf ("Salsa: %i, SAUCE_NORMAL = %i\n", p->sauce_requested, SAUCE_NORMAL);
 	switch (*orden) {
 		case 2:
 		case 3:
@@ -2081,8 +2183,6 @@ void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *o
 			p->topping_requested[0] = p->topping_requested[1] = p->topping_requested[2] = p->topping_requested[3] = 1;
 			break;
 	}
-	
-	printf ("Toppings_requested[4] = {%i, %i, %i, %i};\n", p->topping_requested[0], p->topping_requested[1], p->topping_requested[2], p->topping_requested[3]);
 }
 
 void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas, int pizzas_left, int fallos) {
@@ -2093,6 +2193,98 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	SDL_Color negro;
 	
 	negro.r = negro.g = negro.b = 0;
+	
+	/* Dibujar la cantidad de pizzas hechas y faltantes */
+	rect.x = 613;
+	rect.y = 17;
+	rect.w = texts[TEXT_PIZZAS_MADE]->w;
+	rect.h = texts[TEXT_PIZZAS_MADE]->h;
+	SDL_BlitSurface (texts[TEXT_PIZZAS_MADE], NULL, screen, &rect);
+	
+	rect.x = 613;
+	rect.y = 33;
+	rect.w = texts[TEXT_PIZZAS_LEFT]->w;
+	rect.h = texts[TEXT_PIZZAS_LEFT]->h;
+	SDL_BlitSurface (texts[TEXT_PIZZAS_LEFT], NULL, screen, &rect);
+	
+	rect.x = 613;
+	rect.y = 50;
+	rect.w = texts[TEXT_MISTAKES]->w;
+	rect.h = texts[TEXT_MISTAKES]->h;
+	SDL_BlitSurface (texts[TEXT_MISTAKES], NULL, screen, &rect);
+	
+	sprintf (buffer, "%i", pizzas_hechas);
+	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
+	rect.x = 690 - temp->w;
+	rect.y = 17;
+	rect.w = temp->w;
+	rect.h = temp->h;
+	SDL_BlitSurface (temp, NULL, screen, &rect);
+	SDL_FreeSurface (temp);
+	
+	sprintf (buffer, "%i", pizzas_left);
+	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
+	rect.x = 690 - temp->w;
+	rect.y = 33;
+	rect.w = temp->w;
+	rect.h = temp->h;
+	SDL_BlitSurface (temp, NULL, screen, &rect);
+	SDL_FreeSurface (temp);
+	
+	sprintf (buffer, "%i", fallos);
+	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
+	rect.x = 690 - temp->w;
+	rect.y = 50;
+	rect.w = temp->w;
+	rect.h = temp->h;
+	SDL_BlitSurface (temp, NULL, screen, &rect);
+	SDL_FreeSurface (temp);
+	
+	/* TODO: Dibujar la cantidad de monedas */
+	
+	if (order_screen_done != ORDER_SCREEN_NONE) {
+		rect.x = 401;
+		rect.y = 20;
+		rect.w = texts[TEXT_DONE_LABEL]->w;
+		rect.h = texts[TEXT_DONE_LABEL]->h;
+		
+		SDL_BlitSurface (texts[TEXT_DONE_LABEL], NULL, screen, &rect);
+		
+		rect.x = 401;
+		rect.y = 75;
+		if (candy_mode) {
+			temp = texts[TEXT_10_COINS];
+		} else {
+			temp = texts[TEXT_5_COINS];
+		}
+		rect.w = temp->w;
+		rect.h = temp->h;
+		
+		SDL_BlitSurface (temp, NULL, screen, &rect);
+		
+		if (order_screen_done != ORDER_SCREEN_DONE) {
+			temp = texts[TEXT_TIP_10 + order_screen_done - ORDER_SCREEN_TIP_10];
+			
+			rect.x = 401;
+			rect.y = 100;
+			rect.w = temp->w;
+			rect.h = temp->h;
+			
+			SDL_BlitSurface (temp, NULL, screen, &rect);
+		}
+		
+		rect.x = 500;
+		rect.y = 97;
+		rect.w = images[IMG_DONE]->w;
+		rect.h = images[IMG_DONE]->h;
+		
+		SDL_BlitSurface (images[IMG_DONE], NULL, screen, &rect);
+		
+		order_screen_timer++;
+		if (order_screen_timer >= 16) order_screen_done = ORDER_SCREEN_NONE;
+		return; /* No dibujar lo demás */
+	}
+	
 	/* Dibujar la pizza correcta en la comanda */
 	rect.x = 401;
 	rect.y = 51;
@@ -2219,50 +2411,4 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 			
 		}
 	}
-	
-	/* Dibujar la cantidad de pizzas hechas y faltantes */
-	rect.x = 613;
-	rect.y = 17;
-	rect.w = texts[TEXT_PIZZAS_MADE]->w;
-	rect.h = texts[TEXT_PIZZAS_MADE]->h;
-	SDL_BlitSurface (texts[TEXT_PIZZAS_MADE], NULL, screen, &rect);
-	
-	rect.x = 613;
-	rect.y = 33;
-	rect.w = texts[TEXT_PIZZAS_LEFT]->w;
-	rect.h = texts[TEXT_PIZZAS_LEFT]->h;
-	SDL_BlitSurface (texts[TEXT_PIZZAS_LEFT], NULL, screen, &rect);
-	
-	rect.x = 613;
-	rect.y = 50;
-	rect.w = texts[TEXT_MISTAKES]->w;
-	rect.h = texts[TEXT_MISTAKES]->h;
-	SDL_BlitSurface (texts[TEXT_MISTAKES], NULL, screen, &rect);
-	
-	sprintf (buffer, "%i", pizzas_hechas);
-	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
-	rect.x = 690 - temp->w;
-	rect.y = 17;
-	rect.w = temp->w;
-	rect.h = temp->h;
-	SDL_BlitSurface (temp, NULL, screen, &rect);
-	SDL_FreeSurface (temp);
-	
-	sprintf (buffer, "%i", pizzas_left);
-	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
-	rect.x = 690 - temp->w;
-	rect.y = 33;
-	rect.w = temp->w;
-	rect.h = temp->h;
-	SDL_BlitSurface (temp, NULL, screen, &rect);
-	SDL_FreeSurface (temp);
-	
-	sprintf (buffer, "%i", fallos);
-	temp = TTF_RenderUTF8_Blended (ttf9_burbank_bold, buffer, negro);
-	rect.x = 690 - temp->w;
-	rect.y = 50;
-	rect.w = temp->w;
-	rect.h = temp->h;
-	SDL_BlitSurface (temp, NULL, screen, &rect);
-	SDL_FreeSurface (temp);
 }
