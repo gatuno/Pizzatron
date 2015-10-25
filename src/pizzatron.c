@@ -36,6 +36,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
 #ifdef HAVE_CONFIG_H
@@ -477,6 +478,26 @@ const char *images_intro_old_names [NUM_INTRO_OLD_IMAGES] = {
 	GAMEDATA_DIR "images/intro_old_candy_lever.png"
 };
 
+enum {
+	SND_CACHING,
+	SND_SAUCE,
+	SND_HOTSAUCE,
+	SND_TOPPING,
+	SND_OVERFLOW,
+	SND_THROW,
+	
+	NUM_SOUNDS
+};
+
+const char *sound_names[NUM_SOUNDS] = {
+	GAMEDATA_DIR "sounds/caching.wav",
+	GAMEDATA_DIR "sounds/sauce.wav",
+	GAMEDATA_DIR "sounds/hotsauce.wav",
+	GAMEDATA_DIR "sounds/topping.wav",
+	GAMEDATA_DIR "sounds/overflow.wav",
+	GAMEDATA_DIR "sounds/throw.wav",
+};
+
 /* Codigos de salida */
 enum {
 	GAME_NONE = 0, /* No usado */
@@ -665,6 +686,10 @@ SDL_Surface * images_intro_new [NUM_INTRO_NEW_IMAGES];
 SDL_Surface * images_intro_old [NUM_INTRO_OLD_IMAGES];
 SDL_Surface * image_background_ending;
 SDL_Surface * texts [NUM_TEXTS];
+
+int use_sound;
+Mix_Chunk * sounds[NUM_SOUNDS];
+
 int candy_mode;
 int intro; /* Cuál de los 2 intros se va a dibujar */
 int order_screen_timer;
@@ -896,11 +921,14 @@ int game_loop (int *fin) {
 							mousedown = TRUE;
 							sauce_state = SAUCE_NORMAL;
 							sauce_timer = hand_frame = 0;
+							if (use_sound) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
 						} else if (event.button.x >= 101 && event.button.x < 161 && event.button.y >= 144 && event.button.y < 267) {
 							hand = (candy_mode ? SAUCE_PINK : SAUCE_HOT);
 							mousedown = TRUE;
 							sauce_state = SAUCE_HOT;
 							sauce_timer = hand_frame = 0;
+							if (use_sound && hand == SAUCE_PINK) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
+							if (use_sound && hand == SAUCE_HOT) Mix_PlayChannel (0, sounds[SND_HOTSAUCE], -1);
 						} else if (event.button.x >= 184 && event.button.x < 348 && event.button.y >= 214 && event.button.y < 274) {
 							hand = (candy_mode ? SPRINKLES : CHEESE);
 							mousedown = TRUE;
@@ -934,6 +962,7 @@ int game_loop (int *fin) {
 							if (alpha != 0) {
 								pizza.cheese_placed = hand;
 							}
+							if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
 						} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
 							toppings[topping_count].type = hand - TOPPING_1;
 							toppings[topping_count].frame = hand_frame;
@@ -948,8 +977,10 @@ int game_loop (int *fin) {
 								topping_count++;
 								pizza.topping[(hand - TOPPING_1) % 4]++;
 							}
-							hand = NONE;
+							if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
 						}
+						Mix_HaltChannel (0); // El canal de las salas
+						hand = NONE;
 					}
 					break;
 				case SDL_KEYDOWN:
@@ -1563,6 +1594,7 @@ int game_loop (int *fin) {
 			}
 			
 			if (image > 190 && pizza.sauce_placed != NONE) {
+				if (use_sound && pizza_overflow == 0) Mix_PlayChannel (1, sounds[SND_OVERFLOW], 0);
 				rect.x = pizza.x - 40;
 				rect.y = pizza.y - 15;
 				rect.w = images[IMG_PIZZA_OVERFLOW_SAUCE_1]->w;
@@ -1586,6 +1618,7 @@ int game_loop (int *fin) {
 				/* Activar el mensaje de "hecho" */
 				order_screen_timer = 0;
 				order_screen_done = ORDER_SCREEN_DONE;
+				if (use_sound) Mix_PlayChannel (3, sounds[SND_CACHING], 0);
 				if (pizzas_consecutivas >= 30) {
 					order_screen_done = ORDER_SCREEN_TIP_35;
 					tips = tips + 35;
@@ -1710,6 +1743,7 @@ int game_loop (int *fin) {
 	SDL_FreeSurface (splat_surface);
 	SDL_FreeSurface (splat_surface2);
 	
+	Mix_HaltChannel (-1);
 	return done;
 }
 
@@ -1790,6 +1824,24 @@ void setup (void) {
 		exit (1);
 	}
 	
+	use_sound = 1;
+	if (SDL_InitSubSystem (SDL_INIT_AUDIO) < 0) {
+		fprintf (stdout,
+			"Warning: Can't initialize the audio subsystem\n"
+			"Continuing...\n");
+		use_sound = 0;
+	}
+	if (use_sound) {
+		/* Inicializar el sonido */
+		if (Mix_OpenAudio (22050, AUDIO_S16, 2, 4096) < 0) {
+			fprintf (stdout,
+				"Warning: Can't initialize the SDL Mixer library\n");
+			use_sound = 0;
+		} else {
+			Mix_AllocateChannels (5);
+		}
+	}
+
 	for (g = 0; g < NUM_IMAGES; g++) {
 		image = IMG_Load (images_names[g]);
 		
@@ -1909,6 +1961,23 @@ void setup (void) {
 		images_intro_new [IMG_INTRO_NEW_CANDY] = image;
 	}
 	
+	if (use_sound) {
+		for (g = 0; g < NUM_SOUNDS; g++) {
+			sounds[g] = Mix_LoadWAV (sound_names [g]);
+			
+			if (sounds[g] == NULL) {
+				fprintf (stderr,
+					"Failed to load data file:\n"
+					"%s\n"
+					"The error returned by SDL is:\n"
+					"%s\n", sound_names [g], SDL_GetError ());
+				SDL_Quit ();
+				exit (1);
+			}
+			Mix_VolumeChunk (sounds[g], MIX_MAX_VOLUME / 2);
+		}
+	}
+
 	/* Cargar las tipografias */
 	if (TTF_Init () < 0) {
 		fprintf (stderr,

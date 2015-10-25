@@ -177,6 +177,12 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/ending_3.png \
 	images/ending_4.png \
 	images/done.png \
+	sounds/caching.wav \
+	sounds/hotsauce.wav \
+	sounds/overflow.wav \
+	sounds/sauce.wav \
+	sounds/throw.wav \
+	sounds/topping.wav \
 	burbanksb.ttf \
 	burbankbgbk.ttf
 
