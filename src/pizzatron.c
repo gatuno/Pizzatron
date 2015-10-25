@@ -498,6 +498,11 @@ const char *sound_names[NUM_SOUNDS] = {
 	GAMEDATA_DIR "sounds/throw.wav",
 };
 
+#define MUS_106 GAMEDATA_DIR "music/music_106.ogg"
+#define MUS_270 GAMEDATA_DIR "music/music_270.ogg"
+#define MUS_344 GAMEDATA_DIR "music/music_344.ogg"
+#define MUS_385 GAMEDATA_DIR "music/music_385.ogg"
+
 /* Codigos de salida */
 enum {
 	GAME_NONE = 0, /* No usado */
@@ -689,6 +694,7 @@ SDL_Surface * texts [NUM_TEXTS];
 
 int use_sound;
 Mix_Chunk * sounds[NUM_SOUNDS];
+Mix_Music * music;
 
 int candy_mode;
 int intro; /* Cuál de los 2 intros se va a dibujar */
@@ -705,6 +711,10 @@ int main (int argc, char *argv[]) {
 	candy_mode = 0;
 	fin = 0;
 	do {
+		/* Iniciar la música */
+		if (use_sound) {
+			Mix_PlayMusic (music, -1);
+		}
 		if (intro == 1) {
 			if (game_intro_new () == GAME_QUIT) break;
 		} else {
@@ -1976,6 +1986,27 @@ void setup (void) {
 			}
 			Mix_VolumeChunk (sounds[g], MIX_MAX_VOLUME / 2);
 		}
+		
+		g = RANDOM (12);
+		
+		if (g >= 0 && g <= 3) {
+			music = Mix_LoadMUS (MUS_106);
+		} else if (g >= 4 && g <= 7) {
+			music = Mix_LoadMUS (MUS_270);
+		} else if (g >= 8 && g <= 10) {
+			music = Mix_LoadMUS (MUS_344);
+		} else {
+			music = Mix_LoadMUS (MUS_385);
+		}
+		
+		if (music == NULL) {
+			fprintf (stderr,
+				"Failed to load a music file.\n"
+				"The error returned by SDL is:\n"
+				"%s\n", SDL_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
 	}
 
 	/* Cargar las tipografias */
@@ -2308,8 +2339,8 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	rect.h = texts[TEXT_MISTAKES]->h;
 	SDL_BlitSurface (texts[TEXT_MISTAKES], NULL, screen, &rect);
 	
-	rect.x = 657 - texts[TEXT_COINS]->w;
-	rect.y = 160;
+	rect.x = 650 - texts[TEXT_COINS]->w;
+	rect.y = 153;
 	rect.w = texts[TEXT_COINS]->w;
 	rect.h = texts[TEXT_COINS]->h;
 	SDL_BlitSurface (texts[TEXT_COINS], NULL, screen, &rect);
@@ -2344,7 +2375,7 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	sprintf (buffer, "%i", coins);
 	temp = TTF_RenderUTF8_Blended (ttf13_burbank_bold, buffer, negro);
 	rect.x = 688 - temp->w;
-	rect.y = 160;
+	rect.y = 153;
 	rect.w = temp->w;
 	rect.h = temp->h;
 	SDL_BlitSurface (temp, NULL, screen, &rect);

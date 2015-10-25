@@ -183,6 +183,10 @@ nobase_dist_gamedata_DATA = images/background.png \
 	sounds/sauce.wav \
 	sounds/throw.wav \
 	sounds/topping.wav \
+	music/music_106.ogg \
+	music/music_270.ogg \
+	music/music_344.ogg \
+	music/music_385.ogg \
 	burbanksb.ttf \
 	burbankbgbk.ttf
 
