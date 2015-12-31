@@ -3,7 +3,7 @@
 gamedatadir = $(pkgdatadir)/data
 
 bin_PROGRAMS = pizzatron
-pizzatron_SOURCES = pizzatron.c
+pizzatron_SOURCES = pizzatron.c cp-button.c cp-button.h
 #EXTRA_DIST =
 
 pizzatron_CPPFLAGS = -DGAMEDATA_DIR=\"$(gamedatadir)/\" -DLOCALEDIR=\"$(localedir)\" $(AM_CPPFLAGS)

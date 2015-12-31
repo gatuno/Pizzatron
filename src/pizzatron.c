@@ -43,6 +43,8 @@
 #include "config.h"
 #endif
 
+#include "cp-button.h"
+
 #define FPS (1000/24)
 
 #define SWAP(a, b, t) ((t) = (a), (a) = (b), (b) = (t))
@@ -264,6 +266,10 @@ enum {
 	IMG_CHECKED,
 	IMG_DONE,
 	
+	IMG_BUTTON_CLOSE_UP,
+	IMG_BUTTON_CLOSE_OVER,
+	IMG_BUTTON_CLOSE_DOWN,
+	
 	NUM_IMAGES
 };
 
@@ -447,7 +453,11 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/candy_topping_11.png",
 	
 	GAMEDATA_DIR "images/checked.png",
-	GAMEDATA_DIR "images/done.png"
+	GAMEDATA_DIR "images/done.png",
+	
+	GAMEDATA_DIR "images/close_up.png",
+	GAMEDATA_DIR "images/close_over.png",
+	GAMEDATA_DIR "images/close_press.png"
 };
 
 enum {
@@ -647,7 +657,14 @@ enum {
 	ORDER_SCREEN_TIP_30,
 	ORDER_SCREEN_TIP_35
 };
+
+enum {
+	BUTTON_NONE = 0,
+	BUTTON_CLOSE,
 	
+	NUM_BUTTONS
+};
+
 /* Estructuras */
 typedef struct {
 	int x, y;
@@ -683,6 +700,10 @@ void setup_ending (int fin);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
 void dibujar_comanda (Pizza *, int, int, int, int, int, int);
+int map_button_in_opening_old (int x, int y);
+int map_button_in_opening_new (int x, int y);
+int map_button_in_game (int x, int y);
+int map_button_in_finish (int x, int y);
 
 /* Variables globales */
 SDL_Surface * screen;
@@ -707,6 +728,13 @@ int main (int argc, char *argv[]) {
 	int fin;
 	
 	setup ();
+	
+	/* Registrar botones */
+	cp_registrar_botones (NUM_BUTTONS);
+	
+	cp_registrar_boton (BUTTON_CLOSE, IMG_BUTTON_CLOSE_UP);
+	
+	cp_button_start ();
 	
 	candy_mode = 0;
 	fin = 0;
@@ -737,10 +765,15 @@ int game_intro_old (void) {
 	SDL_Rect rect;
 	SDL_Rect update_rects[6];
 	int num_rects;
+	int map;
 	
 	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
 	
-	/* TODO: Dibujar los botones */
+	/* Dibujar el boton de cierre */
+	rect.x = 721; rect.y = 9;
+	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+	
+	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
@@ -755,10 +788,30 @@ int game_intro_old (void) {
 					/* Vamos a cerrar la aplicación */
 					done = GAME_QUIT;
 					break;
+				case SDL_MOUSEMOTION:
+					map = map_button_in_opening_old (event.motion.x, event.motion.y);
+					cp_button_motion (map);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					map = map_button_in_opening_old (event.button.x, event.button.y);
+					map = cp_button_up (map);
+					
+					switch (map) {
+						case BUTTON_CLOSE:
+							done = GAME_QUIT;
+							break;
+					}
+					break;
 				case SDL_MOUSEBUTTONDOWN:
 					/* Motor de botones primero */
-					
 					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					map = map_button_in_opening_old (event.button.x, event.button.y);
+					cp_button_down (map);
+					/*if (map == BUTTON_START) {
+						if (use_sound) Mix_PlayChannel (-1, sounds[SND_BUTTON], 0);
+					}*/
 					
 					if (candy_mode == 0 && event.button.x > 412 && event.button.x < 433 &&
 					    event.button.y > 423 && event.button.y < 441) {
@@ -789,7 +842,18 @@ int game_intro_old (void) {
 					break;
 			}
 		}
-		/* TODO: Actualizar aquí los botones */
+		
+		if (cp_button_refresh[BUTTON_CLOSE]) {
+			rect.x = 721; rect.y = 9;
+			rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+			
+			SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
 		SDL_UpdateRects (screen, num_rects, update_rects);
 		
 		now_time = SDL_GetTicks ();
@@ -806,10 +870,15 @@ int game_intro_new (void) {
 	SDL_Rect rect;
 	SDL_Rect update_rects[6];
 	int num_rects;
+	int map;
 	
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
 	
-	/* TODO: Dibujar aquí los botones */
+	/* Dibujar el boton de cierre */
+	rect.x = 721; rect.y = 9;
+	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+	
+	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
@@ -824,10 +893,27 @@ int game_intro_new (void) {
 					/* Vamos a cerrar la aplicación */
 					done = GAME_QUIT;
 					break;
+				case SDL_MOUSEMOTION:
+					map = map_button_in_opening_new (event.motion.x, event.motion.y);
+					cp_button_motion (map);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					map = map_button_in_opening_new (event.button.x, event.button.y);
+					map = cp_button_up (map);
+					
+					switch (map) {
+						case BUTTON_CLOSE:
+							done = GAME_QUIT;
+							break;
+					}
+					break;
 				case SDL_MOUSEBUTTONDOWN:
 					/* Motor de botones primero */
-					
 					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					map = map_button_in_opening_new (event.button.x, event.button.y);
+					cp_button_down (map);
 					
 					if (candy_mode == 0 && event.button.x > 15 && event.button.x < 45 &&
 					    event.button.y > 284 && event.button.y < 304) {
@@ -859,7 +945,17 @@ int game_intro_new (void) {
 			}
 		}
 		
-		/* TODO: Actualizar aquí los botones */
+		if (cp_button_refresh[BUTTON_CLOSE]) {
+			rect.x = 721; rect.y = 9;
+			rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+			
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
 		SDL_UpdateRects (screen, num_rects, update_rects);
 		
 		now_time = SDL_GetTicks ();
@@ -874,6 +970,7 @@ int game_loop (int *fin) {
 	SDL_Event event;
 	Uint32 last_time, now_time;
 	SDL_Rect rect, rect2;
+	int map;
 	
 	int handposx, handposy; /* Para calcular los desplazamientos del mouse */
 	int mousedown;
@@ -905,7 +1002,7 @@ int game_loop (int *fin) {
 	splat_surface2 = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 	SDL_SetAlpha (images[IMG_SPLAT_MASK], 0, 0);
 	
-	SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
+	//SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
 	
 	SDL_GetMouseState (&handposx, &handposy);
 	
@@ -924,74 +1021,95 @@ int game_loop (int *fin) {
 		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
+				case SDL_MOUSEMOTION:
+					map = map_button_in_game (event.motion.x, event.motion.y);
+					cp_button_motion (map);
+					break;
 				case SDL_MOUSEBUTTONDOWN:
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						if (event.button.x >= 40 && event.button.x < 100 && event.button.y >= 144 && event.button.y < 267) {
-							hand = (candy_mode ? SAUCE_CHOCOLATE : SAUCE_NORMAL);
-							mousedown = TRUE;
-							sauce_state = SAUCE_NORMAL;
-							sauce_timer = hand_frame = 0;
-							if (use_sound) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
-						} else if (event.button.x >= 101 && event.button.x < 161 && event.button.y >= 144 && event.button.y < 267) {
-							hand = (candy_mode ? SAUCE_PINK : SAUCE_HOT);
-							mousedown = TRUE;
-							sauce_state = SAUCE_HOT;
-							sauce_timer = hand_frame = 0;
-							if (use_sound && hand == SAUCE_PINK) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
-							if (use_sound && hand == SAUCE_HOT) Mix_PlayChannel (0, sounds[SND_HOTSAUCE], -1);
-						} else if (event.button.x >= 184 && event.button.x < 348 && event.button.y >= 214 && event.button.y < 274) {
-							hand = (candy_mode ? SPRINKLES : CHEESE);
-							mousedown = TRUE;
-						} else if (event.button.x >= 349 && event.button.x < 451 && event.button.y >= 207 && event.button.y < 274) {
-							hand = (candy_mode ? TOPPING_5 : TOPPING_1);
-							hand_frame = RANDOM(3);
-							mousedown = TRUE;
-						} else if (event.button.x >= 451 && event.button.x < 553 && event.button.y >= 207 && event.button.y < 274) {
-							hand = (candy_mode ? TOPPING_6 : TOPPING_2);
-							hand_frame = RANDOM(3);
-							mousedown = TRUE;
-						} else if (event.button.x >= 553 && event.button.x < 655 && event.button.y >= 207 && event.button.y < 274) {
-							hand = (candy_mode ? TOPPING_7 : TOPPING_3);
-							hand_frame = RANDOM(3);
-							mousedown = TRUE;
-						} else if (event.button.x >= 655 && event.button.x < 757 && event.button.y >= 207 && event.button.y < 274) {
-							hand = (candy_mode ? TOPPING_8 : TOPPING_4);
-							hand_frame = RANDOM(3);
-							mousedown = TRUE;
-						}
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					/* Primero motor de botones */
+					map = map_button_in_game (event.button.x, event.button.y);
+					cp_button_down (map);
+					/*if (map == BUTTON_START) {
+						if (use_sound) Mix_PlayChannel (-1, sounds[SND_BUTTON], 0);
+					}*/
+					if (map != BUTTON_NONE) break;
+					
+					if (event.button.x >= 40 && event.button.x < 100 && event.button.y >= 144 && event.button.y < 267) {
+						hand = (candy_mode ? SAUCE_CHOCOLATE : SAUCE_NORMAL);
+						mousedown = TRUE;
+						sauce_state = SAUCE_NORMAL;
+						sauce_timer = hand_frame = 0;
+						if (use_sound) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
+					} else if (event.button.x >= 101 && event.button.x < 161 && event.button.y >= 144 && event.button.y < 267) {
+						hand = (candy_mode ? SAUCE_PINK : SAUCE_HOT);
+						mousedown = TRUE;
+						sauce_state = SAUCE_HOT;
+						sauce_timer = hand_frame = 0;
+						if (use_sound && hand == SAUCE_PINK) Mix_PlayChannel (0, sounds[SND_SAUCE], -1);
+						if (use_sound && hand == SAUCE_HOT) Mix_PlayChannel (0, sounds[SND_HOTSAUCE], -1);
+					} else if (event.button.x >= 184 && event.button.x < 348 && event.button.y >= 214 && event.button.y < 274) {
+						hand = (candy_mode ? SPRINKLES : CHEESE);
+						mousedown = TRUE;
+					} else if (event.button.x >= 349 && event.button.x < 451 && event.button.y >= 207 && event.button.y < 274) {
+						hand = (candy_mode ? TOPPING_5 : TOPPING_1);
+						hand_frame = RANDOM(3);
+						mousedown = TRUE;
+					} else if (event.button.x >= 451 && event.button.x < 553 && event.button.y >= 207 && event.button.y < 274) {
+						hand = (candy_mode ? TOPPING_6 : TOPPING_2);
+						hand_frame = RANDOM(3);
+						mousedown = TRUE;
+					} else if (event.button.x >= 553 && event.button.x < 655 && event.button.y >= 207 && event.button.y < 274) {
+						hand = (candy_mode ? TOPPING_7 : TOPPING_3);
+						hand_frame = RANDOM(3);
+						mousedown = TRUE;
+					} else if (event.button.x >= 655 && event.button.x < 757 && event.button.y >= 207 && event.button.y < 274) {
+						hand = (candy_mode ? TOPPING_8 : TOPPING_4);
+						hand_frame = RANDOM(3);
+						mousedown = TRUE;
 					}
 					break;
 				case SDL_MOUSEBUTTONUP:
-					if (event.button.button == SDL_BUTTON_LEFT) {
-						mousedown = FALSE;
-						
-						if ((hand == SPRINKLES || hand == CHEESE) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
-							pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
-							
-							SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
-							if (alpha != 0) {
-								pizza.cheese_placed = hand;
-							}
-							if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
-						} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
-							toppings[topping_count].type = hand - TOPPING_1;
-							toppings[topping_count].frame = hand_frame;
-							image = IMG_TOPPING_1_1 + (hand - TOPPING_1) * 3 + hand_frame;
-							toppings[topping_count].x = handposx - (images[image]->w / 2) - pizza.x;
-							toppings[topping_count].y = handposy - (images[image]->h / 2) - pizza.y;
-							
-							pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
-							
-							SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
-							if (alpha != 0) {
-								topping_count++;
-								pizza.topping[(hand - TOPPING_1) % 4]++;
-							}
-							if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
-						}
-						Mix_HaltChannel (0); // El canal de las salas
-						hand = NONE;
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					/* Primero el motor de botones */
+					map = map_button_in_game (event.button.x, event.button.y);
+					map = cp_button_up (map);
+					
+					if (map == BUTTON_CLOSE) {
+						done = GAME_QUIT;
+						break;
 					}
+					
+					mousedown = FALSE;
+					
+					if ((hand == SPRINKLES || hand == CHEESE) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+						
+						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+						if (alpha != 0) {
+							pizza.cheese_placed = hand;
+						}
+						if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
+					} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+						toppings[topping_count].type = hand - TOPPING_1;
+						toppings[topping_count].frame = hand_frame;
+						image = IMG_TOPPING_1_1 + (hand - TOPPING_1) * 3 + hand_frame;
+						toppings[topping_count].x = handposx - (images[image]->w / 2) - pizza.x;
+						toppings[topping_count].y = handposy - (images[image]->h / 2) - pizza.y;
+						
+						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+						
+						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+						if (alpha != 0) {
+							topping_count++;
+							pizza.topping[(hand - TOPPING_1) % 4]++;
+						}
+						if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
+					}
+					Mix_HaltChannel (0); // El canal de las salsas
+					hand = NONE;
 					break;
 				case SDL_KEYDOWN:
 					
@@ -1743,6 +1861,11 @@ int game_loop (int *fin) {
 			}
 		}
 		
+		/* Dibujar el boton de cierre */
+		rect.x = 721; rect.y = 9;
+		rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+		SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+		
 		SDL_Flip (screen);
 		
 		now_time = SDL_GetTicks ();
@@ -1762,17 +1885,49 @@ int game_end (int fin) {
 	SDL_Event event;
 	Uint32 last_time, now_time;
 	SDL_Rect rect, rect2;
+	SDL_Rect update_rects[6];
+	int num_rects;
+	int map;
 	
 	/* Predibujar todo y renderizar */
 	SDL_BlitSurface (image_background_ending, NULL, screen, NULL);
+	
+	/* Dibujar el boton de cierre */
+	rect.x = 721; rect.y = 9;
+	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
 	do {
 		last_time = SDL_GetTicks ();
 		
+		num_rects = 0;
+		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
+				case SDL_MOUSEMOTION:
+					map = map_button_in_opening_old (event.motion.x, event.motion.y);
+					cp_button_motion (map);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					map = map_button_in_opening_old (event.button.x, event.button.y);
+					map = cp_button_up (map);
+					
+					switch (map) {
+						case BUTTON_CLOSE:
+							done = GAME_QUIT;
+							break;
+					}
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					/* Motor de botones primero */
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					map = map_button_in_opening_old (event.button.x, event.button.y);
+					cp_button_down (map);
+					break;
 				case SDL_QUIT:
 					done = GAME_QUIT;
 					break;
@@ -1781,6 +1936,19 @@ int game_end (int fin) {
 					break;
 			}
 		}
+		
+		if (cp_button_refresh[BUTTON_CLOSE]) {
+			rect.x = 721; rect.y = 9;
+			rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+			
+			SDL_BlitSurface (image_background_ending, &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
+		SDL_UpdateRects (screen, num_rects, update_rects);
 		
 		now_time = SDL_GetTicks ();
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
@@ -2551,3 +2719,24 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 		}
 	}
 }
+
+int map_button_in_opening_old (int x, int y) {
+	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	return BUTTON_NONE;
+}
+
+int map_button_in_opening_new (int x, int y) {
+	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	return BUTTON_NONE;
+}
+
+int map_button_in_game (int x, int y) {
+	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	return BUTTON_NONE;
+}
+
+int map_button_in_finish (int x, int y) {
+	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	return BUTTON_NONE;
+}
+

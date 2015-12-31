@@ -177,6 +177,9 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/ending_3.png \
 	images/ending_4.png \
 	images/done.png \
+	images/close_over.png \
+	images/close_press.png \
+	images/close_up.png \
 	sounds/caching.wav \
 	sounds/hotsauce.wav \
 	sounds/overflow.wav \
