@@ -170,6 +170,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/intro_new_penguin.png \
 	images/intro_new_top.png \
 	images/intro_new_candy_lever.png \
+	images/intro_new_explain.png \
 	images/intro_old_background.png \
 	images/intro_old_candy_lever.png \
 	images/ending_1.png \
@@ -180,6 +181,10 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/close_over.png \
 	images/close_press.png \
 	images/close_up.png \
+	images/boton_1_over.png \
+	images/boton_1_up.png \
+	images/boton_2_over.png \
+	images/boton_2_up.png \
 	sounds/caching.wav \
 	sounds/hotsauce.wav \
 	sounds/overflow.wav \

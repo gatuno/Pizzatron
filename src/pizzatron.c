@@ -270,6 +270,14 @@ enum {
 	IMG_BUTTON_CLOSE_OVER,
 	IMG_BUTTON_CLOSE_DOWN,
 	
+	IMG_BUTTON_1_UP,
+	IMG_BUTTON_1_OVER,
+	IMG_BUTTON_1_DOWN,
+	
+	IMG_BUTTON_2_UP,
+	IMG_BUTTON_2_OVER,
+	IMG_BUTTON_2_DOWN,
+	
 	NUM_IMAGES
 };
 
@@ -457,7 +465,15 @@ const char *images_names[NUM_IMAGES] = {
 	
 	GAMEDATA_DIR "images/close_up.png",
 	GAMEDATA_DIR "images/close_over.png",
-	GAMEDATA_DIR "images/close_press.png"
+	GAMEDATA_DIR "images/close_press.png",
+	
+	GAMEDATA_DIR "images/boton_1_up.png",
+	GAMEDATA_DIR "images/boton_1_over.png",
+	GAMEDATA_DIR "images/boton_1_over.png",
+	
+	GAMEDATA_DIR "images/boton_2_up.png",
+	GAMEDATA_DIR "images/boton_2_over.png",
+	GAMEDATA_DIR "images/boton_2_over.png",
 };
 
 enum {
@@ -466,6 +482,8 @@ enum {
 	IMG_INTRO_NEW_TOP,
 	IMG_INTRO_NEW_CANDY,
 	
+	IMG_INTRO_NEW_EXPLAIN,
+	
 	NUM_INTRO_NEW_IMAGES
 };
 
@@ -473,7 +491,9 @@ const char *images_intro_new_names [NUM_INTRO_NEW_IMAGES] = {
 	GAMEDATA_DIR "images/intro_new_background.png",
 	GAMEDATA_DIR "images/intro_new_penguin.png",
 	GAMEDATA_DIR "images/intro_new_top.png",
-	GAMEDATA_DIR "images/intro_new_candy_lever.png"
+	GAMEDATA_DIR "images/intro_new_candy_lever.png",
+	
+	GAMEDATA_DIR "images/intro_new_explain.png"
 };
 
 enum {
@@ -662,6 +682,11 @@ enum {
 	BUTTON_NONE = 0,
 	BUTTON_CLOSE,
 	
+	BUTTON_UI_INTRO_PLAY,
+	BUTTON_UI_INTRO_HOW,
+	
+	BUTTON_UI_INTRO_HOW_PLAY,
+	
 	NUM_BUTTONS
 };
 
@@ -693,6 +718,7 @@ typedef struct {
 int game_loop (int *);
 int game_intro_old (void);
 int game_intro_new (void);
+int game_intro_new_explain (SDL_Surface *play_text);
 int game_end (int);
 void setup (void);
 void setup_texts (void);
@@ -702,6 +728,7 @@ void place_pizza_and_order (Pizza *, int, int *, int *);
 void dibujar_comanda (Pizza *, int, int, int, int, int, int);
 int map_button_in_opening_old (int x, int y);
 int map_button_in_opening_new (int x, int y);
+int map_button_in_opening_new_how (int x, int y);
 int map_button_in_game (int x, int y);
 int map_button_in_finish (int x, int y);
 
@@ -722,7 +749,9 @@ int intro; /* Cuál de los 2 intros se va a dibujar */
 int order_screen_timer;
 int order_screen_done;
 
-TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold, *ttf9_burbank_bold, *ttf13_burbank_bold;
+/* La 10 y 12 se usan para renderizar los nombres de las pizzas */
+TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
+TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold, *ttf18_burbank_bold;
 
 int main (int argc, char *argv[]) {
 	int fin;
@@ -733,7 +762,9 @@ int main (int argc, char *argv[]) {
 	cp_registrar_botones (NUM_BUTTONS);
 	
 	cp_registrar_boton (BUTTON_CLOSE, IMG_BUTTON_CLOSE_UP);
-	
+	cp_registrar_boton (BUTTON_UI_INTRO_PLAY, IMG_BUTTON_1_UP);
+	cp_registrar_boton (BUTTON_UI_INTRO_HOW, IMG_BUTTON_1_UP);
+	cp_registrar_boton (BUTTON_UI_INTRO_HOW_PLAY, IMG_BUTTON_2_UP);
 	cp_button_start ();
 	
 	candy_mode = 0;
@@ -863,6 +894,138 @@ int game_intro_old (void) {
 	return done;
 }
 
+int game_intro_new_explain (SDL_Surface *play_text) {
+	int done = 0;
+	SDL_Event event;
+	Uint32 last_time, now_time;
+	SDL_Rect rect, rect2, update_rects[6];
+	int num_rects;
+	int map;
+	
+	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
+	
+	/* Dibujar las instrucciones */
+	rect.x = 16; rect.y = 16;
+	rect.w = images_intro_new[IMG_INTRO_NEW_EXPLAIN]->w; rect.h = images_intro_new[IMG_INTRO_NEW_EXPLAIN]->h;
+	
+	SDL_BlitSurface (images_intro_new[IMG_INTRO_NEW_EXPLAIN], NULL, screen, &rect);
+	
+	/* Dibujar el boton de cierre */
+	rect.x = 721; rect.y = 9;
+	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+	
+	SDL_BlitSurface (images[IMG_BUTTON_CLOSE_UP], NULL, screen, &rect);
+	
+	/* Dibujar el boton de "Jugar" */
+	rect.x = 582; rect.y = 396;
+	rect.w = images[IMG_BUTTON_2_UP]->w; rect.h = images[IMG_BUTTON_2_UP]->h;
+	
+	SDL_BlitSurface (images[IMG_BUTTON_2_UP], NULL, screen, &rect);
+	
+	rect.x = 582 + (rect.w - play_text->w) / 2;
+	rect.y = 396 + (rect.h - play_text->h) / 2;
+	
+	rect.w = play_text->w; rect.h = play_text->h;
+	
+	SDL_BlitSurface (play_text, NULL, screen, &rect);
+	
+	SDL_Flip (screen);
+	
+	do {
+		last_time = SDL_GetTicks ();
+		
+		num_rects = 0;
+		
+		while (SDL_PollEvent(&event) > 0) {
+			switch (event.type) {
+				case SDL_QUIT:
+					/* Vamos a cerrar la aplicación */
+					done = GAME_QUIT;
+					break;
+				case SDL_MOUSEMOTION:
+					map = map_button_in_opening_new_how (event.motion.x, event.motion.y);
+					cp_button_motion (map);
+					break;
+				case SDL_MOUSEBUTTONUP:
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					map = map_button_in_opening_new_how (event.button.x, event.button.y);
+					map = cp_button_up (map);
+					
+					switch (map) {
+						case BUTTON_CLOSE:
+							done = GAME_QUIT;
+							break;
+						case BUTTON_UI_INTRO_HOW_PLAY:
+							done = GAME_CONTINUE;
+							break;
+					}
+					break;
+				case SDL_MOUSEBUTTONDOWN:
+					/* Motor de botones primero */
+					if (event.button.button != SDL_BUTTON_LEFT) break;
+					
+					map = map_button_in_opening_new_how (event.button.x, event.button.y);
+					cp_button_down (map);
+					break;
+			}
+		}
+		
+		if (cp_button_refresh[BUTTON_CLOSE]) {
+			rect.x = 721; rect.y = 9;
+			rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+			
+			/* Necesito doble borrado */
+			/* Primero fondo */
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], &rect, screen, &rect);
+			
+			/* Luego con las instrucciones */
+			rect2.x = 721 - 16;
+			rect2.y = 0;
+			rect2.w = images_intro_new[IMG_INTRO_NEW_EXPLAIN]->w - rect2.x;
+			rect2.h = rect.w - 16 + 9;
+			rect.w = rect2.w; rect.h = rect2.h;
+			rect.y = 16; rect.x = 721;
+			
+			SDL_BlitSurface (images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect2, screen, &rect);
+			
+			rect.x = 721; rect.y = 9;
+			rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
+			
+			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
+		if (cp_button_refresh[BUTTON_UI_INTRO_HOW_PLAY]) {
+			rect.x = 582; rect.y = 396;
+			rect.w = images[IMG_BUTTON_2_UP]->w; rect.h = images[IMG_BUTTON_2_UP]->h;
+			
+			rect2.x = 582 - 16;
+			rect2.y = 396 - 16;
+			rect2.w = rect.w; rect2.h = rect.h;
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_EXPLAIN], &rect2, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames [BUTTON_UI_INTRO_HOW_PLAY]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			
+			rect.x = 582 + (rect.w - play_text->w) / 2;
+			rect.y = 396 + (rect.h - play_text->h) / 2;
+			
+			rect.w = play_text->w; rect.h = play_text->h;
+			
+			SDL_BlitSurface (play_text, NULL, screen, &rect);
+			cp_button_refresh[BUTTON_UI_INTRO_HOW_PLAY] = 0;
+		}
+		
+		SDL_UpdateRects (screen, num_rects, update_rects);
+		
+		now_time = SDL_GetTicks ();
+		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
+	} while (!done);
+	
+	return done;
+}
+
 int game_intro_new (void) {
 	int done = 0;
 	SDL_Event event;
@@ -871,6 +1034,13 @@ int game_intro_new (void) {
 	SDL_Rect update_rects[6];
 	int num_rects;
 	int map;
+	SDL_Surface *play_text, *how_text;
+	SDL_Color cafe;
+	cafe.r = 0x54; cafe.g = 0x32; cafe.b = 0x01;
+	
+	/* Renderizar el texto de los botones */
+	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "PLAY", cafe);
+	how_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "INSTRUCTIONS", cafe);
 	
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
 	
@@ -878,7 +1048,33 @@ int game_intro_new (void) {
 	rect.x = 721; rect.y = 9;
 	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
 	
-	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+	SDL_BlitSurface (images[IMG_BUTTON_CLOSE_UP], NULL, screen, &rect);
+	
+	/* Dibujar el boton de "Jugar" */
+	rect.x = 16; rect.y = 365;
+	rect.w = images[IMG_BUTTON_1_UP]->w; rect.h = images[IMG_BUTTON_1_UP]->h;
+	
+	SDL_BlitSurface (images[IMG_BUTTON_1_UP], NULL, screen, &rect);
+	
+	rect.x = 16 + (rect.w - play_text->w) / 2;
+	rect.y = 365 + (rect.h - play_text->h) / 2;
+	
+	rect.w = play_text->w; rect.h = play_text->h;
+	
+	SDL_BlitSurface (play_text, NULL, screen, &rect);
+	
+	/* Dibujar el botón de instrucciones */
+	rect.x = 16; rect.y = 420;
+	rect.w = images[IMG_BUTTON_1_UP]->w; rect.h = images[IMG_BUTTON_1_UP]->h;
+	
+	SDL_BlitSurface (images[IMG_BUTTON_1_UP], NULL, screen, &rect);
+	
+	rect.x = 16 + (rect.w - how_text->w) / 2;
+	rect.y = 420 + (rect.h - how_text->h) / 2;
+	
+	rect.w = how_text->w; rect.h = how_text->h;
+	
+	SDL_BlitSurface (how_text, NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
@@ -905,6 +1101,14 @@ int game_intro_new (void) {
 					switch (map) {
 						case BUTTON_CLOSE:
 							done = GAME_QUIT;
+							break;
+						case BUTTON_UI_INTRO_PLAY:
+							done = GAME_CONTINUE;
+							break;
+						case BUTTON_UI_INTRO_HOW:
+							cp_button_motion (BUTTON_NONE);
+							cp_button_refresh[BUTTON_UI_INTRO_HOW] = 0; /* Para evitar que se redibuje */
+							done = game_intro_new_explain (play_text);
 							break;
 					}
 					break;
@@ -939,9 +1143,6 @@ int game_intro_new (void) {
 						update_rects[num_rects++] = rect;
 					}
 					break;
-				case SDL_KEYDOWN:
-					done = GAME_CONTINUE;
-					break;
 			}
 		}
 		
@@ -954,6 +1155,42 @@ int game_intro_new (void) {
 			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 			update_rects[num_rects++] = rect;
 			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
+		if (cp_button_refresh[BUTTON_UI_INTRO_PLAY]) {
+			rect.x = 16; rect.y = 365;
+			rect.w = images[IMG_BUTTON_1_UP]->w; rect.h = images[IMG_BUTTON_1_UP]->h;
+			
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames [BUTTON_UI_INTRO_PLAY]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			
+			rect.x = 16 + (rect.w - play_text->w) / 2;
+			rect.y = 365 + (rect.h - play_text->h) / 2;
+	
+			rect.w = play_text->w; rect.h = play_text->h;
+	
+			SDL_BlitSurface (play_text, NULL, screen, &rect);
+			cp_button_refresh[BUTTON_UI_INTRO_PLAY] = 0;
+		}
+		
+		if (cp_button_refresh[BUTTON_UI_INTRO_HOW]) {
+			rect.x = 16; rect.y = 420;
+			rect.w = images[IMG_BUTTON_1_UP]->w; rect.h = images[IMG_BUTTON_1_UP]->h;
+			
+			SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames [BUTTON_UI_INTRO_HOW]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			
+			rect.x = 16 + (rect.w - how_text->w) / 2;
+			rect.y = 420 + (rect.h - how_text->h) / 2;
+	
+			rect.w = how_text->w; rect.h = how_text->h;
+	
+			SDL_BlitSurface (how_text, NULL, screen, &rect);
+			cp_button_refresh[BUTTON_UI_INTRO_HOW] = 0;
 		}
 		
 		SDL_UpdateRects (screen, num_rects, update_rects);
@@ -2137,6 +2374,19 @@ void setup (void) {
 		}
 		
 		images_intro_new [IMG_INTRO_NEW_CANDY] = image;
+		
+		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_EXPLAIN]);
+		if (image == NULL) {
+			fprintf (stderr,
+				"Failed to load data file:\n"
+				"%s\n"
+				"The error returned by SDL is:\n"
+				"%s\n", images_intro_new_names [IMG_INTRO_NEW_EXPLAIN], SDL_GetError());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		images_intro_new [IMG_INTRO_NEW_EXPLAIN] = image;
 	}
 	
 	if (use_sound) {
@@ -2200,6 +2450,17 @@ void setup (void) {
 	ttf12_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 12);
 	
 	if (!ttf12_burbank_bold) {
+		fprintf (stderr,
+			"Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n", TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	ttf18_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 18);
+	
+	if (!ttf18_burbank_bold) {
 		fprintf (stderr,
 			"Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
@@ -2391,6 +2652,10 @@ void setup_texts (void) {
 		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SQUID", azul);
 		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 FISH", azul);
 	}
+	
+	/* La 10 y la 12 ya no son necesarias */
+	TTF_CloseFont (ttf10_burbank_bold);
+	TTF_CloseFont (ttf12_burbank_bold);
 }
 
 void setup_ending (int fin) {
@@ -2727,6 +2992,14 @@ int map_button_in_opening_old (int x, int y) {
 
 int map_button_in_opening_new (int x, int y) {
 	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	if (x >= 16 && x < 211 && y >= 365 && y < 408) return BUTTON_UI_INTRO_PLAY;
+	if (x >= 16 && x < 211 && y >= 420 && y < 463) return BUTTON_UI_INTRO_HOW;
+	return BUTTON_NONE;
+}
+
+int map_button_in_opening_new_how (int x, int y) {
+	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	if (x >= 582 && x < 710 && y >= 396 && y < 438) return BUTTON_UI_INTRO_HOW_PLAY;
 	return BUTTON_NONE;
 }
 
