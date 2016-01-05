@@ -281,6 +281,11 @@ enum {
 	NUM_IMAGES
 };
 
+#ifdef WIN32
+# undef GAMEDATA_DIR
+# define GAMEDATA_DIR "./"
+#endif
+
 const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/background.png",
 	GAMEDATA_DIR "images/conveyorbelt.png",
@@ -2304,7 +2309,8 @@ void setup (void) {
 	
 	srand ((unsigned int) getpid ());
 	
-	intro = ((int) (2.0 * rand () / (RAND_MAX + 1.0)));
+	intro = RANDOM(10);
+	intro = intro % 2;
 	
 	if (intro == 0) {
 		/* Cargar el viejo intro */

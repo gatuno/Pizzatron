@@ -48,7 +48,30 @@ PKG_CHECK_MODULES(SDL_mixer, [SDL_mixer >= $SDL_MIXER_VERSION], [], [])
 
 AC_CONFIG_HEADERS([config.h])
 
+AC_CHECK_TOOL(WINDRES, windres)
+
+# Revisar el host
 AC_CANONICAL_HOST
+
+case $host_os in
+  *mingw32* ) MINGW32=yes;;
+          * ) MINGW32=no;;
+esac
+case $host_os in
+  *cygwin* ) CYGWIN=yes;;
+         * ) CYGWIN=no;;
+esac
+case $host_os in
+  *linux* ) LINUX=yes;;
+        * ) LINUX=no;;
+esac
+case $host_os in
+ *darwin* ) MACOSX=yes;;
+       * ) MACOSX=no;;
+esac
+
+AM_CONDITIONAL(MINGW32, test x$MINGW32 = xyes)
+AM_CONDITIONAL(LINUX, test x$LINUX = xyes)
 
 AC_CONFIG_FILES([
                  Makefile
