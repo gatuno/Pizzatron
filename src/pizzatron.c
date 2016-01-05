@@ -500,12 +500,16 @@ enum {
 	IMG_INTRO_OLD_BACKGROUND,
 	IMG_INTRO_OLD_CANDY,
 	
+	IMG_INTRO_OLD_BUTTON,
+	
 	NUM_INTRO_OLD_IMAGES
 };
 
 const char *images_intro_old_names [NUM_INTRO_OLD_IMAGES] = {
 	GAMEDATA_DIR "images/intro_old_background.png",
-	GAMEDATA_DIR "images/intro_old_candy_lever.png"
+	GAMEDATA_DIR "images/intro_old_candy_lever.png",
+	
+	GAMEDATA_DIR "images/boton_old_up.png"
 };
 
 enum {
@@ -751,7 +755,11 @@ int order_screen_done;
 
 /* La 10 y 12 se usan para renderizar los nombres de las pizzas */
 TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
-TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold, *ttf18_burbank_bold;
+/* La 9 y 13 se usan para la comanda */
+TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
+
+/* La 18 para el intro nuevo y las acme para el intro viejo */
+TTF_Font *ttf18_burbank_bold, *ttf16_acme, *ttf20_acme;
 
 int main (int argc, char *argv[]) {
 	int fin;
@@ -797,6 +805,13 @@ int game_intro_old (void) {
 	SDL_Rect update_rects[6];
 	int num_rects;
 	int map;
+	SDL_Surface *play_button_text;
+	SDL_Color blanco;
+	
+	blanco.r = blanco.g = blanco.b = 0xff;
+	
+	/* Renderizar el texto de Start */
+	play_button_text = TTF_RenderUTF8_Blended (ttf20_acme, "START", blanco);
 	
 	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
 	
@@ -805,6 +820,21 @@ int game_intro_old (void) {
 	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
 	
 	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+	
+	/* Dibujar el boton de jugar */
+	rect.x = 49; rect.y = 425;
+	rect.w = images_intro_old [IMG_INTRO_OLD_BUTTON]->w;
+	rect.h = images_intro_old [IMG_INTRO_OLD_BUTTON]->h;
+	
+	SDL_BlitSurface (images_intro_old[IMG_INTRO_OLD_BUTTON], NULL, screen, &rect);
+	
+	/* Su texto */
+	rect.x = 49 + 4 + (images_intro_old [IMG_INTRO_OLD_BUTTON]->w - play_button_text->w) / 2;
+	rect.y = 436;
+	rect.w = play_button_text->w;
+	rect.h = play_button_text->h;
+	
+	SDL_BlitSurface (play_button_text, NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
@@ -832,6 +862,9 @@ int game_intro_old (void) {
 						case BUTTON_CLOSE:
 							done = GAME_QUIT;
 							break;
+						case BUTTON_UI_INTRO_PLAY:
+							done = GAME_CONTINUE;
+							break;
 					}
 					break;
 				case SDL_MOUSEBUTTONDOWN:
@@ -840,9 +873,6 @@ int game_intro_old (void) {
 					
 					map = map_button_in_opening_old (event.button.x, event.button.y);
 					cp_button_down (map);
-					/*if (map == BUTTON_START) {
-						if (use_sound) Mix_PlayChannel (-1, sounds[SND_BUTTON], 0);
-					}*/
 					
 					if (candy_mode == 0 && event.button.x > 412 && event.button.x < 433 &&
 					    event.button.y > 423 && event.button.y < 441) {
@@ -867,9 +897,6 @@ int game_intro_old (void) {
 						SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], &rect, screen, &rect);
 						update_rects[num_rects++] = rect;
 					}
-					break;
-				case SDL_KEYDOWN:
-					done = GAME_CONTINUE;
 					break;
 			}
 		}
@@ -1042,6 +1069,7 @@ int game_intro_new (void) {
 	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "PLAY", cafe);
 	how_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "INSTRUCTIONS", cafe);
 	
+	TTF_CloseFont (ttf18_burbank_bold);
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
 	
 	/* Dibujar el boton de cierre */
@@ -2458,15 +2486,31 @@ void setup (void) {
 		exit (1);
 	}
 	
-	ttf18_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 18);
+	if (intro == 0) {
+		/* Tipografia exclusiva para el intro viejo */
+		ttf16_acme = TTF_OpenFont (GAMEDATA_DIR "acmeexplosive.ttf", 16);
+		ttf20_acme = TTF_OpenFont (GAMEDATA_DIR "acmeexplosive.ttf", 20);
+		
+		if (!ttf16_acme || !ttf20_acme) {
+			fprintf (stderr,
+				"Failed to load font file 'Acme Explosive'\n"
+				"The error returned by SDL is:\n"
+				"%s\n", TTF_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
+	} else {
+		/* Tipografia exclusiva para el intro nuevo */
+		ttf18_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 18);
 	
-	if (!ttf18_burbank_bold) {
-		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
-		SDL_Quit ();
-		exit (1);
+		if (!ttf18_burbank_bold) {
+			fprintf (stderr,
+				"Failed to load font file 'Burbank Small Bold'\n"
+				"The error returned by SDL is:\n"
+				"%s\n", TTF_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
 	}
 	
 	ttf9_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 9);
@@ -2987,6 +3031,7 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 
 int map_button_in_opening_old (int x, int y) {
 	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	if (x >= 49 && x < 176 && y >= 425 && y < 476) return BUTTON_UI_INTRO_PLAY;
 	return BUTTON_NONE;
 }
 

@@ -185,6 +185,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/boton_1_up.png \
 	images/boton_2_over.png \
 	images/boton_2_up.png \
+	images/boton_old_up.png \
 	sounds/caching.wav \
 	sounds/hotsauce.wav \
 	sounds/overflow.wav \
@@ -196,7 +197,8 @@ nobase_dist_gamedata_DATA = images/background.png \
 	music/music_344.ogg \
 	music/music_385.ogg \
 	burbanksb.ttf \
-	burbankbgbk.ttf
+	burbankbgbk.ttf \
+	acmeexplosive.ttf
 
 # Instalar los archivos .desktop e iconos
 applicationsdir = $(datadir)/applications
