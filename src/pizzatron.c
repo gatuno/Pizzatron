@@ -113,7 +113,6 @@ enum {
 	IMG_TOPPING_7_BOX,
 	IMG_TOPPING_8_BOX,
 	
-	
 	IMG_SPLAT_SAUCE,
 	IMG_SPLAT_HOT,
 	IMG_SPLAT_CHOCO,
@@ -265,6 +264,34 @@ enum {
 	
 	IMG_CHECKED,
 	IMG_DONE,
+	
+	IMG_CHEESE_DROPPED,
+	IMG_SPRINKLES_DROPPED,
+	
+	IMG_TOPPING_1_1_DROPPED,
+	IMG_TOPPING_1_2_DROPPED,
+	IMG_TOPPING_1_3_DROPPED,
+	IMG_TOPPING_2_1_DROPPED,
+	IMG_TOPPING_2_2_DROPPED,
+	IMG_TOPPING_2_3_DROPPED,
+	IMG_TOPPING_3_1_DROPPED,
+	IMG_TOPPING_3_2_DROPPED,
+	IMG_TOPPING_3_3_DROPPED,
+	IMG_TOPPING_4_1_DROPPED,
+	IMG_TOPPING_4_2_DROPPED,
+	IMG_TOPPING_4_3_DROPPED,
+	IMG_TOPPING_5_1_DROPPED,
+	IMG_TOPPING_5_2_DROPPED,
+	IMG_TOPPING_5_3_DROPPED,
+	IMG_TOPPING_6_1_DROPPED,
+	IMG_TOPPING_6_2_DROPPED,
+	IMG_TOPPING_6_3_DROPPED,
+	IMG_TOPPING_7_1_DROPPED,
+	IMG_TOPPING_7_2_DROPPED,
+	IMG_TOPPING_7_3_DROPPED,
+	IMG_TOPPING_8_1_DROPPED,
+	IMG_TOPPING_8_2_DROPPED,
+	IMG_TOPPING_8_3_DROPPED,
 	
 	IMG_BUTTON_CLOSE_UP,
 	IMG_BUTTON_CLOSE_OVER,
@@ -467,6 +494,34 @@ const char *images_names[NUM_IMAGES] = {
 	
 	GAMEDATA_DIR "images/checked.png",
 	GAMEDATA_DIR "images/done.png",
+	
+	GAMEDATA_DIR "images/cheese_drop.png",
+	GAMEDATA_DIR "images/sprinkles_drop.png",
+	
+	GAMEDATA_DIR "images/topping_1_1_dropped.png",
+	GAMEDATA_DIR "images/topping_1_2_dropped.png",
+	GAMEDATA_DIR "images/topping_1_3_dropped.png",
+	GAMEDATA_DIR "images/topping_2_1_dropped.png",
+	GAMEDATA_DIR "images/topping_2_2_dropped.png",
+	GAMEDATA_DIR "images/topping_2_3_dropped.png",
+	GAMEDATA_DIR "images/topping_3_1_dropped.png",
+	GAMEDATA_DIR "images/topping_3_2_dropped.png",
+	GAMEDATA_DIR "images/topping_3_3_dropped.png",
+	GAMEDATA_DIR "images/topping_4_1_dropped.png",
+	GAMEDATA_DIR "images/topping_4_2_dropped.png",
+	GAMEDATA_DIR "images/topping_4_3_dropped.png",
+	GAMEDATA_DIR "images/topping_5_1_dropped.png",
+	GAMEDATA_DIR "images/topping_5_2_dropped.png",
+	GAMEDATA_DIR "images/topping_5_3_dropped.png",
+	GAMEDATA_DIR "images/topping_6_1_dropped.png",
+	GAMEDATA_DIR "images/topping_6_2_dropped.png",
+	GAMEDATA_DIR "images/topping_6_3_dropped.png",
+	GAMEDATA_DIR "images/topping_7_1_dropped.png",
+	GAMEDATA_DIR "images/topping_7_2_dropped.png",
+	GAMEDATA_DIR "images/topping_7_3_dropped.png",
+	GAMEDATA_DIR "images/topping_8_1_dropped.png",
+	GAMEDATA_DIR "images/topping_8_2_dropped.png",
+	GAMEDATA_DIR "images/topping_8_3_dropped.png",
 	
 	GAMEDATA_DIR "images/close_up.png",
 	GAMEDATA_DIR "images/close_over.png",
@@ -722,6 +777,15 @@ typedef struct {
 	int type;
 	int frame;
 } Topping;
+
+typedef struct {
+	int x, y;
+	double speed_x, speed_y;
+	int type;
+	int frame;
+	int rotable;
+	int angulo;
+} DroppedTopping;
 
 /* Prototipos de función */
 int game_loop (int *);
@@ -1242,7 +1306,8 @@ int game_loop (int *fin) {
 	SDL_Rect rect, rect2;
 	int map;
 	
-	int handposx, handposy; /* Para calcular los desplazamientos del mouse */
+	int handposx2, handposx1, handposx, handposy2, handposy1, handposy; /* Para calcular los desplazamientos del mouse */
+	int strengthY, strengthX;
 	int mousedown;
 	
 	Pizza pizza;
@@ -1254,12 +1319,15 @@ int game_loop (int *fin) {
 	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
 	int image;
 	int sauce_state, sauce_timer;
-	int hand;
+	int hand = NONE;
 	Uint8 alpha, rgb_r, rgb_g, rgb_b;
 	Uint32 *pixel;
 	int midleft, left, midright, right, top, bottom;
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
 	int pizzas_hechas = 0, orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
+	
+	DroppedTopping dropped_tops[20];
+	int dropt_queue_start = 0, dropt_queue_end = 0;
 	
 	int score, tips;
 	score = tips = 0;
@@ -1275,6 +1343,9 @@ int game_loop (int *fin) {
 	//SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
 	
 	SDL_GetMouseState (&handposx, &handposy);
+	
+	handposx2 = handposx1 = handposx;
+	handposy2 = handposy1 = handposy;
 	
 	mousedown = FALSE;
 	
@@ -1354,22 +1425,22 @@ int game_loop (int *fin) {
 					
 					mousedown = FALSE;
 					
-					if ((hand == SPRINKLES || hand == CHEESE) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
-						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+					if ((hand == SPRINKLES || hand == CHEESE) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_1]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
 						
 						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
 						if (alpha != 0) {
 							pizza.cheese_placed = hand;
 						}
 						if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
-					} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (handposy >= pizza.y && handposy < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+					} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_1]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
 						toppings[topping_count].type = hand - TOPPING_1;
 						toppings[topping_count].frame = hand_frame;
 						image = IMG_TOPPING_1_1 + (hand - TOPPING_1) * 3 + hand_frame;
-						toppings[topping_count].x = handposx - (images[image]->w / 2) - pizza.x;
-						toppings[topping_count].y = handposy - (images[image]->h / 2) - pizza.y;
+						toppings[topping_count].x = event.button.x - (images[image]->w / 2) - pizza.x;
+						toppings[topping_count].y = event.button.y - (images[image]->h / 2) - pizza.y;
 						
-						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((handposy - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((handposx - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
 						
 						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
 						if (alpha != 0) {
@@ -1377,6 +1448,22 @@ int game_loop (int *fin) {
 							pizza.topping[(hand - TOPPING_1) % 4]++;
 						}
 						if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
+					} else if (hand != NONE) {
+						/* Soltó un ingrediente */
+						/* Si está lleno, eliminar el primer ingrediente volando */
+						if (dropt_queue_start == (dropt_queue_end + 1) % 20) {
+							dropt_queue_start = (dropt_queue_start + 1) % 20;
+						}
+						dropped_tops[dropt_queue_end].type = hand;
+						dropped_tops[dropt_queue_end].frame = hand_frame;
+						dropped_tops[dropt_queue_end].x = event.button.x;
+						dropped_tops[dropt_queue_end].y = event.button.y;
+						dropped_tops[dropt_queue_end].rotable = (hand != SPRINKLES && hand != CHEESE);
+						dropped_tops[dropt_queue_end].angulo = 0;
+						dropped_tops[dropt_queue_end].speed_x = 0 - strengthX;
+						dropped_tops[dropt_queue_end].speed_y = 20 - strengthY;
+						
+						dropt_queue_end = (dropt_queue_end + 1) % 20;
 					}
 					Mix_HaltChannel (0); // El canal de las salsas
 					hand = NONE;
@@ -1391,7 +1478,26 @@ int game_loop (int *fin) {
 			}
 		}
 		
+		handposy2 = handposy1;
+		handposy1 = handposy;
+		
+		handposx2 = handposx1;
+		handposx1 = handposx;
+		
 		SDL_GetMouseState (&handposx, &handposy);
+		
+		strengthY = (handposy2 - handposy + 60) / 3;
+		if (strengthY > 40) {
+			strengthY = 40;
+		} else if (strengthY < -20) {
+			strengthY = -20;
+		}
+		strengthX = (handposx2 - handposx) / 3;
+		if (strengthX > 30) {
+			strengthX = 30;
+		} else if (strengthX < -30) {
+			strengthX = -30;
+		}
 		
 		/* Considerar la pizza perfecta hasta que se compruebe lo contrario */
 		perfect_pizza = TRUE;
@@ -2068,6 +2174,7 @@ int game_loop (int *fin) {
 						rect.y = handposy - 50;
 						image = IMG_SAUCE_SQUASH_1;
 					} else if (hand == SAUCE_CHOCOLATE) {
+						rect.x += 1;
 						rect.y = handposy - 38;
 						image = IMG_CHOCO_SQUASH_1;
 					} else {
@@ -2113,6 +2220,100 @@ int game_loop (int *fin) {
 			}
 		}
 		
+		/* Dibujar aquí los ingredientes que caen */
+		for (g = dropt_queue_start; g != dropt_queue_end; g = (g + 1) % 20) {
+			//printf ("Recorriend el dropped: %i\n", g);
+			if (dropped_tops[g].type >= SAUCE_NORMAL && dropped_tops[g].type <= SAUCE_PINK) {
+				if (dropped_tops[g].type == SAUCE_HOT) {
+					rect.x = dropped_tops[g].x - 24; /* FIXME: Arreglar estas coordenadas */
+					rect.y = dropped_tops[g].y - 58;
+					image = IMG_HOT_SAUCE;
+				} else {
+					rect.x = dropped_tops[g].x - 21;
+					if (dropped_tops[g].type == SAUCE_NORMAL) {
+						rect.y = dropped_tops[g].y - 50;
+						image = IMG_SAUCE;
+					} else if (dropped_tops[g].type == SAUCE_CHOCOLATE) {
+						rect.y = dropped_tops[g].y - 38;
+						image = IMG_CHOCOLATE;
+					} else {
+						rect.y = dropped_tops[g].y - 106;
+						image = IMG_PINK_ICING;
+					}
+				}
+				/* Dibujar en la coordenada indicada */
+			} else if (dropped_tops[g].type == CHEESE) {
+				rect.x = dropped_tops[g].x - 60;
+				rect.y = dropped_tops[g].y - 39;
+				
+				image = IMG_CHEESE_DROPPED;
+			} else if (dropped_tops[g].type == SPRINKLES) {
+				rect.x = dropped_tops[g].x - 50;
+				rect.y = dropped_tops[g].y - 42;
+				
+				image = IMG_SPRINKLES_DROPPED;
+			} else if (dropped_tops[g].type == TOPPING_1) {
+				rect.x = dropped_tops[g].x - 44;
+				rect.y = dropped_tops[g].y - 37;
+				
+				image = IMG_TOPPING_1_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_2) {
+				rect.x = dropped_tops[g].x - 66;
+				rect.y = dropped_tops[g].y - 59;
+				
+				image = IMG_TOPPING_2_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_3) {
+				rect.x = dropped_tops[g].x - 84;
+				rect.y = dropped_tops[g].y - 54;
+				
+				image = IMG_TOPPING_3_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_4) {
+				rect.x = dropped_tops[g].x - 71;
+				rect.y = dropped_tops[g].y - 52;
+				
+				image = IMG_TOPPING_4_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_5) {
+				rect.x = dropped_tops[g].x - 41;
+				rect.y = dropped_tops[g].y - 62;
+				
+				image = IMG_TOPPING_5_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_6) {
+				rect.x = dropped_tops[g].x - 26;
+				rect.y = dropped_tops[g].y - 29;
+				
+				image = IMG_TOPPING_6_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_7) {
+				rect.x = dropped_tops[g].x - 31;
+				rect.y = dropped_tops[g].y - 35;
+				
+				image = IMG_TOPPING_7_1_DROPPED + dropped_tops[g].frame;
+			} else if (dropped_tops[g].type == TOPPING_8) {
+				rect.x = dropped_tops[g].x - 32;
+				rect.y = dropped_tops[g].y - 20;
+				
+				image = IMG_TOPPING_8_1_DROPPED + dropped_tops[g].frame;
+			}
+			
+			rect.w = images[image]->w;
+			rect.h = images[image]->h;
+			SDL_BlitSurface (images[image], NULL, screen, &rect);
+			
+			if (dropped_tops[g].speed_y > 20.0) {
+				dropped_tops[g].speed_y = dropped_tops[g].speed_y - 1.0;
+			} else if (dropped_tops[g].speed_y < 20.0) {
+				dropped_tops[g].speed_y = dropped_tops[g].speed_y + 1.0;
+			}
+			
+			dropped_tops[g].y = dropped_tops[g].y + dropped_tops[g].speed_y;
+			
+			if (dropped_tops[g].speed_x > 0.0) {
+				dropped_tops[g].speed_x = dropped_tops[g].speed_x - 0.5;
+			} else if (dropped_tops[g].speed_x < 0.0) {
+				dropped_tops[g].speed_x = dropped_tops[g].speed_x + 0.5;
+			}
+			dropped_tops[g].x = dropped_tops[g].x + dropped_tops[g].speed_x;
+		}
+		
 		if (failures >= 5) {
 			done = GAME_CONTINUE;
 			if (pizzas_hechas <= 1) {
@@ -2140,7 +2341,6 @@ int game_loop (int *fin) {
 		
 		now_time = SDL_GetTicks ();
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
-		
 	} while (!done);
 	
 	SDL_FreeSurface (splat_surface);
@@ -2529,6 +2729,8 @@ void setup (void) {
 		SDL_Quit ();
 		exit (1);
 	}
+	
+	negro.r = negro.g = negro.b = 0;
 	
 	texts[TEXT_PIZZAS_MADE] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS MADE", negro);
 	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS LEFT", negro);

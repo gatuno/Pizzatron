@@ -186,6 +186,32 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/boton_2_over.png \
 	images/boton_2_up.png \
 	images/boton_old_up.png \
+	images/cheese_drop.png \
+	images/sprinkles_drop.png \
+	images/topping_1_1_dropped.png \
+	images/topping_1_2_dropped.png \
+	images/topping_1_3_dropped.png \
+	images/topping_2_1_dropped.png \
+	images/topping_2_2_dropped.png \
+	images/topping_2_3_dropped.png \
+	images/topping_3_1_dropped.png \
+	images/topping_3_2_dropped.png \
+	images/topping_3_3_dropped.png \
+	images/topping_4_1_dropped.png \
+	images/topping_4_2_dropped.png \
+	images/topping_4_3_dropped.png \
+	images/topping_5_1_dropped.png \
+	images/topping_5_2_dropped.png \
+	images/topping_5_3_dropped.png \
+	images/topping_6_1_dropped.png \
+	images/topping_6_2_dropped.png \
+	images/topping_6_3_dropped.png \
+	images/topping_7_1_dropped.png \
+	images/topping_7_2_dropped.png \
+	images/topping_7_3_dropped.png \
+	images/topping_8_1_dropped.png \
+	images/topping_8_2_dropped.png \
+	images/topping_8_3_dropped.png \
 	sounds/caching.wav \
 	sounds/hotsauce.wav \
 	sounds/overflow.wav \
