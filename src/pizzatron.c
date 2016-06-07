@@ -2222,6 +2222,11 @@ int game_loop (int *fin) {
 		
 		/* Dibujar aquí los ingredientes que caen */
 		for (g = dropt_queue_start; g != dropt_queue_end; g = (g + 1) % 20) {
+			if (dropped_tops[g].y >= 1000 && g == dropt_queue_start) {
+				dropt_queue_start = (dropt_queue_start + 1) % 20;
+				continue;
+			}
+			
 			//printf ("Recorriend el dropped: %i\n", g);
 			if (dropped_tops[g].type >= SAUCE_NORMAL && dropped_tops[g].type <= SAUCE_PINK) {
 				if (dropped_tops[g].type == SAUCE_HOT) {
@@ -2806,6 +2811,7 @@ void setup (void) {
 void setup_texts (void) {
 	/* Renderizar todos los textos */
 	SDL_Color azul, negro;
+	int g;
 	
 	azul.r = 0x01;
 	azul.g = 0x45;
@@ -2908,6 +2914,107 @@ void setup_texts (void) {
 	/* La 10 y la 12 ya no son necesarias */
 	TTF_CloseFont (ttf10_burbank_bold);
 	TTF_CloseFont (ttf12_burbank_bold);
+	
+	/* Cerrar las imágenes que no son necesarias */
+	if (candy_mode) {
+		SDL_FreeSurface (images[IMG_PIZZA_BASE_2]);
+		SDL_FreeSurface (images[IMG_PIZZA_BASE_3]);
+		
+		SDL_FreeSurface (images[IMG_PIZZA_CHEESE]);
+		SDL_FreeSurface (images[IMG_CHEESE_BOX]);
+		SDL_FreeSurface (images[IMG_CHEESE_HAND]);
+		
+		SDL_FreeSurface (images[IMG_SAUCE]);
+		SDL_FreeSurface (images[IMG_SPLAT_SAUCE]);
+		SDL_FreeSurface (images[IMG_HOT_SAUCE]);
+		SDL_FreeSurface (images[IMG_SPLAT_HOT]);
+		
+		for (g = IMG_TOPPING_1_BOX; g <= IMG_TOPPING_4_BOX; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_SAUCE_SQUASH_1; g <= IMG_SAUCE_SQUASH_6; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_HOT_SQUASH_1; g <= IMG_HOT_SQUASH_8; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_HAND_TOPPING_1_1; g <= IMG_HAND_TOPPING_4_3; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_TOPPING_1_1; g <= IMG_TOPPING_4_3; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_PIZZA_OVERFLOW_SAUCE_1; g <= IMG_PIZZA_OVERFLOW_HOT_7; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		SDL_FreeSurface (images[IMG_ORDER_PIZZA_CHEESE]);
+		SDL_FreeSurface (images[IMG_ORDER_PIZZA_HOT]);
+		
+		for (g = IMG_ORDER_TOPPING_1; g <= IMG_ORDER_TOPPING_11; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		SDL_FreeSurface (images[IMG_CHEESE_DROPPED]);
+		
+		for (g = IMG_TOPPING_1_1_DROPPED; g <= IMG_TOPPING_4_3_DROPPED; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+	} else {
+		SDL_FreeSurface (images[IMG_PIZZA_BASE_4]);
+		SDL_FreeSurface (images[IMG_PIZZA_BASE_5]);
+		
+		SDL_FreeSurface (images[IMG_PIZZA_SPRINKLES]);
+		SDL_FreeSurface (images[IMG_SPRINKLES_BOX]);
+		SDL_FreeSurface (images[IMG_SPRINKLES_HAND]);
+		
+		SDL_FreeSurface (images[IMG_CHOCOLATE]);
+		SDL_FreeSurface (images[IMG_SPLAT_CHOCO]);
+		SDL_FreeSurface (images[IMG_PINK_ICING]);
+		SDL_FreeSurface (images[IMG_SPLAT_PINK]);
+		
+		for (g = IMG_TOPPING_5_BOX; g <= IMG_TOPPING_8_BOX; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_CHOCO_SQUASH_1; g <= IMG_CHOCO_SQUASH_6; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_PINK_SQUASH_1; g <= IMG_PINK_SQUASH_6; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_HAND_TOPPING_5_1; g <= IMG_HAND_TOPPING_8_3; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_TOPPING_5_1; g <= IMG_TOPPING_8_3; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		for (g = IMG_PIZZA_OVERFLOW_CHOCO_1; g <= IMG_PIZZA_OVERFLOW_PINK_7; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		SDL_FreeSurface (images[IMG_ORDER_PIZZA_CHOCO]);
+		SDL_FreeSurface (images[IMG_ORDER_PIZZA_PINK]);
+		
+		for (g = IMG_ORDER_CANDY_TOPPING_1; g <= IMG_ORDER_CANDY_TOPPING_11; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+		
+		SDL_FreeSurface (images[IMG_SPRINKLES_DROPPED]);
+		
+		for (g = IMG_TOPPING_5_1_DROPPED; g <= IMG_TOPPING_8_3_DROPPED; g++) {
+			SDL_FreeSurface (images[g]);
+		}
+	}
 }
 
 void setup_ending (int fin) {
