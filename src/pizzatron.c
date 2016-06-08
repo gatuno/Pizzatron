@@ -82,11 +82,8 @@ enum {
 	
 	IMG_CONVEYORBELT,
 	
-	IMG_PIZZA_BASE_1,
-	IMG_PIZZA_BASE_2,
-	IMG_PIZZA_BASE_3,
-	IMG_PIZZA_BASE_4,
-	IMG_PIZZA_BASE_5,
+	IMG_PIZZA_BASE_CLEAR,
+	IMG_PIZZA_BASE,
 	
 	IMG_PIZZA_CHEESE,
 	IMG_PIZZA_SPRINKLES,
@@ -207,66 +204,15 @@ enum {
 	IMG_TOPPING_8_2,
 	IMG_TOPPING_8_3,
 	
-	IMG_PIZZA_OVERFLOW_SAUCE_1,
-	IMG_PIZZA_OVERFLOW_SAUCE_2,
-	IMG_PIZZA_OVERFLOW_SAUCE_3,
-	IMG_PIZZA_OVERFLOW_SAUCE_4,
-	IMG_PIZZA_OVERFLOW_SAUCE_5,
-	IMG_PIZZA_OVERFLOW_SAUCE_6,
-	IMG_PIZZA_OVERFLOW_SAUCE_7,
+	IMG_PIZZA_OVERFLOW_SAUCE,
+	IMG_PIZZA_OVERFLOW_HOT,
+	IMG_PIZZA_OVERFLOW_CHOCO,
+	IMG_PIZZA_OVERFLOW_PINK,
 	
-	IMG_PIZZA_OVERFLOW_HOT_1,
-	IMG_PIZZA_OVERFLOW_HOT_2,
-	IMG_PIZZA_OVERFLOW_HOT_3,
-	IMG_PIZZA_OVERFLOW_HOT_4,
-	IMG_PIZZA_OVERFLOW_HOT_5,
-	IMG_PIZZA_OVERFLOW_HOT_6,
-	IMG_PIZZA_OVERFLOW_HOT_7,
+	IMG_ORDER_PIZZA,
 	
-	IMG_PIZZA_OVERFLOW_CHOCO_1,
-	IMG_PIZZA_OVERFLOW_CHOCO_2,
-	IMG_PIZZA_OVERFLOW_CHOCO_3,
-	IMG_PIZZA_OVERFLOW_CHOCO_4,
-	IMG_PIZZA_OVERFLOW_CHOCO_5,
-	IMG_PIZZA_OVERFLOW_CHOCO_6,
-	IMG_PIZZA_OVERFLOW_CHOCO_7,
-	
-	IMG_PIZZA_OVERFLOW_PINK_1,
-	IMG_PIZZA_OVERFLOW_PINK_2,
-	IMG_PIZZA_OVERFLOW_PINK_3,
-	IMG_PIZZA_OVERFLOW_PINK_4,
-	IMG_PIZZA_OVERFLOW_PINK_5,
-	IMG_PIZZA_OVERFLOW_PINK_6,
-	IMG_PIZZA_OVERFLOW_PINK_7,
-	
-	IMG_ORDER_PIZZA_CHEESE,
-	IMG_ORDER_PIZZA_HOT,
-	IMG_ORDER_PIZZA_CHOCO,
-	IMG_ORDER_PIZZA_PINK,
-	
-	IMG_ORDER_TOPPING_1,
-	IMG_ORDER_TOPPING_2,
-	IMG_ORDER_TOPPING_3,
-	IMG_ORDER_TOPPING_4,
-	IMG_ORDER_TOPPING_5,
-	IMG_ORDER_TOPPING_6,
-	IMG_ORDER_TOPPING_7,
-	IMG_ORDER_TOPPING_8,
-	IMG_ORDER_TOPPING_9,
-	IMG_ORDER_TOPPING_10,
-	IMG_ORDER_TOPPING_11,
-	
-	IMG_ORDER_CANDY_TOPPING_1,
-	IMG_ORDER_CANDY_TOPPING_2,
-	IMG_ORDER_CANDY_TOPPING_3,
-	IMG_ORDER_CANDY_TOPPING_4,
-	IMG_ORDER_CANDY_TOPPING_5,
-	IMG_ORDER_CANDY_TOPPING_6,
-	IMG_ORDER_CANDY_TOPPING_7,
-	IMG_ORDER_CANDY_TOPPING_8,
-	IMG_ORDER_CANDY_TOPPING_9,
-	IMG_ORDER_CANDY_TOPPING_10,
-	IMG_ORDER_CANDY_TOPPING_11,
+	IMG_ORDER_TOPPING,
+	IMG_ORDER_TOPPING_CANDY,
 	
 	IMG_CHECKED,
 	IMG_DONE,
@@ -323,11 +269,8 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/background.png",
 	GAMEDATA_DIR "images/conveyorbelt.png",
 	
-	GAMEDATA_DIR "images/pizza_base_1.png",
-	GAMEDATA_DIR "images/pizza_base_2.png",
-	GAMEDATA_DIR "images/pizza_base_3.png",
-	GAMEDATA_DIR "images/pizza_base_4.png",
-	GAMEDATA_DIR "images/pizza_base_5.png",
+	GAMEDATA_DIR "images/pizza_base_clear.png",
+	GAMEDATA_DIR "images/pizza_base.png",
 	
 	GAMEDATA_DIR "images/pizza_cheese.png",
 	GAMEDATA_DIR "images/pizza_sprinkles.png",
@@ -440,63 +383,15 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/topping_8_2.png",
 	GAMEDATA_DIR "images/topping_8_3.png",
 	
-	GAMEDATA_DIR "images/overflow_sauce_1.png",
-	GAMEDATA_DIR "images/overflow_sauce_2.png",
-	GAMEDATA_DIR "images/overflow_sauce_3.png",
-	GAMEDATA_DIR "images/overflow_sauce_4.png",
-	GAMEDATA_DIR "images/overflow_sauce_5.png",
-	GAMEDATA_DIR "images/overflow_sauce_6.png",
-	GAMEDATA_DIR "images/overflow_sauce_7.png",
-	GAMEDATA_DIR "images/overflow_hot_1.png",
-	GAMEDATA_DIR "images/overflow_hot_2.png",
-	GAMEDATA_DIR "images/overflow_hot_3.png",
-	GAMEDATA_DIR "images/overflow_hot_4.png",
-	GAMEDATA_DIR "images/overflow_hot_5.png",
-	GAMEDATA_DIR "images/overflow_hot_6.png",
-	GAMEDATA_DIR "images/overflow_hot_7.png",
-	GAMEDATA_DIR "images/overflow_chocolate_1.png",
-	GAMEDATA_DIR "images/overflow_chocolate_2.png",
-	GAMEDATA_DIR "images/overflow_chocolate_3.png",
-	GAMEDATA_DIR "images/overflow_chocolate_4.png",
-	GAMEDATA_DIR "images/overflow_chocolate_5.png",
-	GAMEDATA_DIR "images/overflow_chocolate_6.png",
-	GAMEDATA_DIR "images/overflow_chocolate_7.png",
-	GAMEDATA_DIR "images/overflow_pink_1.png",
-	GAMEDATA_DIR "images/overflow_pink_2.png",
-	GAMEDATA_DIR "images/overflow_pink_3.png",
-	GAMEDATA_DIR "images/overflow_pink_4.png",
-	GAMEDATA_DIR "images/overflow_pink_5.png",
-	GAMEDATA_DIR "images/overflow_pink_6.png",
-	GAMEDATA_DIR "images/overflow_pink_7.png",
+	GAMEDATA_DIR "images/overflow_sauce.png",
+	GAMEDATA_DIR "images/overflow_hot.png",
+	GAMEDATA_DIR "images/overflow_chocolate.png",
+	GAMEDATA_DIR "images/overflow_pink.png",
 	
-	GAMEDATA_DIR "images/order_pizza_cheese.png",
-	GAMEDATA_DIR "images/order_pizza_hot.png",
-	GAMEDATA_DIR "images/order_pizza_choco.png",
-	GAMEDATA_DIR "images/order_pizza_pink.png",
+	GAMEDATA_DIR "images/order_pizza.png",
 	
-	GAMEDATA_DIR "images/topping_1.png",
-	GAMEDATA_DIR "images/topping_2.png",
-	GAMEDATA_DIR "images/topping_3.png",
-	GAMEDATA_DIR "images/topping_4.png",
-	GAMEDATA_DIR "images/topping_5.png",
-	GAMEDATA_DIR "images/topping_6.png",
-	GAMEDATA_DIR "images/topping_7.png",
-	GAMEDATA_DIR "images/topping_8.png",
-	GAMEDATA_DIR "images/topping_9.png",
-	GAMEDATA_DIR "images/topping_10.png",
-	GAMEDATA_DIR "images/topping_11.png",
-	
-	GAMEDATA_DIR "images/candy_topping_1.png",
-	GAMEDATA_DIR "images/candy_topping_2.png",
-	GAMEDATA_DIR "images/candy_topping_3.png",
-	GAMEDATA_DIR "images/candy_topping_4.png",
-	GAMEDATA_DIR "images/candy_topping_5.png",
-	GAMEDATA_DIR "images/candy_topping_6.png",
-	GAMEDATA_DIR "images/candy_topping_7.png",
-	GAMEDATA_DIR "images/candy_topping_8.png",
-	GAMEDATA_DIR "images/candy_topping_9.png",
-	GAMEDATA_DIR "images/candy_topping_10.png",
-	GAMEDATA_DIR "images/candy_topping_11.png",
+	GAMEDATA_DIR "images/topping_order.png",
+	GAMEDATA_DIR "images/candy_topping_order.png",
 	
 	GAMEDATA_DIR "images/checked.png",
 	GAMEDATA_DIR "images/done.png",
@@ -1400,8 +1295,8 @@ int game_loop (int *fin) {
 	
 	sauce_state = NONE;
 	
-	splat_surface = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
-	splat_surface2 = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_1]->w, images[IMG_PIZZA_BASE_1]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	splat_surface = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_CLEAR]->w, images[IMG_PIZZA_BASE_CLEAR]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+	splat_surface2 = SDL_AllocSurface (SDL_SWSURFACE, images[IMG_PIZZA_BASE_CLEAR]->w, images[IMG_PIZZA_BASE_CLEAR]->h, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
 	SDL_SetAlpha (images[IMG_SPLAT_MASK], 0, 0);
 	
 	//SDL_EventState (SDL_MOUSEMOTION, SDL_IGNORE);
@@ -1491,24 +1386,24 @@ int game_loop (int *fin) {
 					
 					mousedown = FALSE;
 					
-					if ((hand == SPRINKLES || hand == CHEESE) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_1]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
-						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+					if ((hand == SPRINKLES || hand == CHEESE) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_CLEAR]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_CLEAR]->w)) {
+						pixel = images[IMG_PIZZA_BASE_CLEAR]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_CLEAR]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_CLEAR]->format->BytesPerPixel);
 						
-						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_CLEAR]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
 						if (alpha != 0) {
 							pizza.cheese_placed = hand;
 						}
 						if (use_sound) Mix_PlayChannel (2, sounds[SND_TOPPING], 0);
-					} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_1]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+					} else if ((hand >= TOPPING_1 && hand <= TOPPING_8) && (event.button.y >= pizza.y && event.button.y < pizza.y + images[IMG_PIZZA_BASE_CLEAR]->h && event.button.x >= pizza.x && event.button.x < pizza.x + images[IMG_PIZZA_BASE_CLEAR]->w)) {
 						toppings[topping_count].type = hand - TOPPING_1;
 						toppings[topping_count].frame = hand_frame;
 						image = IMG_TOPPING_1_1 + (hand - TOPPING_1) * 3 + hand_frame;
 						toppings[topping_count].x = event.button.x - (images[image]->w / 2) - pizza.x;
 						toppings[topping_count].y = event.button.y - (images[image]->h / 2) - pizza.y;
 						
-						pixel = images[IMG_PIZZA_BASE_1]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_1]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_1]->format->BytesPerPixel);
+						pixel = images[IMG_PIZZA_BASE_CLEAR]->pixels + ((event.button.y - pizza.y) * images[IMG_PIZZA_BASE_CLEAR]->pitch) + ((event.button.x - pizza.x) * images[IMG_PIZZA_BASE_CLEAR]->format->BytesPerPixel);
 						
-						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_1]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
+						SDL_GetRGBA (*pixel, images[IMG_PIZZA_BASE_CLEAR]->format, &rgb_r, &rgb_g, &rgb_b, &alpha);
 						if (alpha != 0) {
 							topping_count++;
 							pizza.topping[(hand - TOPPING_1) % 4]++;
@@ -1908,7 +1803,7 @@ int game_loop (int *fin) {
 			SDL_BlitSurface (images[IMG_TOPPING_4_BOX], NULL, screen, &rect);
 		}
 		
-		if (hand >= SAUCE_NORMAL && hand <= SAUCE_PINK && mousedown && (handposy + 100 >= pizza.y && handposy + 100 < pizza.y + images[IMG_PIZZA_BASE_1]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_1]->w)) {
+		if (hand >= SAUCE_NORMAL && hand <= SAUCE_PINK && mousedown && (handposy + 100 >= pizza.y && handposy + 100 < pizza.y + images[IMG_PIZZA_BASE_CLEAR]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_CLEAR]->w)) {
 			if (pizza.sauce_placed != hand) {
 				if (splat_queue_start != splat_queue_end) {
 					/* Revisar si el splat que hay es de otra salsa */
@@ -2017,18 +1912,30 @@ int game_loop (int *fin) {
 			pizza.x += pizzaspeed + speedboost;
 			rect.x = pizza.x;
 			rect.y = pizza.y;
-			image = IMG_PIZZA_BASE_1 + (pizza.sauce_placed - NONE);
-			rect.w = images[image]->w;
-			rect.h = images[image]->h;
-			SDL_BlitSurface (images[image], NULL, screen, &rect);
+			rect.w = images[IMG_PIZZA_BASE_CLEAR]->w;
+			rect.h = images[IMG_PIZZA_BASE_CLEAR]->h;
+			rect2.w = rect.w;
+			rect2.h = rect.h;
+			rect2.y = 0;
+			if (pizza.sauce_placed == NONE) {
+				SDL_BlitSurface (images[IMG_PIZZA_BASE_CLEAR], NULL, screen, &rect);
+				image = IMG_PIZZA_BASE_CLEAR;
+				rect2.x = 0;
+			} else {
+				rect2.x = rect.w * (pizza.sauce_placed - NONE - 1);
+				
+				SDL_BlitSurface (images[IMG_PIZZA_BASE], &rect2, screen, &rect);
+				image = IMG_PIZZA_BASE;
+			}
 		
 			/* Dibujar los splats */
 			if (pizza.sauce_placed == NONE && splat_queue_end != splat_queue_start) {
-				image = IMG_SPLAT_SAUCE + (splats[splat_queue_start].type - SAUCE_NORMAL);
 				SDL_BlitSurface (images[IMG_SPLAT_MASK], NULL, splat_surface, NULL);
-				SDL_BlitSurface (images[IMG_PIZZA_BASE_1 + pizza.sauce_placed], NULL, splat_surface, NULL);
+				SDL_BlitSurface (images[image], &rect2, splat_surface, NULL);
 				
 				SDL_FillRect (splat_surface2, NULL, SDL_MapRGBA (splat_surface2->format, 0, 0, 0, SDL_ALPHA_OPAQUE));
+				
+				image = IMG_SPLAT_SAUCE + (splats[splat_queue_start].type - SAUCE_NORMAL);
 				
 				rect.w = images[image]->w;
 				rect.h = images[image]->h;
@@ -2178,11 +2085,15 @@ int game_loop (int *fin) {
 				if (use_sound && pizza_overflow == 0) Mix_PlayChannel (1, sounds[SND_OVERFLOW], 0);
 				rect.x = pizza.x - 40;
 				rect.y = pizza.y - 15;
-				rect.w = images[IMG_PIZZA_OVERFLOW_SAUCE_1]->w;
-				rect.h = images[IMG_PIZZA_OVERFLOW_SAUCE_1]->h;
+				rect.w = images[IMG_PIZZA_OVERFLOW_SAUCE]->w / 7;
+				rect.h = images[IMG_PIZZA_OVERFLOW_SAUCE]->h;
 				
-				image = IMG_PIZZA_OVERFLOW_SAUCE_1 + (pizza.sauce_placed - SAUCE_NORMAL) * 7 + pizza_overflow;
-				SDL_BlitSurface (images[image], NULL, screen, &rect);
+				rect2.x = pizza_overflow * rect.w;
+				rect2.y = 0;
+				rect2.w = rect.w;
+				rect2.h = rect.h;
+				image = IMG_PIZZA_OVERFLOW_SAUCE + (pizza.sauce_placed - SAUCE_NORMAL);
+				SDL_BlitSurface (images[image], &rect2, screen, &rect);
 				
 				if (pizza_overflow < 6) {
 					pizza_overflow++;
@@ -3054,9 +2965,6 @@ void setup_texts (void) {
 	
 	/* Cerrar las imágenes que no son necesarias */
 	if (candy_mode) {
-		SDL_FreeSurface (images[IMG_PIZZA_BASE_2]);
-		SDL_FreeSurface (images[IMG_PIZZA_BASE_3]);
-		
 		SDL_FreeSurface (images[IMG_PIZZA_CHEESE]);
 		SDL_FreeSurface (images[IMG_CHEESE_BOX]);
 		SDL_FreeSurface (images[IMG_CHEESE_HAND]);
@@ -3086,16 +2994,10 @@ void setup_texts (void) {
 			SDL_FreeSurface (images[g]);
 		}
 		
-		for (g = IMG_PIZZA_OVERFLOW_SAUCE_1; g <= IMG_PIZZA_OVERFLOW_HOT_7; g++) {
-			SDL_FreeSurface (images[g]);
-		}
+		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_SAUCE]);
+		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_HOT]);
 		
-		SDL_FreeSurface (images[IMG_ORDER_PIZZA_CHEESE]);
-		SDL_FreeSurface (images[IMG_ORDER_PIZZA_HOT]);
-		
-		for (g = IMG_ORDER_TOPPING_1; g <= IMG_ORDER_TOPPING_11; g++) {
-			SDL_FreeSurface (images[g]);
-		}
+		SDL_FreeSurface (images[IMG_ORDER_TOPPING]);
 		
 		SDL_FreeSurface (images[IMG_CHEESE_DROPPED]);
 		
@@ -3103,9 +3005,6 @@ void setup_texts (void) {
 			SDL_FreeSurface (images[g]);
 		}
 	} else {
-		SDL_FreeSurface (images[IMG_PIZZA_BASE_4]);
-		SDL_FreeSurface (images[IMG_PIZZA_BASE_5]);
-		
 		SDL_FreeSurface (images[IMG_PIZZA_SPRINKLES]);
 		SDL_FreeSurface (images[IMG_SPRINKLES_BOX]);
 		SDL_FreeSurface (images[IMG_SPRINKLES_HAND]);
@@ -3135,16 +3034,10 @@ void setup_texts (void) {
 			SDL_FreeSurface (images[g]);
 		}
 		
-		for (g = IMG_PIZZA_OVERFLOW_CHOCO_1; g <= IMG_PIZZA_OVERFLOW_PINK_7; g++) {
-			SDL_FreeSurface (images[g]);
-		}
+		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_CHOCO]);
+		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_PINK]);
 		
-		SDL_FreeSurface (images[IMG_ORDER_PIZZA_CHOCO]);
-		SDL_FreeSurface (images[IMG_ORDER_PIZZA_PINK]);
-		
-		for (g = IMG_ORDER_CANDY_TOPPING_1; g <= IMG_ORDER_CANDY_TOPPING_11; g++) {
-			SDL_FreeSurface (images[g]);
-		}
+		SDL_FreeSurface (images[IMG_ORDER_TOPPING_CANDY]);
 		
 		SDL_FreeSurface (images[IMG_SPRINKLES_DROPPED]);
 		
@@ -3356,11 +3249,14 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	/* Dibujar la pizza correcta en la comanda */
 	rect.x = 401;
 	rect.y = 51;
-	rect.w = images[IMG_ORDER_PIZZA_CHEESE]->w;
-	rect.h = images[IMG_ORDER_PIZZA_CHEESE]->h;
+	rect.w = images[IMG_ORDER_PIZZA]->w / 4;
+	rect.h = images[IMG_ORDER_PIZZA]->h;
 	
-	g = pizza->sauce_requested - SAUCE_NORMAL + IMG_ORDER_PIZZA_CHEESE;
-	SDL_BlitSurface (images[g], NULL, screen, &rect);
+	rect2.x = rect.w * (pizza->sauce_requested - SAUCE_NORMAL);
+	rect2.y = 0;
+	rect2.w = rect.w;
+	rect2.h = rect.h;
+	SDL_BlitSurface (images[IMG_ORDER_PIZZA], &rect2, screen, &rect);
 	
 	/* Dibujar el nombre de la pizza */
 	rect.x = 398;
@@ -3374,12 +3270,17 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	if (orden > 1) {
 		rect.x = 391;
 		rect.y = 106;
-		rect.w = images[IMG_ORDER_TOPPING_1]->w;
-		rect.h = images[IMG_ORDER_TOPPING_1]->h;
-	
-		g = IMG_ORDER_TOPPING_1 + (orden / 2) - 1;
-		if (candy_mode) g += 11;
-		SDL_BlitSurface (images[g], NULL, screen, &rect);
+		rect.w = images[IMG_ORDER_TOPPING]->w / 11;
+		rect.h = images[IMG_ORDER_TOPPING]->h;
+		
+		rect2.x = rect.w * ((orden / 2) - 1);
+		rect2.y = 0;
+		rect2.w = rect.w;
+		rect2.h = rect.h;
+		
+		g = IMG_ORDER_TOPPING;
+		if (candy_mode) g = IMG_ORDER_TOPPING_CANDY;
+		SDL_BlitSurface (images[g], &rect2, screen, &rect);
 	}
 	
 	/* Dibujar las palomitas */

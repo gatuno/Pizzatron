@@ -3,11 +3,8 @@ gamedatadir = $(pkgdatadir)/data
 nobase_dist_gamedata_DATA = images/background.png \
 	images/icon.png \
 	images/conveyorbelt.png \
-	images/pizza_base_1.png \
-	images/pizza_base_2.png \
-	images/pizza_base_3.png \
-	images/pizza_base_4.png \
-	images/pizza_base_5.png \
+	images/pizza_base_clear.png \
+	images/pizza_base.png \
 	images/pizza_sprinkles.png \
 	images/pizza_cheese.png \
 	images/pizza_shadow.png \
@@ -111,60 +108,13 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/topping_6_box.png \
 	images/topping_7_box.png \
 	images/topping_8_box.png \
-	images/overflow_chocolate_1.png \
-	images/overflow_chocolate_2.png \
-	images/overflow_chocolate_3.png \
-	images/overflow_chocolate_4.png \
-	images/overflow_chocolate_5.png \
-	images/overflow_chocolate_6.png \
-	images/overflow_chocolate_7.png \
-	images/overflow_hot_1.png \
-	images/overflow_hot_2.png \
-	images/overflow_hot_3.png \
-	images/overflow_hot_4.png \
-	images/overflow_hot_5.png \
-	images/overflow_hot_6.png \
-	images/overflow_hot_7.png \
-	images/overflow_pink_1.png \
-	images/overflow_pink_2.png \
-	images/overflow_pink_3.png \
-	images/overflow_pink_4.png \
-	images/overflow_pink_5.png \
-	images/overflow_pink_6.png \
-	images/overflow_pink_7.png \
-	images/overflow_sauce_1.png \
-	images/overflow_sauce_2.png \
-	images/overflow_sauce_3.png \
-	images/overflow_sauce_4.png \
-	images/overflow_sauce_5.png \
-	images/overflow_sauce_6.png \
-	images/overflow_sauce_7.png \
-	images/candy_topping_1.png \
-	images/candy_topping_2.png \
-	images/candy_topping_3.png \
-	images/candy_topping_4.png \
-	images/candy_topping_5.png \
-	images/candy_topping_6.png \
-	images/candy_topping_7.png \
-	images/candy_topping_8.png \
-	images/candy_topping_9.png \
-	images/candy_topping_10.png \
-	images/candy_topping_11.png \
-	images/order_pizza_cheese.png \
-	images/order_pizza_choco.png \
-	images/order_pizza_hot.png \
-	images/order_pizza_pink.png \
-	images/topping_1.png \
-	images/topping_2.png \
-	images/topping_3.png \
-	images/topping_4.png \
-	images/topping_5.png \
-	images/topping_6.png \
-	images/topping_7.png \
-	images/topping_8.png \
-	images/topping_9.png \
-	images/topping_10.png \
-	images/topping_11.png \
+	images/overflow_chocolate.png \
+	images/overflow_hot.png \
+	images/overflow_pink.png \
+	images/overflow_sauce.png \
+	images/order_pizza.png \
+	images/topping_order.png \
+	images/candy_topping_order.png \
 	images/checked.png \
 	images/intro_new_background.png \
 	images/intro_new_penguin.png \
