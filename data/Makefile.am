@@ -212,6 +212,16 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/topping_8_1_dropped.png \
 	images/topping_8_2_dropped.png \
 	images/topping_8_3_dropped.png \
+	images/stamps/392.png \
+	images/stamps/394.png \
+	images/stamps/396.png \
+	images/stamps/398.png \
+	images/stamps/400.png \
+	images/stamps/402.png \
+	images/stamps/404.png \
+	images/stamps/406.png \
+	images/stamps/408.png \
+	images/stamps/410.png \
 	sounds/caching.wav \
 	sounds/hotsauce.wav \
 	sounds/overflow.wav \

@@ -45,6 +45,8 @@
 
 #include "cp-button.h"
 
+#include "cpstamp.h"
+
 #define FPS (1000/24)
 
 #define SWAP(a, b, t) ((t) = (a), (a) = (b), (b) = (t))
@@ -830,10 +832,16 @@ TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
 /* La 18 para el intro nuevo y las acme para el intro viejo */
 TTF_Font *ttf18_burbank_bold, *ttf16_acme, *ttf20_acme;
 
+CPStampCategory *c;
+CPStampHandle *stamp_handle;
+
 int main (int argc, char *argv[]) {
 	int fin;
 	
 	setup ();
+	stamp_handle = CPStamp_Init (argc, argv);
+	
+	if (use_sound) CPStamp_WithSound (stamp_handle, TRUE);
 	
 	/* Registrar botones */
 	cp_registrar_botones (NUM_BUTTONS);
@@ -843,6 +851,44 @@ int main (int argc, char *argv[]) {
 	cp_registrar_boton (BUTTON_UI_INTRO_HOW, IMG_BUTTON_1_UP);
 	cp_registrar_boton (BUTTON_UI_INTRO_HOW_PLAY, IMG_BUTTON_2_UP);
 	cp_button_start ();
+	
+	/* Registrar las estampas */
+	c = CPStamp_Open (stamp_handle, STAMP_TYPE_GAME, "Pizzatron", "pizzatron");
+	
+	if (c == NULL) {
+		printf ("Failed to init the substamp system\n");
+	}
+	
+	if (!CPStamp_IsRegistered (c, 392)) {
+		CPStamp_Register (c, 392, "Food Fiasco", "Make a mess of the kitchen with 3 wrong pizzas", "images/stamps/392.png", STAMP_TYPE_GAME, STAMP_EASY);
+	}
+	if (!CPStamp_IsRegistered (c, 394)) {
+		CPStamp_Register (c, 394, "Just Dessert", "Play Pizzatron in Candy Mode", "images/stamps/394.png", STAMP_TYPE_GAME, STAMP_EASY);
+	}
+	if (!CPStamp_IsRegistered (c, 396)) {
+		CPStamp_Register (c, 396, "Chef's Hat", "Make 20 pizzas without any mistakes", "images/stamps/396.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+	}
+	if (!CPStamp_IsRegistered (c, 398)) {
+		CPStamp_Register (c, 398, "Spice Sea", "Make 3 hot sauce and shrimp pizzas to order", "images/stamps/398.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+	}
+	if (!CPStamp_IsRegistered (c, 400)) {
+		CPStamp_Register (c, 400, "Cocoa Beans", "Make 3 jellybean and chocolate pizzas to order", "images/stamps/400.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+	}
+	if (!CPStamp_IsRegistered (c, 402)) {
+		CPStamp_Register (c, 402, "Fiery Squids", "Make 3 hot sauce and squid pizzas to order", "images/stamps/402.png", STAMP_TYPE_GAME, STAMP_HARD);
+	}
+	if (!CPStamp_IsRegistered (c, 404)) {
+		CPStamp_Register (c, 404, "Candy Land", "Make 3 pink sauce and marshmallow pizzas to order", "images/stamps/404.png", STAMP_TYPE_GAME, STAMP_HARD);
+	}
+	if (!CPStamp_IsRegistered (c, 406)) {
+		CPStamp_Register (c, 406, "Pizza Chef", "Make 30 pizzas without any mistakes", "images/stamps/406.png", STAMP_TYPE_GAME, STAMP_HARD);
+	}
+	if (!CPStamp_IsRegistered (c, 408)) {
+		CPStamp_Register (c, 408, "Pizza Master", "Make 40 pizzas without any mistakes", "images/stamps/408.png", STAMP_TYPE_GAME, STAMP_EXTREME);
+	}
+	if (!CPStamp_IsRegistered (c, 410)) {
+		CPStamp_Register (c, 410, "Dessert Chef", "Make 40 candy pizzas without any mistakes", "images/stamps/410.png", STAMP_TYPE_GAME, STAMP_EXTREME);
+	}
 	
 	candy_mode = 0;
 	fin = 0;
@@ -861,6 +907,8 @@ int main (int argc, char *argv[]) {
 		setup_ending (fin);
 		if (game_end (fin) == GAME_QUIT) break;
 	} while (1 == 0);
+	
+	CPStamp_Close (c);
 	
 	SDL_Quit ();
 	return EXIT_SUCCESS;
@@ -1325,14 +1373,15 @@ int game_loop (int *fin) {
 	int midleft, left, midright, right, top, bottom;
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
 	int pizzas_hechas = 0, orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
+	SDL_Surface *splat_surface, *splat_surface2;
 	
 	DroppedTopping dropped_tops[20];
 	int dropt_queue_start = 0, dropt_queue_end = 0;
+	int score = 0, tips = 0;
+	int lanzados[TOPPING_8 + 1];
+	int no_marshmallow_pizzas = 0, no_jelly_pizzas = 0, no_squid_pizzas = 0, no_shrimp_pizzas = 0;
 	
-	int score, tips;
-	score = tips = 0;
-	
-	SDL_Surface *splat_surface, *splat_surface2;
+	memset (lanzados, 0, sizeof (lanzados));
 	
 	sauce_state = NONE;
 	
@@ -1356,6 +1405,8 @@ int game_loop (int *fin) {
 	place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
 	speedboost = 0;
 	pizzas_consecutivas = 0;
+	
+	if (candy_mode) CPStamp_Earn (stamp_handle, c, 394);
 	
 	do {
 		last_time = SDL_GetTicks ();
@@ -1463,7 +1514,18 @@ int game_loop (int *fin) {
 						dropped_tops[dropt_queue_end].speed_x = 0 - strengthX;
 						dropped_tops[dropt_queue_end].speed_y = 20 - strengthY;
 						
+						lanzados[hand] = 1;
 						dropt_queue_end = (dropt_queue_end + 1) % 20;
+						
+						/* Estampa "Mess of the kitchen" */
+						image = 0;
+						for (g = 0; g <= TOPPING_8; g++) {
+							image += lanzados[g];
+						}
+						
+						if (image == 7 && failures == 3) {
+							CPStamp_Earn (stamp_handle, c, 392);
+						}
 					}
 					Mix_HaltChannel (0); // El canal de las salsas
 					hand = NONE;
@@ -2114,10 +2176,48 @@ int game_loop (int *fin) {
 		} else {
 			if (perfect_pizza) {
 				/* En caso contrario, acomodar una nueva pizza y una nueva orden */
+				if (orden == 5 && candy_mode == 0) {
+					no_shrimp_pizzas++;
+					if (no_shrimp_pizzas == 3) {
+						CPStamp_Earn (stamp_handle, c, 398);
+					}
+				}
+				
+				if (orden == 7 && candy_mode == 0) {
+					no_squid_pizzas++;
+					if (no_squid_pizzas == 3) {
+						CPStamp_Earn (stamp_handle, c, 402);
+					}
+				}
+				
+				if (orden == 8 && candy_mode == 1) {
+					no_jelly_pizzas++;
+					if (no_jelly_pizzas == 3) {
+						CPStamp_Earn (stamp_handle, c, 400);
+					}
+				}
+				
+				if (orden == 7 && candy_mode == 1) {
+					no_marshmallow_pizzas++;
+					if (no_marshmallow_pizzas == 3) {
+						CPStamp_Earn (stamp_handle, c, 404);
+					}
+				}
 				place_pizza_and_order (&pizza, candy_mode, &pizzas_hechas, &orden);
 				pizzas_hechas++;
 				pizzas_consecutivas++;
 				handicap++;
+				
+				if (pizzas_consecutivas == 20) {
+					CPStamp_Earn (stamp_handle, c, 396);
+				} else if (pizzas_consecutivas == 30) {
+					CPStamp_Earn (stamp_handle, c, 406);
+				} else if (candy_mode && pizzas_consecutivas == 40) {
+					CPStamp_Earn (stamp_handle, c, 408);
+					CPStamp_Earn (stamp_handle, c, 410);
+				} else if (pizzas_consecutivas == 40) {
+					CPStamp_Earn (stamp_handle, c, 408);
+				}
 				
 				/* Activar el mensaje de "hecho" */
 				order_screen_timer = 0;
@@ -2150,6 +2250,16 @@ int game_loop (int *fin) {
 				pizzas_consecutivas = 0;
 				failures++;
 				handicap--;
+				
+				/* Estampa "Mess of the kitchen" */
+				image = 0;
+				for (g = 0; g <= TOPPING_8; g++) {
+					image += lanzados[g];
+				}
+				
+				if (image == 7 && failures == 3) {
+					CPStamp_Earn (stamp_handle, c, 392);
+				}
 			}
 			ordenes_hechas++;
 			pizza.y = 293;
@@ -2329,6 +2439,7 @@ int game_loop (int *fin) {
 		}
 		
 		if (ordenes_hechas >= 40) {
+			
 			done = GAME_CONTINUE;
 			if (pizzas_hechas >= 40) {
 				*fin = END_PERFECT;
@@ -2341,6 +2452,10 @@ int game_loop (int *fin) {
 		rect.x = 721; rect.y = 9;
 		rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
 		SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+		
+		if (CPStamp_IsActive (stamp_handle)) {
+			CPStamp_Draw (stamp_handle, screen, FALSE);
+		}
 		
 		SDL_Flip (screen);
 		
@@ -2378,6 +2493,8 @@ int game_end (int fin) {
 		last_time = SDL_GetTicks ();
 		
 		num_rects = 0;
+		
+		CPStamp_Restore (stamp_handle, screen);
 		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
@@ -2421,6 +2538,11 @@ int game_end (int fin) {
 			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 			update_rects[num_rects++] = rect;
 			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
+		if (CPStamp_IsActive (stamp_handle)) {
+			CPStamp_Draw (stamp_handle, screen, TRUE);
+			update_rects[num_rects++] = CPStamp_GetUpdateRect (stamp_handle);
 		}
 		
 		SDL_UpdateRects (screen, num_rects, update_rects);

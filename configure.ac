@@ -24,7 +24,7 @@ SDL_VERSION=1.2.14
 SDL_IMAGE_VERSION=1.2.10
 SDL_TTF_VERSION=2.0.11
 SDL_MIXER_VERSION=1.2.12
-#CPSTAMP_VERSION=0.9.1
+CPSTAMP_VERSION=0.9.5
 
 AC_MSG_CHECKING([if you have SDL installed on your system])
 PKG_CHECK_EXISTS([sdl >= $SDL_VERSION], [AC_MSG_RESULT([yes])], [AC_MSG_FAILURE([SDL not found in your system])])
@@ -42,9 +42,9 @@ AC_MSG_CHECKING([if you have SDL_mixer installed on your system])
 PKG_CHECK_EXISTS([SDL_mixer >= $SDL_MIXER_VERSION], [AC_MSG_RESULT([yes])], [AC_MSG_FAILURE([SDL_mixer not found in your system])])
 PKG_CHECK_MODULES(SDL_mixer, [SDL_mixer >= $SDL_MIXER_VERSION], [], [])
 
-#AC_MSG_CHECKING([if you have Club Penguin library Stamp installed on your system])
-#PKG_CHECK_EXISTS([cpstamp >= $CPSTAMP_VERSION], [AC_MSG_RESULT([yes])], [AC_MSG_FAILURE([Club Penguin library Stamp not found in your system])])
-#PKG_CHECK_MODULES(CPSTAMP, [cpstamp >= $CPSTAMP_VERSION], [], [])
+AC_MSG_CHECKING([if you have Club Penguin library Stamp installed on your system])
+PKG_CHECK_EXISTS([cpstamp >= $CPSTAMP_VERSION], [AC_MSG_RESULT([yes])], [AC_MSG_FAILURE([Club Penguin library Stamp not found in your system])])
+PKG_CHECK_MODULES(CPSTAMP, [cpstamp >= $CPSTAMP_VERSION], [], [])
 
 AC_CONFIG_HEADERS([config.h])
 
