@@ -1,0 +1,479 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: pizzatron 0.8.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-06-07 23:00-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/pizzatron.c:869
+#, c-format
+msgid "Failed to init the substamp system\n"
+msgstr ""
+
+#: src/pizzatron.c:941
+msgid "START"
+msgstr ""
+
+#: src/pizzatron.c:1198
+msgid "PLAY"
+msgstr ""
+
+#: src/pizzatron.c:1199
+msgid "INSTRUCTIONS"
+msgstr ""
+
+#: src/pizzatron.c:2593
+#, c-format
+msgid ""
+"Error: Can't initialize the video subsystem\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2611
+#, c-format
+msgid ""
+"Error: Can't setup 760x480 video mode.\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2620
+#, c-format
+msgid ""
+"Warning: Can't initialize the audio subsystem\n"
+"Continuing...\n"
+msgstr ""
+
+#: src/pizzatron.c:2628
+#, c-format
+msgid "Warning: Can't initialize the SDL Mixer library\n"
+msgstr ""
+
+#: src/pizzatron.c:2640 src/pizzatron.c:2665 src/pizzatron.c:2683
+#: src/pizzatron.c:2705 src/pizzatron.c:2726 src/pizzatron.c:2744
+#: src/pizzatron.c:2757 src/pizzatron.c:2774 src/pizzatron.c:3164
+#, c-format
+msgid ""
+"Failed to load data file:\n"
+"%s\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2798
+#, c-format
+msgid ""
+"Failed to load a music file.\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2809
+#, c-format
+msgid ""
+"Error: Can't initialize the SDL TTF library\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2819 src/pizzatron.c:2830 src/pizzatron.c:2856
+#: src/pizzatron.c:2868 src/pizzatron.c:2885 src/pizzatron.c:2915
+#: src/pizzatron.c:2931
+#, c-format
+msgid ""
+"Failed to load font file 'Burbank Small Bold'\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2844
+#, c-format
+msgid ""
+"Failed to load font file 'Acme Explosive'\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2877
+msgid "PIZZAS MADE"
+msgstr ""
+
+#: src/pizzatron.c:2878
+msgid "PIZZAS LEFT"
+msgstr ""
+
+#: src/pizzatron.c:2879
+msgid "MISTAKES"
+msgstr ""
+
+#: src/pizzatron.c:2892
+msgid "COINS"
+msgstr ""
+
+#: src/pizzatron.c:2898
+#, c-format
+msgid ""
+"Failed to load font file 'Burbank Big Regular'\n"
+"The error returned by SDL is:\n"
+"%s\n"
+msgstr ""
+
+#: src/pizzatron.c:2907
+msgid "DONE!"
+msgstr ""
+
+#: src/pizzatron.c:2922
+msgid "+5 COINS"
+msgstr ""
+
+#: src/pizzatron.c:2923
+msgid "+10 COINS"
+msgstr ""
+
+#: src/pizzatron.c:2938
+msgid "+10 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2939
+msgid "+15 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2940
+msgid "+20 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2941
+msgid "+25 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2942
+msgid "+30 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2943
+msgid "+35 TIP!"
+msgstr ""
+
+#: src/pizzatron.c:2960
+msgid "CHOCOLATE SPRINKLE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2961
+msgid "PINK ICING SPRINKLE"
+msgstr ""
+
+#: src/pizzatron.c:2962
+msgid "LIQUORICE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2963
+msgid "PINK LIQUORICE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2964
+msgid "CHOCOLATE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2965
+msgid "PINK CHOCOLATE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2966
+msgid "MARSHMALLOW PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2967
+msgid "PINK MARSHMALLOW PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2968
+msgid "JELLY BEAN PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2969
+msgid "PINK JELLY BEAN PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2970
+msgid "LIQUORICE-CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2971
+msgid "PINK LIQUORICE-CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2972
+msgid "MARSHMALLOW JELLY PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2973
+msgid "PINK MARSHMALLOW JELLY PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2974
+msgid "LIQUORICE MARSHMALLOW PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2975
+msgid "PINK LIQUORICE MARSHMALLOW PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2976
+msgid "JELLY CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2977
+msgid "PINK JELLY CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2978
+msgid "LIQUORICE JELLY PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2979
+msgid "PINK LIQUORICE JELLY PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2980
+msgid "MARSHMALLOW CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2981
+msgid "PINK MARSHMALLOW CHIP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2982
+msgid "CHOCOLATE SUGAR PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2983
+msgid "PINK SUGAR PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:2985
+msgid "SPRINKLES"
+msgstr ""
+
+#: src/pizzatron.c:2987
+msgid "CHOCOLATE SAUCE"
+msgstr ""
+
+#: src/pizzatron.c:2988
+msgid "PINK ICING"
+msgstr ""
+
+#: src/pizzatron.c:2990
+msgid "5 LIQUORICE"
+msgstr ""
+
+#: src/pizzatron.c:2991
+msgid "5 CHOCOLATE CHIPS"
+msgstr ""
+
+#: src/pizzatron.c:2992
+msgid "5 MARSHMALLOWS"
+msgstr ""
+
+#: src/pizzatron.c:2993
+msgid "5 JELLY BEANS"
+msgstr ""
+
+#: src/pizzatron.c:2995
+msgid "2 LIQUORICE"
+msgstr ""
+
+#: src/pizzatron.c:2996
+msgid "2 CHOCOLATE CHIPS"
+msgstr ""
+
+#: src/pizzatron.c:2997
+msgid "2 MARSHMALLOWS"
+msgstr ""
+
+#: src/pizzatron.c:2998
+msgid "2 JELLY BEANS"
+msgstr ""
+
+#: src/pizzatron.c:3000
+msgid "1 LIQUORICE"
+msgstr ""
+
+#: src/pizzatron.c:3001
+msgid "1 CHOCOLATE CHIP"
+msgstr ""
+
+#: src/pizzatron.c:3002
+msgid "1 MARSHMALLOW"
+msgstr ""
+
+#: src/pizzatron.c:3003
+msgid "1 JELLY BEAN"
+msgstr ""
+
+#: src/pizzatron.c:3005
+msgid "CHEESE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3006
+msgid "HOT CHEESE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3007
+msgid "SEAWEED PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3008
+msgid "SPICY SEAWEED PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3009
+msgid "SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3010
+msgid "HOT SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3011
+msgid "SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3012
+msgid "SPICY SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3013
+msgid "FISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3014
+msgid "FLAMETHROWER FISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3015
+msgid "SEAWEED-SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3016
+msgid "HOT SEAWEED-SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3017
+msgid "FISH DISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3018
+msgid "HOT FISH DISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3019
+msgid "SEAWEED-SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3020
+msgid "HOT SEAWEED-SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3021
+msgid "FISH SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3022
+msgid "HOT FISH SHRIMP PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3023
+msgid "SEAWEED FISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3024
+msgid "HOT SEAWEED FISH PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3025
+msgid "SHRIMP SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3026
+msgid "HOT SHRIMP SQUID PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3027
+msgid "SUPREME PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3028
+msgid "SUPREME SIZZLE PIZZA"
+msgstr ""
+
+#: src/pizzatron.c:3030
+msgid "CHEESE"
+msgstr ""
+
+#: src/pizzatron.c:3032
+msgid "PIZZA SAUCE"
+msgstr ""
+
+#: src/pizzatron.c:3033
+msgid "HOT SAUCE"
+msgstr ""
+
+#: src/pizzatron.c:3035
+msgid "5 SEAWEED"
+msgstr ""
+
+#: src/pizzatron.c:3036
+msgid "5 SHRIMP"
+msgstr ""
+
+#: src/pizzatron.c:3037
+msgid "5 SQUID"
+msgstr ""
+
+#: src/pizzatron.c:3038
+msgid "5 FISH"
+msgstr ""
+
+#: src/pizzatron.c:3040
+msgid "2 SEAWEED"
+msgstr ""
+
+#: src/pizzatron.c:3041
+msgid "2 SHRIMP"
+msgstr ""
+
+#: src/pizzatron.c:3042
+msgid "2 SQUID"
+msgstr ""
+
+#: src/pizzatron.c:3043
+msgid "2 FISH"
+msgstr ""
+
+#: src/pizzatron.c:3045
+msgid "1 SEAWEED"
+msgstr ""
+
+#: src/pizzatron.c:3046
+msgid "1 SHRIMP"
+msgstr ""
+
+#: src/pizzatron.c:3047
+msgid "1 SQUID"
+msgstr ""
+
+#: src/pizzatron.c:3048
+msgid "1 FISH"
+msgstr ""

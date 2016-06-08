@@ -43,6 +43,10 @@
 #include "config.h"
 #endif
 
+#include <locale.h>
+#include "gettext.h"
+#define _(string) gettext (string)
+
 #include "cp-button.h"
 
 #include "cpstamp.h"
@@ -838,6 +842,12 @@ CPStampHandle *stamp_handle;
 int main (int argc, char *argv[]) {
 	int fin;
 	
+	/* Inicializar l18n */
+	setlocale (LC_ALL, "");
+	bindtextdomain (PACKAGE, LOCALEDIR);
+	
+	textdomain (PACKAGE);
+	
 	setup ();
 	stamp_handle = CPStamp_Init (argc, argv);
 	
@@ -856,7 +866,7 @@ int main (int argc, char *argv[]) {
 	c = CPStamp_Open (stamp_handle, STAMP_TYPE_GAME, "Pizzatron", "pizzatron");
 	
 	if (c == NULL) {
-		printf ("Failed to init the substamp system\n");
+		printf (_("Failed to init the substamp system\n"));
 	}
 	
 	if (!CPStamp_IsRegistered (c, 392)) {
@@ -928,7 +938,7 @@ int game_intro_old (void) {
 	blanco.r = blanco.g = blanco.b = 0xff;
 	
 	/* Renderizar el texto de Start */
-	play_button_text = TTF_RenderUTF8_Blended (ttf20_acme, "START", blanco);
+	play_button_text = TTF_RenderUTF8_Blended (ttf20_acme, _("START"), blanco);
 	
 	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
 	
@@ -1034,6 +1044,8 @@ int game_intro_old (void) {
 		now_time = SDL_GetTicks ();
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
 	} while (!done);
+	
+	SDL_FreeSurface (play_button_text);
 	
 	return done;
 }
@@ -1183,8 +1195,8 @@ int game_intro_new (void) {
 	cafe.r = 0x54; cafe.g = 0x32; cafe.b = 0x01;
 	
 	/* Renderizar el texto de los botones */
-	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "PLAY", cafe);
-	how_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, "INSTRUCTIONS", cafe);
+	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, _("PLAY"), cafe);
+	how_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, _("INSTRUCTIONS"), cafe);
 	
 	TTF_CloseFont (ttf18_burbank_bold);
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
@@ -1343,6 +1355,9 @@ int game_intro_new (void) {
 		now_time = SDL_GetTicks ();
 		if (now_time < last_time + FPS) SDL_Delay(last_time + FPS - now_time);
 	} while (!done);
+	
+	SDL_FreeSurface (play_text);
+	SDL_FreeSurface (how_text);
 	
 	return done;
 }
@@ -2575,9 +2590,9 @@ void setup (void) {
 	/* Inicializar el Video SDL */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		fprintf (stderr,
-			"Error: Can't initialize the video subsystem\n"
+			_("Error: Can't initialize the video subsystem\n"
 			"The error returned by SDL is:\n"
-			"%s\n", SDL_GetError());
+			"%s\n"), SDL_GetError());
 		exit (1);
 	}
 	
@@ -2593,24 +2608,24 @@ void setup (void) {
 	
 	if (screen == NULL) {
 		fprintf (stderr,
-			"Error: Can't setup 760x480 video mode.\n"
+			_("Error: Can't setup 760x480 video mode.\n"
 			"The error returned by SDL is:\n"
-			"%s\n", SDL_GetError());
+			"%s\n"), SDL_GetError());
 		exit (1);
 	}
 	
 	use_sound = 1;
 	if (SDL_InitSubSystem (SDL_INIT_AUDIO) < 0) {
 		fprintf (stdout,
-			"Warning: Can't initialize the audio subsystem\n"
-			"Continuing...\n");
+			_("Warning: Can't initialize the audio subsystem\n"
+			"Continuing...\n"));
 		use_sound = 0;
 	}
 	if (use_sound) {
 		/* Inicializar el sonido */
 		if (Mix_OpenAudio (22050, AUDIO_S16, 2, 4096) < 0) {
 			fprintf (stdout,
-				"Warning: Can't initialize the SDL Mixer library\n");
+				_("Warning: Can't initialize the SDL Mixer library\n"));
 			use_sound = 0;
 		} else {
 			Mix_AllocateChannels (5);
@@ -2622,10 +2637,10 @@ void setup (void) {
 		
 		if (image == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_names[g], SDL_GetError());
+				"%s\n"), images_names[g], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2647,10 +2662,10 @@ void setup (void) {
 		
 			if (image == NULL) {
 				fprintf (stderr,
-					"Failed to load data file:\n"
+					_("Failed to load data file:\n"
 					"%s\n"
 					"The error returned by SDL is:\n"
-					"%s\n", images_intro_old_names[g], SDL_GetError());
+					"%s\n"), images_intro_old_names[g], SDL_GetError());
 				SDL_Quit ();
 				exit (1);
 			}
@@ -2665,10 +2680,10 @@ void setup (void) {
 		
 		if (image2 == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_intro_new_names [IMG_INTRO_NEW_PENGUIN], SDL_GetError());
+				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_PENGUIN], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2687,10 +2702,10 @@ void setup (void) {
 		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_BACKGROUND]);
 		if (image == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_intro_new_names [IMG_INTRO_NEW_BACKGROUND], SDL_GetError());
+				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_BACKGROUND], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2708,10 +2723,10 @@ void setup (void) {
 		image2 = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_TOP]);
 		if (image2 == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_intro_new_names [IMG_INTRO_NEW_TOP], SDL_GetError());
+				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_TOP], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2726,10 +2741,10 @@ void setup (void) {
 		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_CANDY]);
 		if (image == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_intro_new_names [IMG_INTRO_NEW_CANDY], SDL_GetError());
+				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_CANDY], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2739,10 +2754,10 @@ void setup (void) {
 		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_EXPLAIN]);
 		if (image == NULL) {
 			fprintf (stderr,
-				"Failed to load data file:\n"
+				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n", images_intro_new_names [IMG_INTRO_NEW_EXPLAIN], SDL_GetError());
+				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_EXPLAIN], SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2756,10 +2771,10 @@ void setup (void) {
 			
 			if (sounds[g] == NULL) {
 				fprintf (stderr,
-					"Failed to load data file:\n"
+					_("Failed to load data file:\n"
 					"%s\n"
 					"The error returned by SDL is:\n"
-					"%s\n", sound_names [g], SDL_GetError ());
+					"%s\n"), sound_names [g], SDL_GetError ());
 				SDL_Quit ();
 				exit (1);
 			}
@@ -2780,9 +2795,9 @@ void setup (void) {
 		
 		if (music == NULL) {
 			fprintf (stderr,
-				"Failed to load a music file.\n"
+				_("Failed to load a music file.\n"
 				"The error returned by SDL is:\n"
-				"%s\n", SDL_GetError ());
+				"%s\n"), SDL_GetError ());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2791,8 +2806,8 @@ void setup (void) {
 	/* Cargar las tipografias */
 	if (TTF_Init () < 0) {
 		fprintf (stderr,
-			"Error: Can't initialize the SDL TTF library\n"
-			"%s\n", TTF_GetError ());
+			_("Error: Can't initialize the SDL TTF library\n"
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -2801,9 +2816,9 @@ void setup (void) {
 	
 	if (!ttf10_burbank_bold) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -2812,9 +2827,9 @@ void setup (void) {
 	
 	if (!ttf12_burbank_bold) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -2826,9 +2841,9 @@ void setup (void) {
 		
 		if (!ttf16_acme || !ttf20_acme) {
 			fprintf (stderr,
-				"Failed to load font file 'Acme Explosive'\n"
+				_("Failed to load font file 'Acme Explosive'\n"
 				"The error returned by SDL is:\n"
-				"%s\n", TTF_GetError ());
+				"%s\n"), TTF_GetError ());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2838,9 +2853,9 @@ void setup (void) {
 	
 		if (!ttf18_burbank_bold) {
 			fprintf (stderr,
-				"Failed to load font file 'Burbank Small Bold'\n"
+				_("Failed to load font file 'Burbank Small Bold'\n"
 				"The error returned by SDL is:\n"
-				"%s\n", TTF_GetError ());
+				"%s\n"), TTF_GetError ());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2850,46 +2865,46 @@ void setup (void) {
 	
 	if (!ttf9_burbank_bold) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
 	negro.r = negro.g = negro.b = 0;
 	
-	texts[TEXT_PIZZAS_MADE] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS MADE", negro);
-	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "PIZZAS LEFT", negro);
-	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, "MISTAKES", negro);
+	texts[TEXT_PIZZAS_MADE] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("PIZZAS MADE"), negro);
+	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("PIZZAS LEFT"), negro);
+	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("MISTAKES"), negro);
 	
 	ttf13_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 13);
 	
 	if (!ttf13_burbank_bold) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, "COINS", negro);
+	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, _("COINS"), negro);
 	
 	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 38);
 	
 	if (!temp) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Big Regular'\n"
+			_("Failed to load font file 'Burbank Big Regular'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	/* Utilizar esta fuente para pre-renderizar el texto de "pizza completa" */
 	negro.r = negro.g = negro.b = 0;
 	
-	texts[TEXT_DONE_LABEL] = TTF_RenderUTF8_Blended (temp, "DONE!", negro);
+	texts[TEXT_DONE_LABEL] = TTF_RenderUTF8_Blended (temp, _("DONE!"), negro);
 	
 	TTF_CloseFont (temp);
 	
@@ -2897,15 +2912,15 @@ void setup (void) {
 	
 	if (!temp) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	texts[TEXT_5_COINS] = TTF_RenderUTF8_Blended (temp, "+5 COINS", negro);
-	texts[TEXT_10_COINS] = TTF_RenderUTF8_Blended (temp, "+10 COINS", negro);
+	texts[TEXT_5_COINS] = TTF_RenderUTF8_Blended (temp, _("+5 COINS"), negro);
+	texts[TEXT_10_COINS] = TTF_RenderUTF8_Blended (temp, _("+10 COINS"), negro);
 	
 	TTF_CloseFont (temp);
 	
@@ -2913,19 +2928,19 @@ void setup (void) {
 	
 	if (!temp) {
 		fprintf (stderr,
-			"Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n", TTF_GetError ());
+			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	texts[TEXT_TIP_10] = TTF_RenderUTF8_Blended (temp, "+10 TIP!", negro);
-	texts[TEXT_TIP_15] = TTF_RenderUTF8_Blended (temp, "+15 TIP!", negro);
-	texts[TEXT_TIP_20] = TTF_RenderUTF8_Blended (temp, "+20 TIP!", negro);
-	texts[TEXT_TIP_25] = TTF_RenderUTF8_Blended (temp, "+25 TIP!", negro);
-	texts[TEXT_TIP_30] = TTF_RenderUTF8_Blended (temp, "+30 TIP!", negro);
-	texts[TEXT_TIP_35] = TTF_RenderUTF8_Blended (temp, "+35 TIP!", negro);
+	texts[TEXT_TIP_10] = TTF_RenderUTF8_Blended (temp, _("+10 TIP!"), negro);
+	texts[TEXT_TIP_15] = TTF_RenderUTF8_Blended (temp, _("+15 TIP!"), negro);
+	texts[TEXT_TIP_20] = TTF_RenderUTF8_Blended (temp, _("+20 TIP!"), negro);
+	texts[TEXT_TIP_25] = TTF_RenderUTF8_Blended (temp, _("+25 TIP!"), negro);
+	texts[TEXT_TIP_30] = TTF_RenderUTF8_Blended (temp, _("+30 TIP!"), negro);
+	texts[TEXT_TIP_35] = TTF_RenderUTF8_Blended (temp, _("+35 TIP!"), negro);
 	
 	TTF_CloseFont (temp);
 }
@@ -2942,95 +2957,95 @@ void setup_texts (void) {
 	negro.r = negro.g = negro.b = 0;
 	
 	if (candy_mode) {
-		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE SPRINKLE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK ICING SPRINKLE", azul);
-		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK CHOCOLATE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "JELLY BEAN PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK JELLY BEAN PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE-CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE-CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW JELLY PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW JELLY PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE MARSHMALLOW PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE MARSHMALLOW PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "JELLY CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK JELLY CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "LIQUORICE JELLY PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK LIQUORICE JELLY PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "MARSHMALLOW CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK MARSHMALLOW CHIP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHOCOLATE SUGAR PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "PINK SUGAR PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("CHOCOLATE SPRINKLE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK ICING SPRINKLE"), azul);
+		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("LIQUORICE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK LIQUORICE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("CHOCOLATE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK CHOCOLATE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("MARSHMALLOW PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK MARSHMALLOW PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("JELLY BEAN PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK JELLY BEAN PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("LIQUORICE-CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK LIQUORICE-CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("MARSHMALLOW JELLY PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK MARSHMALLOW JELLY PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("LIQUORICE MARSHMALLOW PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK LIQUORICE MARSHMALLOW PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("JELLY CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK JELLY CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("LIQUORICE JELLY PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK LIQUORICE JELLY PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("MARSHMALLOW CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK MARSHMALLOW CHIP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("CHOCOLATE SUGAR PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PINK SUGAR PIZZA"), azul);
 		
-		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "SPRINKLES", azul);
+		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("SPRINKLES"), azul);
 		
-		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "CHOCOLATE SAUCE", azul);
-		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "PINK ICING", azul);
+		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("CHOCOLATE SAUCE"), azul);
+		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("PINK ICING"), azul);
 		
-		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 LIQUORICE", azul);
-		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 CHOCOLATE CHIPS", azul);
-		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 MARSHMALLOWS", azul);
-		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 JELLY BEANS", azul);
+		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 LIQUORICE"), azul);
+		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 CHOCOLATE CHIPS"), azul);
+		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 MARSHMALLOWS"), azul);
+		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 JELLY BEANS"), azul);
 		
-		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 LIQUORICE", azul);
-		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 CHOCOLATE CHIPS", azul);
-		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 MARSHMALLOWS", azul);
-		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 JELLY BEANS", azul);
+		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 LIQUORICE"), azul);
+		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 CHOCOLATE CHIPS"), azul);
+		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 MARSHMALLOWS"), azul);
+		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 JELLY BEANS"), azul);
 		
-		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 LIQUORICE", azul);
-		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 CHOCOLATE CHIP", azul);
-		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 MARSHMALLOW", azul);
-		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 JELLY BEAN", azul);
+		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 LIQUORICE"), azul);
+		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 CHOCOLATE CHIP"), azul);
+		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 MARSHMALLOW"), azul);
+		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 JELLY BEAN"), azul);
 	} else {
-		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "CHEESE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT CHEESE PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SPICY SEAWEED PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SPICY SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FLAMETHROWER FISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED-SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED-SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH DISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT FISH DISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED-SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED-SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "FISH SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT FISH SHRIMP PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SEAWEED FISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SEAWEED FISH PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SHRIMP SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "HOT SHRIMP SQUID PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SUPREME PIZZA", azul);
-		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, "SUPREME SIZZLE PIZZA", azul);
+		texts[TEXT_PIZZA_ORDER_1] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("CHEESE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_2] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT CHEESE PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_3] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SEAWEED PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_4] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SPICY SEAWEED PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_5] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_6] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_7] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_8] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SPICY SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_9] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("FISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_10] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("FLAMETHROWER FISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_11] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SEAWEED-SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_12] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT SEAWEED-SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_13] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("FISH DISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_14] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT FISH DISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_15] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SEAWEED-SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_16] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT SEAWEED-SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_17] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("FISH SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_18] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT FISH SHRIMP PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_19] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SEAWEED FISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_20] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT SEAWEED FISH PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_21] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SHRIMP SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_22] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("HOT SHRIMP SQUID PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_23] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SUPREME PIZZA"), azul);
+		texts[TEXT_PIZZA_ORDER_24] = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SUPREME SIZZLE PIZZA"), azul);
 		
-		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "CHEESE", azul);
+		texts[TEXT_CHEESE_SPRINKLES] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("CHEESE"), azul);
 		
-		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "PIZZA SAUCE", azul);
-		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "HOT SAUCE", azul);
+		texts[TEXT_SAUCE_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("PIZZA SAUCE"), azul);
+		texts[TEXT_SAUCE_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("HOT SAUCE"), azul);
 		
-		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SEAWEED", azul);
-		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SHRIMP", azul);
-		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 SQUID", azul);
-		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "5 FISH", azul);
+		texts[TEXT_5_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 SEAWEED"), azul);
+		texts[TEXT_5_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 SHRIMP"), azul);
+		texts[TEXT_5_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 SQUID"), azul);
+		texts[TEXT_5_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 FISH"), azul);
 		
-		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SEAWEED", azul);
-		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SHRIMP", azul);
-		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 SQUID", azul);
-		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "2 FISH", azul);
+		texts[TEXT_2_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 SEAWEED"), azul);
+		texts[TEXT_2_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 SHRIMP"), azul);
+		texts[TEXT_2_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 SQUID"), azul);
+		texts[TEXT_2_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("2 FISH"), azul);
 		
-		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SEAWEED", azul);
-		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SHRIMP", azul);
-		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 SQUID", azul);
-		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, "1 FISH", azul);
+		texts[TEXT_1_TOPPING_1] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 SEAWEED"), azul);
+		texts[TEXT_1_TOPPING_2] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 SHRIMP"), azul);
+		texts[TEXT_1_TOPPING_3] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 SQUID"), azul);
+		texts[TEXT_1_TOPPING_4] = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("1 FISH"), azul);
 	}
 	
 	/* La 10 y la 12 ya no son necesarias */
@@ -3146,10 +3161,10 @@ void setup_ending (int fin) {
 		
 	if (image == NULL) {
 		fprintf (stderr,
-			"Failed to load data file:\n"
+			_("Failed to load data file:\n"
 			"%s\n"
 			"The error returned by SDL is:\n"
-			"%s\n", images_end_names [fin], SDL_GetError());
+			"%s\n"), images_end_names [fin], SDL_GetError());
 		SDL_Quit ();
 		exit (1);
 	}
