@@ -50,6 +50,7 @@
 #include "cp-button.h"
 
 #include "cpstamp.h"
+#include "rotar.h"
 
 #define FPS (1000/24)
 
@@ -1283,7 +1284,7 @@ int game_loop (int *fin) {
 	int midleft, left, midright, right, top, bottom;
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
 	int pizzas_hechas = 0, orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
-	SDL_Surface *splat_surface, *splat_surface2;
+	SDL_Surface *splat_surface, *splat_surface2, *rotated;
 	
 	DroppedTopping dropped_tops[20];
 	int dropt_queue_start = 0, dropt_queue_end = 0;
@@ -2337,7 +2338,25 @@ int game_loop (int *fin) {
 			
 			rect.w = images[image]->w;
 			rect.h = images[image]->h;
-			SDL_BlitSurface (images[image], NULL, screen, &rect);
+			
+			if (dropped_tops[g].rotable) {
+				int r_x, r_y;
+				coordenadas_centro (-1 * (rect.x - dropped_tops[g].x), -1 * (rect.y - dropped_tops[g].y), images[image]->w, images[image]->h, dropped_tops[g].angulo, &r_x, &r_y);
+				
+				rotated = rotozoomSurface (images[image], dropped_tops[g].angulo, 1);
+				
+				rect.x += r_x;
+				rect.y += r_y;
+				dropped_tops[g].angulo -= dropped_tops[g].speed_x;
+				if (dropped_tops[g].angulo < 0) dropped_tops[g].angulo += 360;
+			} else {
+				rotated = images[image];
+			}
+			SDL_BlitSurface (rotated, NULL, screen, &rect);
+			
+			if (dropped_tops[g].rotable) {
+				SDL_FreeSurface (rotated);
+			}
 			
 			if (dropped_tops[g].speed_y > 20.0) {
 				dropped_tops[g].speed_y = dropped_tops[g].speed_y - 1.0;
