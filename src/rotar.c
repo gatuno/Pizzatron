@@ -283,7 +283,7 @@ SDL_Surface *rotozoomSurface(SDL_Surface * src, double angle, int smooth) {
 #if SDL_BYTEORDER == SDL_LIL_ENDIAN
 			0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000
 #else
-			0xff000000,  0x00ff0000, 0x0000ff00, 0x000000ff
+			0xff000000, 0x00ff0000, 0x0000ff00, 0x000000ff
 #endif
 			);
 		if(colorKeyAvailable)

@@ -3,7 +3,7 @@
 gamedatadir = $(pkgdatadir)/data
 
 bin_PROGRAMS = pizzatron
-pizzatron_SOURCES = pizzatron.c cp-button.c cp-button.h gettext.h rotar.c rotar.h
+pizzatron_SOURCES = pizzatron.c cp-button.c cp-button.h gettext.h rotar.c rotar.h draw-text.c draw-text.h
 EXTRA_DIST = pizzatron.rc
 
 if MINGW32

@@ -183,6 +183,7 @@ nobase_dist_gamedata_DATA = images/background.png \
 	music/music_344.ogg \
 	music/music_385.ogg \
 	burbanksb.ttf \
+	burbanks.ttf \
 	burbankbgbk.ttf \
 	acmeexplosive.ttf
 

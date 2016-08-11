@@ -51,6 +51,7 @@
 
 #include "cpstamp.h"
 #include "rotar.h"
+#include "draw-text.h"
 
 #define FPS (1000/24)
 
@@ -732,6 +733,9 @@ TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
 /* La 18 para el intro nuevo y las acme para el intro viejo */
 TTF_Font *ttf18_burbank_bold, *ttf16_acme, *ttf20_acme;
 
+/* La 28 se usa para el intro nuevo */
+TTF_Font *ttf28_burbank_bold, *ttf14_burbank_bold;
+
 CPStampCategory *c;
 CPStampHandle *stamp_handle;
 
@@ -837,6 +841,9 @@ int game_intro_old (void) {
 	play_button_text = TTF_RenderUTF8_Blended (ttf20_acme, _("START"), blanco);
 	
 	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
+	
+	TTF_CloseFont (ttf20_acme);
+	TTF_CloseFont (ttf16_acme);
 	
 	/* Dibujar el boton de cierre */
 	rect.x = 721; rect.y = 9;
@@ -953,7 +960,99 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	SDL_Rect rect, rect2, update_rects[6];
 	int num_rects;
 	int map;
+	SDL_Surface *text;
+	SDL_Color cafe, blanco, negro;
 	
+	negro.r = negro.b = negro.g = 0x00;
+	cafe.r = 0x7b; cafe.g = 0x3f; cafe.b = 0x29;
+	blanco.r = blanco.g = blanco.b = 0xFF;
+	
+	/* Renderizar los textos */
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("ORDERS"), cafe);
+	rect.x = 26;
+	rect.y = 25;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("ORDERS"), blanco);
+	rect.x = 24;
+	rect.y = 23;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("SAUCES"), cafe);
+	rect.x = 668 - text->w;
+	rect.y = 33;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("SAUCES"), blanco);
+	rect.x = 666 - text->w;
+	rect.y = 31;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("TOPPINGS"), cafe);
+	rect.x = 507 - text->w;
+	rect.y = 242;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("TOPPINGS"), blanco);
+	rect.x = 504 - text->w;
+	rect.y = 239;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto debajo de las órdenes */
+	text = draw_text (ttf14_burbank_bold, _("Make pizza to\nmatch the orders\non the screen."), negro, ALIGN_LEFT, 0);
+	rect.x = 24;
+	rect.y = 80;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto debajo de las salsas */
+	text = draw_text (ttf14_burbank_bold, _("Pick your sauce\nand spread it over\nthe entire pizza."), negro, ALIGN_LEFT, 0);
+	rect.x = 560;
+	rect.y = 147;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto de los ingredientes */
+	text = draw_text (ttf14_burbank_bold, _("Drag toppings onto your\npizza to match the order."), negro, ALIGN_LEFT, 0);
+	rect.x = 516;
+	rect.y = 239;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	/* Predibujar todo */
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
 	
 	/* Dibujar las instrucciones */
@@ -1254,6 +1353,9 @@ int game_intro_new (void) {
 	
 	SDL_FreeSurface (play_text);
 	SDL_FreeSurface (how_text);
+	
+	TTF_CloseFont (ttf28_burbank_bold);
+	TTF_CloseFont (ttf14_burbank_bold);
 	
 	return done;
 }
@@ -2742,6 +2844,7 @@ void setup (void) {
 		exit (1);
 	}
 	
+	/* La 10 y 12 son para los nombres de las pizzas */
 	ttf10_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 10);
 	
 	if (!ttf10_burbank_bold) {
@@ -2763,6 +2866,8 @@ void setup (void) {
 		SDL_Quit ();
 		exit (1);
 	}
+	
+	/* Se cierran cuando se renderizan los nombres */
 	
 	if (intro == 0) {
 		/* Tipografia exclusiva para el intro viejo */
@@ -2789,6 +2894,22 @@ void setup (void) {
 			SDL_Quit ();
 			exit (1);
 		}
+		
+		/* Se cierra en el intro nuevo */
+		
+		ttf28_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 28);
+		ttf14_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanks.ttf", 14);
+		
+		if (!ttf28_burbank_bold || !ttf14_burbank_bold) {
+			fprintf (stderr,
+				_("Failed to load font file 'Burbank Small Bold'\n"
+				"The error returned by SDL is:\n"
+				"%s\n"), TTF_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		/* Ambas se cierran en el intro nuevo */
 	}
 	
 	ttf9_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 9);
@@ -2820,6 +2941,8 @@ void setup (void) {
 	}
 	
 	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, _("COINS"), negro);
+	
+	/* La ttf9 y ttf13 no se cierran, se usan para la comanda */
 	
 	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 38);
 	
