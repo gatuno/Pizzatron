@@ -483,6 +483,9 @@ enum {
 	SND_OVERFLOW,
 	SND_THROW,
 	
+	SND_SAUCE_1,
+	SND_SAUCE_2,
+	
 	NUM_SOUNDS
 };
 
@@ -493,6 +496,9 @@ const char *sound_names[NUM_SOUNDS] = {
 	GAMEDATA_DIR "sounds/topping.wav",
 	GAMEDATA_DIR "sounds/overflow.wav",
 	GAMEDATA_DIR "sounds/throw.wav",
+	
+	GAMEDATA_DIR "sounds/sauce1.wav",
+	GAMEDATA_DIR "sounds/sauce2.wav",
 };
 
 #define MUS_106 GAMEDATA_DIR "music/music_106.ogg"
@@ -1527,6 +1533,9 @@ int game_loop (int *fin) {
 						dropped_tops[dropt_queue_end].speed_x = 0 - strengthX;
 						dropped_tops[dropt_queue_end].speed_y = 20 - strengthY;
 						
+						if (strengthX >= 30 || strengthX <= -30) {
+							if (use_sound) Mix_PlayChannel (2, sounds[SND_THROW], 0);
+						}
 						lanzados[hand] = 1;
 						dropt_queue_end = (dropt_queue_end + 1) % 20;
 						
@@ -1670,6 +1679,7 @@ int game_loop (int *fin) {
 					rect.h = images[IMG_INGREDIENTS_HOLDER_A_3]->h;
 					
 					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_3], NULL, screen, &rect);
+					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_1], 0);
 					break;
 				case 2:
 					rect.x = 19;
@@ -1791,6 +1801,7 @@ int game_loop (int *fin) {
 					break;
 				case 1:
 					rect.y = 147;
+					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_2], 0);
 					break;
 				case 2:
 					rect.y = 180;
@@ -2271,7 +2282,7 @@ int game_loop (int *fin) {
 					order_screen_done = ORDER_SCREEN_TIP_10;
 					tips = tips + 10;
 				}
-				/* TODO: Revisar aquí por varias estampas */
+				
 				score = score + 5;
 				if (candy_mode) score = score + 5;
 				
@@ -2369,7 +2380,7 @@ int game_loop (int *fin) {
 			//printf ("Recorriend el dropped: %i\n", g);
 			if (dropped_tops[g].type >= SAUCE_NORMAL && dropped_tops[g].type <= SAUCE_PINK) {
 				if (dropped_tops[g].type == SAUCE_HOT) {
-					rect.x = dropped_tops[g].x - 24; /* FIXME: Arreglar estas coordenadas */
+					rect.x = dropped_tops[g].x - 24;
 					rect.y = dropped_tops[g].y - 58;
 					image = IMG_HOT_SAUCE;
 				} else {
@@ -2486,7 +2497,6 @@ int game_loop (int *fin) {
 		}
 		
 		if (ordenes_hechas >= 40) {
-			
 			done = GAME_CONTINUE;
 			if (pizzas_hechas >= 40) {
 				*fin = END_PERFECT;

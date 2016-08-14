@@ -178,6 +178,8 @@ nobase_dist_gamedata_DATA = images/background.png \
 	sounds/sauce.wav \
 	sounds/throw.wav \
 	sounds/topping.wav \
+	sounds/sauce1.wav \
+	sounds/sauce2.wav \
 	music/music_106.ogg \
 	music/music_270.ogg \
 	music/music_344.ogg \
