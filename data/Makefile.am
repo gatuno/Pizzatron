@@ -135,7 +135,8 @@ nobase_dist_gamedata_DATA = images/background.png \
 	images/boton_1_up.png \
 	images/boton_2_over.png \
 	images/boton_2_up.png \
-	images/boton_old_up.png \
+	images/boton_3_over.png \
+	images/boton_3_up.png \
 	images/cheese_drop.png \
 	images/sprinkles_drop.png \
 	images/topping_1_1_dropped.png \

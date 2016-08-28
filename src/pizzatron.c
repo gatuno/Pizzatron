@@ -259,6 +259,10 @@ enum {
 	IMG_BUTTON_2_OVER,
 	IMG_BUTTON_2_DOWN,
 	
+	IMG_BUTTON_3_UP,
+	IMG_BUTTON_3_OVER,
+	IMG_BUTTON_3_DOWN,
+	
 	NUM_IMAGES
 };
 
@@ -437,6 +441,10 @@ const char *images_names[NUM_IMAGES] = {
 	GAMEDATA_DIR "images/boton_2_up.png",
 	GAMEDATA_DIR "images/boton_2_over.png",
 	GAMEDATA_DIR "images/boton_2_over.png",
+	
+	GAMEDATA_DIR "images/boton_3_up.png",
+	GAMEDATA_DIR "images/boton_3_over.png",
+	GAMEDATA_DIR "images/boton_3_over.png",
 };
 
 enum {
@@ -463,16 +471,12 @@ enum {
 	IMG_INTRO_OLD_BACKGROUND,
 	IMG_INTRO_OLD_CANDY,
 	
-	IMG_INTRO_OLD_BUTTON,
-	
 	NUM_INTRO_OLD_IMAGES
 };
 
 const char *images_intro_old_names [NUM_INTRO_OLD_IMAGES] = {
 	GAMEDATA_DIR "images/intro_old_background.png",
 	GAMEDATA_DIR "images/intro_old_candy_lever.png",
-	
-	GAMEDATA_DIR "images/boton_old_up.png"
 };
 
 enum {
@@ -660,6 +664,8 @@ enum {
 	
 	BUTTON_UI_INTRO_HOW_PLAY,
 	
+	BUTTON_END_DONE,
+	
 	NUM_BUTTONS
 };
 
@@ -730,8 +736,10 @@ int candy_mode;
 int intro; /* Cuál de los 2 intros se va a dibujar */
 int order_screen_timer;
 int order_screen_done;
+int pizzas_hechas = 0, score = 0, tips = 0;
 
 /* La 10 y 12 se usan para renderizar los nombres de las pizzas */
+/* La 12 se utiliza en la pantalla de ending */
 TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
 /* La 9 y 13 se usan para la comanda */
 TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
@@ -766,6 +774,7 @@ int main (int argc, char *argv[]) {
 	cp_registrar_boton (BUTTON_UI_INTRO_PLAY, IMG_BUTTON_1_UP);
 	cp_registrar_boton (BUTTON_UI_INTRO_HOW, IMG_BUTTON_1_UP);
 	cp_registrar_boton (BUTTON_UI_INTRO_HOW_PLAY, IMG_BUTTON_2_UP);
+	cp_registrar_boton (BUTTON_END_DONE, IMG_BUTTON_3_UP);
 	cp_button_start ();
 	
 	/* Registrar las estampas */
@@ -859,13 +868,13 @@ int game_intro_old (void) {
 	
 	/* Dibujar el boton de jugar */
 	rect.x = 49; rect.y = 425;
-	rect.w = images_intro_old [IMG_INTRO_OLD_BUTTON]->w;
-	rect.h = images_intro_old [IMG_INTRO_OLD_BUTTON]->h;
+	rect.w = images [IMG_BUTTON_3_UP]->w;
+	rect.h = images [IMG_BUTTON_3_UP]->h;
 	
-	SDL_BlitSurface (images_intro_old[IMG_INTRO_OLD_BUTTON], NULL, screen, &rect);
+	SDL_BlitSurface (images[IMG_BUTTON_3_UP], NULL, screen, &rect);
 	
 	/* Su texto */
-	rect.x = 49 + 4 + (images_intro_old [IMG_INTRO_OLD_BUTTON]->w - play_button_text->w) / 2;
+	rect.x = 49 + 4 + (images[IMG_BUTTON_3_UP]->w - play_button_text->w) / 2;
 	rect.y = 436;
 	rect.w = play_button_text->w;
 	rect.h = play_button_text->h;
@@ -967,11 +976,12 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	int num_rects;
 	int map;
 	SDL_Surface *text;
-	SDL_Color cafe, blanco, negro;
+	SDL_Color cafe, blanco, negro, azul;
 	
 	negro.r = negro.b = negro.g = 0x00;
 	cafe.r = 0x7b; cafe.g = 0x3f; cafe.b = 0x29;
 	blanco.r = blanco.g = blanco.b = 0xFF;
+	azul.r = 0x01; azul.g = 0x45; azul.b = 0x87;
 	
 	/* Renderizar los textos */
 	text = TTF_RenderUTF8_Blended (ttf28_burbank_bold, _("ORDERS"), cafe);
@@ -1052,6 +1062,43 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	text = draw_text (ttf14_burbank_bold, _("Drag toppings onto your\npizza to match the order."), negro, ALIGN_LEFT, 0);
 	rect.x = 516;
 	rect.y = 239;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto de la comanda */
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("CHEESE PIZZA"), azul);
+	rect.x = 163;
+	rect.y = 60;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("CHEESE"), azul);
+	rect.x = 260;
+	rect.y = 86;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("PIZZA SAUCE"), azul);
+	rect.x = 260;
+	rect.y = 102;
+	rect.w = text->w;
+	rect.h = text->h;
+	
+	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf10_burbank_bold, _("5 SHRIMP"), azul);
+	rect.x = 260;
+	rect.y = 132;
 	rect.w = text->w;
 	rect.h = text->h;
 	
@@ -1199,7 +1246,6 @@ int game_intro_new (void) {
 	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, _("PLAY"), cafe);
 	how_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, _("INSTRUCTIONS"), cafe);
 	
-	TTF_CloseFont (ttf18_burbank_bold);
 	SDL_BlitSurface (images_intro_new [IMG_INTRO_NEW_BACKGROUND], NULL, screen, NULL);
 	
 	/* Dibujar el boton de cierre */
@@ -1360,6 +1406,7 @@ int game_intro_new (void) {
 	SDL_FreeSurface (play_text);
 	SDL_FreeSurface (how_text);
 	
+	TTF_CloseFont (ttf18_burbank_bold);
 	TTF_CloseFont (ttf28_burbank_bold);
 	TTF_CloseFont (ttf14_burbank_bold);
 	
@@ -1391,12 +1438,11 @@ int game_loop (int *fin) {
 	Uint32 *pixel;
 	int midleft, left, midright, right, top, bottom;
 	int hand_frame, pizza_overflow = -1, perfect_pizza;
-	int pizzas_hechas = 0, orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
+	int orden, pizzas_consecutivas, failures = 0, ordenes_hechas = 0;
 	SDL_Surface *splat_surface, *splat_surface2, *rotated;
 	
 	DroppedTopping dropped_tops[20];
 	int dropt_queue_start = 0, dropt_queue_end = 0;
-	int score = 0, tips = 0;
 	int lanzados[TOPPING_8 + 1];
 	int no_marshmallow_pizzas = 0, no_jelly_pizzas = 0, no_squid_pizzas = 0, no_shrimp_pizzas = 0;
 	
@@ -1670,6 +1716,7 @@ int game_loop (int *fin) {
 					rect.h = images[IMG_INGREDIENTS_HOLDER_A_2]->h;
 			
 					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_2], NULL, screen, &rect);
+					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_1], 0);
 					break;
 				case 1:
 					rect.x = 19;
@@ -1679,7 +1726,6 @@ int game_loop (int *fin) {
 					rect.h = images[IMG_INGREDIENTS_HOLDER_A_3]->h;
 					
 					SDL_BlitSurface (images[IMG_INGREDIENTS_HOLDER_A_3], NULL, screen, &rect);
-					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_1], 0);
 					break;
 				case 2:
 					rect.x = 19;
@@ -1798,10 +1844,10 @@ int game_loop (int *fin) {
 			switch (sauce_timer) {
 				case 0:
 					rect.y = 151;
+					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_2], 0);
 					break;
 				case 1:
 					rect.y = 147;
-					if (use_sound) Mix_PlayChannel (4, sounds[SND_SAUCE_2], 0);
 					break;
 				case 2:
 					rect.y = 180;
@@ -2531,7 +2577,7 @@ int game_end (int fin) {
 	int done = 0;
 	SDL_Event event;
 	Uint32 last_time, now_time;
-	SDL_Rect rect, rect2;
+	SDL_Rect rect;
 	SDL_Rect update_rects[6];
 	int num_rects;
 	int map;
@@ -2543,6 +2589,11 @@ int game_end (int fin) {
 	rect.x = 721; rect.y = 9;
 	rect.w = images[IMG_BUTTON_CLOSE_UP]->w; rect.h = images[IMG_BUTTON_CLOSE_UP]->h;
 	SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
+	
+	/* Dibujar el boton de done */
+	rect.x = 49; rect.y = 428;
+	rect.w = images[IMG_BUTTON_3_UP]->w; rect.h = images[IMG_BUTTON_3_UP]->h;
+	SDL_BlitSurface (images[cp_button_frames[BUTTON_END_DONE]], NULL, screen, &rect);
 	
 	SDL_Flip (screen);
 	
@@ -2556,12 +2607,12 @@ int game_end (int fin) {
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
 				case SDL_MOUSEMOTION:
-					map = map_button_in_opening_old (event.motion.x, event.motion.y);
+					map = map_button_in_finish (event.motion.x, event.motion.y);
 					cp_button_motion (map);
 					break;
 				case SDL_MOUSEBUTTONUP:
 					if (event.button.button != SDL_BUTTON_LEFT) break;
-					map = map_button_in_opening_old (event.button.x, event.button.y);
+					map = map_button_in_finish (event.button.x, event.button.y);
 					map = cp_button_up (map);
 					
 					switch (map) {
@@ -2574,14 +2625,11 @@ int game_end (int fin) {
 					/* Motor de botones primero */
 					if (event.button.button != SDL_BUTTON_LEFT) break;
 					
-					map = map_button_in_opening_old (event.button.x, event.button.y);
+					map = map_button_in_finish (event.button.x, event.button.y);
 					cp_button_down (map);
 					break;
 				case SDL_QUIT:
 					done = GAME_QUIT;
-					break;
-				case SDL_KEYDOWN:
-					done = GAME_CONTINUE;
 					break;
 			}
 		}
@@ -2595,6 +2643,17 @@ int game_end (int fin) {
 			SDL_BlitSurface (images[cp_button_frames[BUTTON_CLOSE]], NULL, screen, &rect);
 			update_rects[num_rects++] = rect;
 			cp_button_refresh[BUTTON_CLOSE] = 0;
+		}
+		
+		if (cp_button_refresh[BUTTON_END_DONE]) {
+			rect.x = 49; rect.y = 428;
+			rect.w = images[IMG_BUTTON_3_UP]->w; rect.h = images[IMG_BUTTON_3_UP]->h;
+			
+			SDL_BlitSurface (image_background_ending, &rect, screen, &rect);
+			
+			SDL_BlitSurface (images[cp_button_frames[BUTTON_END_DONE]], NULL, screen, &rect);
+			update_rects[num_rects++] = rect;
+			cp_button_refresh[BUTTON_END_DONE] = 0;
 		}
 		
 		if (CPStamp_IsActive (stamp_handle)) {
@@ -3113,7 +3172,7 @@ void setup_texts (void) {
 	
 	/* La 10 y la 12 ya no son necesarias */
 	TTF_CloseFont (ttf10_burbank_bold);
-	TTF_CloseFont (ttf12_burbank_bold);
+	//TTF_CloseFont (ttf12_burbank_bold); /* Se utiliza otra vez en el ending, por lo tanto, no se cierra */
 	
 	/* Cerrar las imágenes que no son necesarias */
 	if (candy_mode) {
@@ -3200,7 +3259,14 @@ void setup_texts (void) {
 }
 
 void setup_ending (int fin) {
-	SDL_Surface *image;
+	SDL_Surface *image, *text;
+	TTF_Font *temp;
+	SDL_Color blanco, negro;
+	SDL_Rect rect;
+	char buffer[10];
+	
+	blanco.r = blanco.g = blanco.b = 0xFF;
+	negro.r = negro.g = negro.b = 0;
 	
 	image = IMG_Load (images_end_names [fin]);
 		
@@ -3214,6 +3280,151 @@ void setup_ending (int fin) {
 		exit (1);
 	}
 	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 30);
+	
+	if (!temp) {
+		fprintf (stderr,
+			_("Failed to load font file 'Burbank Big Regular'\n"
+			"The error returned by SDL is:\n"
+			"%s\n"), TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	TTF_SetFontOutline (temp, 3);
+	const char *score_txt;
+	if (fin == END_PERFECT) {
+		score_txt = _("PERFECT SCORE");
+	} else {
+		score_txt = _("SCORE");
+	}
+	
+	text = TTF_RenderUTF8_Blended (temp, score_txt, negro);
+	rect.x = 22;
+	rect.y = 15;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	TTF_SetFontOutline (temp, 0);
+	rect.x = 25;
+	rect.y = 18;
+	rect.w = text->w;
+	rect.h = text->h;
+	text = TTF_RenderUTF8_Blended (temp, score_txt, blanco);
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	TTF_CloseFont (temp);
+	
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("PIZZAS SOLD"), negro);
+	rect.x = 22;
+	rect.y = 70;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	sprintf (buffer, "%i", pizzas_hechas);
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, buffer, negro);
+	rect.x = 160 - text->w;
+	rect.y = 70;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto de score */
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("SALES"), negro);
+	rect.x = 22;
+	rect.y = 88;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	sprintf (buffer, "%i", score);
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, buffer, negro);
+	rect.x = 160 - text->w;
+	rect.y = 88;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("COINS"), negro);
+	rect.x = 162;
+	rect.y = 88;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	
+	rect.x = 162;
+	rect.y = 106;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	/* Texto de las propinas */
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, _("TIPS"), negro);
+	rect.x = 22;
+	rect.y = 106;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	sprintf (buffer, "%i", tips);
+	text = TTF_RenderUTF8_Blended (ttf12_burbank_bold, buffer, negro);
+	rect.x = 160 - text->w;
+	rect.y = 106;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 16);
+	
+	if (!temp) {
+		fprintf (stderr,
+			_("Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n"), TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	/* Texto "Total de monedas" */
+	text = TTF_RenderUTF8_Blended (temp, _("TOTAL"), negro);
+	rect.x = 22;
+	rect.y = 134;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	sprintf (buffer, "%i", score + tips);
+	text = TTF_RenderUTF8_Blended (temp, buffer, negro);
+	rect.x = 160 - text->w;
+	rect.y = 134;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	text = TTF_RenderUTF8_Blended (temp, _("COINS"), negro);
+	rect.x = 162;
+	rect.y = 134;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	TTF_CloseFont (temp);
+	
+	TTF_CloseFont (ttf12_burbank_bold);
 	image_background_ending = image;
 }
 
@@ -3560,6 +3771,8 @@ int map_button_in_game (int x, int y) {
 
 int map_button_in_finish (int x, int y) {
 	if (x >= 721 && x < 749 && y >= 9 && y < 37) return BUTTON_CLOSE;
+	if (x >= 49 && x < 176 && y >= 428 && y < 476) return BUTTON_END_DONE;
+	
 	return BUTTON_NONE;
 }
 
