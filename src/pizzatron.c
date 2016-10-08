@@ -1420,7 +1420,7 @@ int game_loop (int *fin) {
 	SDL_Rect rect, rect2;
 	int map;
 	
-	int handposx2, handposx1, handposx, handposy2, handposy1, handposy; /* Para calcular los desplazamientos del mouse */
+	int handposx2, handposx1, handposx, handposy2, handposy1, handposy, first_motion; /* Para calcular los desplazamientos del mouse */
 	int strengthY, strengthX;
 	int mousedown;
 	
@@ -1476,10 +1476,38 @@ int game_loop (int *fin) {
 	do {
 		last_time = SDL_GetTicks ();
 		
+		first_motion = 1;
+		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
 				case SDL_MOUSEMOTION:
 					map = map_button_in_game (event.motion.x, event.motion.y);
+					
+					if (first_motion) {
+						handposy2 = handposy1;
+						handposy1 = handposy;
+		
+						handposx2 = handposx1;
+						handposx1 = handposx;
+						first_motion = 0;
+					}
+					
+					handposx = event.motion.x;
+					handposy = event.motion.y;
+					
+					strengthY = (handposy2 - handposy + 60) / 3;
+					if (strengthY > 40) {
+						strengthY = 40;
+					} else if (strengthY < -20) {
+						strengthY = -20;
+					}
+					strengthX = (handposx2 - handposx) / 3;
+					if (strengthX > 30) {
+						strengthX = 30;
+					} else if (strengthX < -30) {
+						strengthX = -30;
+					}
+					
 					cp_button_motion (map);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
@@ -1606,27 +1634,6 @@ int game_loop (int *fin) {
 					done = GAME_QUIT;
 					break;
 			}
-		}
-		
-		handposy2 = handposy1;
-		handposy1 = handposy;
-		
-		handposx2 = handposx1;
-		handposx1 = handposx;
-		
-		SDL_GetMouseState (&handposx, &handposy);
-		
-		strengthY = (handposy2 - handposy + 60) / 3;
-		if (strengthY > 40) {
-			strengthY = 40;
-		} else if (strengthY < -20) {
-			strengthY = -20;
-		}
-		strengthX = (handposx2 - handposx) / 3;
-		if (strengthX > 30) {
-			strengthX = 30;
-		} else if (strengthX < -30) {
-			strengthX = -30;
 		}
 		
 		/* Considerar la pizza perfecta hasta que se compruebe lo contrario */
@@ -2619,6 +2626,9 @@ int game_end (int fin) {
 						case BUTTON_CLOSE:
 							done = GAME_QUIT;
 							break;
+						case BUTTON_END_DONE:
+							done = GAME_QUIT;
+							break;
 					}
 					break;
 				case SDL_MOUSEBUTTONDOWN:
@@ -3420,6 +3430,43 @@ void setup_ending (int fin) {
 	rect.w = text->w;
 	rect.h = text->h;
 	SDL_BlitSurface (text, NULL, image, &rect);
+	SDL_FreeSurface (text);
+	
+	TTF_CloseFont (temp);
+	
+	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 20);
+	
+	if (!temp) {
+		fprintf (stderr,
+			_("Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n"), TTF_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	TTF_SetFontOutline (temp, 2);
+	
+	text = TTF_RenderUTF8_Blended (temp, _("DONE"), negro);
+	rect.x = 4 + (images[IMG_BUTTON_3_UP]->w - text->w) / 2;
+	rect.y = 11;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_UP], &rect);
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_OVER], &rect);
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_DOWN], &rect);
+	SDL_FreeSurface (text);
+	
+	TTF_SetFontOutline (temp, 0);
+	
+	text = TTF_RenderUTF8_Blended (temp, _("DONE"), blanco);
+	rect.x = 4 + (images[IMG_BUTTON_3_UP]->w - text->w) / 2;
+	rect.y = 13;
+	rect.w = text->w;
+	rect.h = text->h;
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_UP], &rect);
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_OVER], &rect);
+	SDL_BlitSurface (text, NULL, images[IMG_BUTTON_3_DOWN], &rect);
 	SDL_FreeSurface (text);
 	
 	TTF_CloseFont (temp);

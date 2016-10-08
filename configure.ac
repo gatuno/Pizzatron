@@ -1,6 +1,6 @@
-AC_INIT([Pizzatron], [0.8.0], [], [pizzatron])
+AC_INIT([Pizzatron], [0.9.2], [], [pizzatron])
 
-AC_REVISION([Revision 1])
+AC_REVISION([Revision 2])
 
 AC_CONFIG_AUX_DIR([build-aux])
 
@@ -16,7 +16,7 @@ AC_PROG_CC
 AM_INIT_AUTOMAKE([-Wall -Werror])
 
 # Translate this program
-AM_GNU_GETTEXT_VERSION([0.18.1])
+AM_GNU_GETTEXT_VERSION([0.19.3])
 AM_GNU_GETTEXT([external])
 
 AM_PROG_CC_C_O
