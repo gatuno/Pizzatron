@@ -849,6 +849,7 @@ int game_intro_old (void) {
 	int map;
 	SDL_Surface *play_button_text;
 	SDL_Color blanco;
+	SDLKey key;
 	
 	blanco.r = blanco.g = blanco.b = 0xff;
 	
@@ -943,6 +944,17 @@ int game_intro_old (void) {
 						update_rects[num_rects++] = rect;
 					}
 					break;
+				case SDL_KEYDOWN:
+					/* Tengo una tecla presionada */
+					key = event.key.keysym.sym;
+					
+					if (key == SDLK_F11 || (key == SDLK_RETURN && (event.key.keysym.mod & KMOD_ALT))) {
+						SDL_WM_ToggleFullScreen (screen);
+					}
+					if (key == SDLK_ESCAPE) {
+						done = GAME_QUIT;
+					}
+					break;
 			}
 		}
 		
@@ -977,6 +989,7 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	int map;
 	SDL_Surface *text;
 	SDL_Color cafe, blanco, negro, azul;
+	SDLKey key;
 	
 	negro.r = negro.b = negro.g = 0x00;
 	cafe.r = 0x7b; cafe.g = 0x3f; cafe.b = 0x29;
@@ -1038,7 +1051,7 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	SDL_BlitSurface (text, NULL, images_intro_new[IMG_INTRO_NEW_EXPLAIN], &rect);
 	SDL_FreeSurface (text);
 	
-	/* Texto debajo de las órdenes */
+	/* Texto debajo de las ordenes */
 	text = draw_text (ttf14_burbank_bold, _("Make pizza to\nmatch the orders\non the screen."), negro, ALIGN_LEFT, 0);
 	rect.x = 24;
 	rect.y = 80;
@@ -1171,6 +1184,17 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 					map = map_button_in_opening_new_how (event.button.x, event.button.y);
 					cp_button_down (map);
 					break;
+				case SDL_KEYDOWN:
+					/* Tengo una tecla presionada */
+					key = event.key.keysym.sym;
+					
+					if (key == SDLK_F11 || (key == SDLK_RETURN && (event.key.keysym.mod & KMOD_ALT))) {
+						SDL_WM_ToggleFullScreen (screen);
+					}
+					if (key == SDLK_ESCAPE) {
+						done = GAME_QUIT;
+					}
+					break;
 			}
 		}
 		
@@ -1241,6 +1265,7 @@ int game_intro_new (void) {
 	SDL_Surface *play_text, *how_text;
 	SDL_Color cafe;
 	cafe.r = 0x54; cafe.g = 0x32; cafe.b = 0x01;
+	SDLKey key;
 	
 	/* Renderizar el texto de los botones */
 	play_text = TTF_RenderUTF8_Blended (ttf18_burbank_bold, _("PLAY"), cafe);
@@ -1347,6 +1372,17 @@ int game_intro_new (void) {
 						update_rects[num_rects++] = rect;
 					}
 					break;
+				case SDL_KEYDOWN:
+					/* Tengo una tecla presionada */
+					key = event.key.keysym.sym;
+					
+					if (key == SDLK_F11 || (key == SDLK_RETURN && (event.key.keysym.mod & KMOD_ALT))) {
+						SDL_WM_ToggleFullScreen (screen);
+					}
+					if (key == SDLK_ESCAPE) {
+						done = GAME_QUIT;
+					}
+					break;
 			}
 		}
 		
@@ -1419,6 +1455,7 @@ int game_loop (int *fin) {
 	Uint32 last_time, now_time;
 	SDL_Rect rect, rect2;
 	int map;
+	SDLKey key;
 	
 	int handposx2, handposx1, handposx, handposy2, handposy1, handposy, first_motion; /* Para calcular los desplazamientos del mouse */
 	int strengthY, strengthX;
@@ -1627,7 +1664,15 @@ int game_loop (int *fin) {
 					hand = NONE;
 					break;
 				case SDL_KEYDOWN:
+					/* Tengo una tecla presionada */
+					key = event.key.keysym.sym;
 					
+					if (key == SDLK_F11 || (key == SDLK_RETURN && (event.key.keysym.mod & KMOD_ALT))) {
+						SDL_WM_ToggleFullScreen (screen);
+					}
+					if (key == SDLK_ESCAPE) {
+						done = GAME_QUIT;
+					}
 					break;
 				case SDL_QUIT:
 					/* Vamos a cerrar la aplicación */
@@ -2588,6 +2633,7 @@ int game_end (int fin) {
 	SDL_Rect update_rects[6];
 	int num_rects;
 	int map;
+	SDLKey key;
 	
 	/* Predibujar todo y renderizar */
 	SDL_BlitSurface (image_background_ending, NULL, screen, NULL);
@@ -2640,6 +2686,17 @@ int game_end (int fin) {
 					break;
 				case SDL_QUIT:
 					done = GAME_QUIT;
+					break;
+				case SDL_KEYDOWN:
+					/* Tengo una tecla presionada */
+					key = event.key.keysym.sym;
+					
+					if (key == SDLK_F11 || (key == SDLK_RETURN && (event.key.keysym.mod & KMOD_ALT))) {
+						SDL_WM_ToggleFullScreen (screen);
+					}
+					if (key == SDLK_ESCAPE) {
+						done = GAME_QUIT;
+					}
 					break;
 			}
 		}

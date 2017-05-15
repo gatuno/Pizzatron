@@ -1,4 +1,4 @@
-AC_INIT([Pizzatron], [0.9.2], [], [pizzatron])
+AC_INIT([Pizzatron], [0.9.3], [], [pizzatron])
 
 AC_REVISION([Revision 2])
 
