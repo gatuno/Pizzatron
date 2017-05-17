@@ -53,6 +53,8 @@
 #include "rotar.h"
 #include "draw-text.h"
 
+#include "path.h"
+
 #define FPS (1000/24)
 
 #define SWAP(a, b, t) ((t) = (a), (a) = (b), (b) = (t))
@@ -266,185 +268,180 @@ enum {
 	NUM_IMAGES
 };
 
-#ifdef WIN32
-# undef GAMEDATA_DIR
-# define GAMEDATA_DIR "./"
-#endif
-
 const char *images_names[NUM_IMAGES] = {
-	GAMEDATA_DIR "images/background.png",
-	GAMEDATA_DIR "images/conveyorbelt.png",
+	"images/background.png",
+	"images/conveyorbelt.png",
 	
-	GAMEDATA_DIR "images/pizza_base_clear.png",
-	GAMEDATA_DIR "images/pizza_base.png",
+	"images/pizza_base_clear.png",
+	"images/pizza_base.png",
 	
-	GAMEDATA_DIR "images/pizza_cheese.png",
-	GAMEDATA_DIR "images/pizza_sprinkles.png",
-	GAMEDATA_DIR "images/pizza_shadow.png",
+	"images/pizza_cheese.png",
+	"images/pizza_sprinkles.png",
+	"images/pizza_shadow.png",
 	
-	GAMEDATA_DIR "images/splat_mask.png",
+	"images/splat_mask.png",
 	
-	GAMEDATA_DIR "images/base_sauces.png",
-	GAMEDATA_DIR "images/holder_a_1.png",
-	GAMEDATA_DIR "images/holder_a_2.png",
-	GAMEDATA_DIR "images/holder_a_3.png",
-	GAMEDATA_DIR "images/holder_b.png",
-	GAMEDATA_DIR "images/sauce.png",
-	GAMEDATA_DIR "images/hot_sauce.png",
-	GAMEDATA_DIR "images/chocolate.png",
-	GAMEDATA_DIR "images/pink_icing.png",
+	"images/base_sauces.png",
+	"images/holder_a_1.png",
+	"images/holder_a_2.png",
+	"images/holder_a_3.png",
+	"images/holder_b.png",
+	"images/sauce.png",
+	"images/hot_sauce.png",
+	"images/chocolate.png",
+	"images/pink_icing.png",
 	
-	GAMEDATA_DIR "images/cheese_box.png",
-	GAMEDATA_DIR "images/sprinkle_box.png",
-	GAMEDATA_DIR "images/topping_1_box.png",
-	GAMEDATA_DIR "images/topping_2_box.png",
-	GAMEDATA_DIR "images/topping_3_box.png",
-	GAMEDATA_DIR "images/topping_4_box.png",
-	GAMEDATA_DIR "images/topping_5_box.png",
-	GAMEDATA_DIR "images/topping_6_box.png",
-	GAMEDATA_DIR "images/topping_7_box.png",
-	GAMEDATA_DIR "images/topping_8_box.png",
+	"images/cheese_box.png",
+	"images/sprinkle_box.png",
+	"images/topping_1_box.png",
+	"images/topping_2_box.png",
+	"images/topping_3_box.png",
+	"images/topping_4_box.png",
+	"images/topping_5_box.png",
+	"images/topping_6_box.png",
+	"images/topping_7_box.png",
+	"images/topping_8_box.png",
 	
-	GAMEDATA_DIR "images/splat_sauce.png",
-	GAMEDATA_DIR "images/splat_hot.png",
-	GAMEDATA_DIR "images/splat_choco.png",
-	GAMEDATA_DIR "images/splat_pink.png",
+	"images/splat_sauce.png",
+	"images/splat_hot.png",
+	"images/splat_choco.png",
+	"images/splat_pink.png",
 	
-	GAMEDATA_DIR "images/sauce_squash_01.png",
-	GAMEDATA_DIR "images/sauce_squash_02.png",
-	GAMEDATA_DIR "images/sauce_squash_03.png",
-	GAMEDATA_DIR "images/sauce_squash_04.png",
-	GAMEDATA_DIR "images/sauce_squash_05.png",
-	GAMEDATA_DIR "images/sauce_squash_06.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_01.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_02.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_03.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_04.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_05.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_06.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_07.png",
-	GAMEDATA_DIR "images/hot_sauce_squash_08.png",
-	GAMEDATA_DIR "images/chocolate_squash_01.png",
-	GAMEDATA_DIR "images/chocolate_squash_02.png",
-	GAMEDATA_DIR "images/chocolate_squash_03.png",
-	GAMEDATA_DIR "images/chocolate_squash_04.png",
-	GAMEDATA_DIR "images/chocolate_squash_05.png",
-	GAMEDATA_DIR "images/chocolate_squash_06.png",
-	GAMEDATA_DIR "images/pink_icing_squash_01.png",
-	GAMEDATA_DIR "images/pink_icing_squash_02.png",
-	GAMEDATA_DIR "images/pink_icing_squash_03.png",
-	GAMEDATA_DIR "images/pink_icing_squash_04.png",
-	GAMEDATA_DIR "images/pink_icing_squash_05.png",
-	GAMEDATA_DIR "images/pink_icing_squash_06.png",
+	"images/sauce_squash_01.png",
+	"images/sauce_squash_02.png",
+	"images/sauce_squash_03.png",
+	"images/sauce_squash_04.png",
+	"images/sauce_squash_05.png",
+	"images/sauce_squash_06.png",
+	"images/hot_sauce_squash_01.png",
+	"images/hot_sauce_squash_02.png",
+	"images/hot_sauce_squash_03.png",
+	"images/hot_sauce_squash_04.png",
+	"images/hot_sauce_squash_05.png",
+	"images/hot_sauce_squash_06.png",
+	"images/hot_sauce_squash_07.png",
+	"images/hot_sauce_squash_08.png",
+	"images/chocolate_squash_01.png",
+	"images/chocolate_squash_02.png",
+	"images/chocolate_squash_03.png",
+	"images/chocolate_squash_04.png",
+	"images/chocolate_squash_05.png",
+	"images/chocolate_squash_06.png",
+	"images/pink_icing_squash_01.png",
+	"images/pink_icing_squash_02.png",
+	"images/pink_icing_squash_03.png",
+	"images/pink_icing_squash_04.png",
+	"images/pink_icing_squash_05.png",
+	"images/pink_icing_squash_06.png",
 	
-	GAMEDATA_DIR "images/cheese_hand.png",
-	GAMEDATA_DIR "images/sprinkles_hand.png",
+	"images/cheese_hand.png",
+	"images/sprinkles_hand.png",
 	
-	GAMEDATA_DIR "images/hand_topping_1_1.png",
-	GAMEDATA_DIR "images/hand_topping_1_2.png",
-	GAMEDATA_DIR "images/hand_topping_1_3.png",
-	GAMEDATA_DIR "images/hand_topping_2_1.png",
-	GAMEDATA_DIR "images/hand_topping_2_2.png",
-	GAMEDATA_DIR "images/hand_topping_2_3.png",
-	GAMEDATA_DIR "images/hand_topping_3_1.png",
-	GAMEDATA_DIR "images/hand_topping_3_2.png",
-	GAMEDATA_DIR "images/hand_topping_3_3.png",
-	GAMEDATA_DIR "images/hand_topping_4_1.png",
-	GAMEDATA_DIR "images/hand_topping_4_2.png",
-	GAMEDATA_DIR "images/hand_topping_4_3.png",
-	GAMEDATA_DIR "images/hand_topping_5_1.png",
-	GAMEDATA_DIR "images/hand_topping_5_2.png",
-	GAMEDATA_DIR "images/hand_topping_5_3.png",
-	GAMEDATA_DIR "images/hand_topping_6_1.png",
-	GAMEDATA_DIR "images/hand_topping_6_2.png",
-	GAMEDATA_DIR "images/hand_topping_6_3.png",
-	GAMEDATA_DIR "images/hand_topping_7_1.png",
-	GAMEDATA_DIR "images/hand_topping_7_2.png",
-	GAMEDATA_DIR "images/hand_topping_7_3.png",
-	GAMEDATA_DIR "images/hand_topping_8_1.png",
-	GAMEDATA_DIR "images/hand_topping_8_2.png",
-	GAMEDATA_DIR "images/hand_topping_8_3.png",
-	GAMEDATA_DIR "images/topping_1_1.png",
-	GAMEDATA_DIR "images/topping_1_2.png",
-	GAMEDATA_DIR "images/topping_1_3.png",
-	GAMEDATA_DIR "images/topping_2_1.png",
-	GAMEDATA_DIR "images/topping_2_2.png",
-	GAMEDATA_DIR "images/topping_2_3.png",
-	GAMEDATA_DIR "images/topping_3_1.png",
-	GAMEDATA_DIR "images/topping_3_2.png",
-	GAMEDATA_DIR "images/topping_3_3.png",
-	GAMEDATA_DIR "images/topping_4_1.png",
-	GAMEDATA_DIR "images/topping_4_2.png",
-	GAMEDATA_DIR "images/topping_4_3.png",
-	GAMEDATA_DIR "images/topping_5_1.png",
-	GAMEDATA_DIR "images/topping_5_2.png",
-	GAMEDATA_DIR "images/topping_5_3.png",
-	GAMEDATA_DIR "images/topping_6_1.png",
-	GAMEDATA_DIR "images/topping_6_2.png",
-	GAMEDATA_DIR "images/topping_6_3.png",
-	GAMEDATA_DIR "images/topping_7_1.png",
-	GAMEDATA_DIR "images/topping_7_2.png",
-	GAMEDATA_DIR "images/topping_7_3.png",
-	GAMEDATA_DIR "images/topping_8_1.png",
-	GAMEDATA_DIR "images/topping_8_2.png",
-	GAMEDATA_DIR "images/topping_8_3.png",
+	"images/hand_topping_1_1.png",
+	"images/hand_topping_1_2.png",
+	"images/hand_topping_1_3.png",
+	"images/hand_topping_2_1.png",
+	"images/hand_topping_2_2.png",
+	"images/hand_topping_2_3.png",
+	"images/hand_topping_3_1.png",
+	"images/hand_topping_3_2.png",
+	"images/hand_topping_3_3.png",
+	"images/hand_topping_4_1.png",
+	"images/hand_topping_4_2.png",
+	"images/hand_topping_4_3.png",
+	"images/hand_topping_5_1.png",
+	"images/hand_topping_5_2.png",
+	"images/hand_topping_5_3.png",
+	"images/hand_topping_6_1.png",
+	"images/hand_topping_6_2.png",
+	"images/hand_topping_6_3.png",
+	"images/hand_topping_7_1.png",
+	"images/hand_topping_7_2.png",
+	"images/hand_topping_7_3.png",
+	"images/hand_topping_8_1.png",
+	"images/hand_topping_8_2.png",
+	"images/hand_topping_8_3.png",
+	"images/topping_1_1.png",
+	"images/topping_1_2.png",
+	"images/topping_1_3.png",
+	"images/topping_2_1.png",
+	"images/topping_2_2.png",
+	"images/topping_2_3.png",
+	"images/topping_3_1.png",
+	"images/topping_3_2.png",
+	"images/topping_3_3.png",
+	"images/topping_4_1.png",
+	"images/topping_4_2.png",
+	"images/topping_4_3.png",
+	"images/topping_5_1.png",
+	"images/topping_5_2.png",
+	"images/topping_5_3.png",
+	"images/topping_6_1.png",
+	"images/topping_6_2.png",
+	"images/topping_6_3.png",
+	"images/topping_7_1.png",
+	"images/topping_7_2.png",
+	"images/topping_7_3.png",
+	"images/topping_8_1.png",
+	"images/topping_8_2.png",
+	"images/topping_8_3.png",
 	
-	GAMEDATA_DIR "images/overflow_sauce.png",
-	GAMEDATA_DIR "images/overflow_hot.png",
-	GAMEDATA_DIR "images/overflow_chocolate.png",
-	GAMEDATA_DIR "images/overflow_pink.png",
+	"images/overflow_sauce.png",
+	"images/overflow_hot.png",
+	"images/overflow_chocolate.png",
+	"images/overflow_pink.png",
 	
-	GAMEDATA_DIR "images/order_pizza.png",
+	"images/order_pizza.png",
 	
-	GAMEDATA_DIR "images/topping_order.png",
-	GAMEDATA_DIR "images/candy_topping_order.png",
+	"images/topping_order.png",
+	"images/candy_topping_order.png",
 	
-	GAMEDATA_DIR "images/checked.png",
-	GAMEDATA_DIR "images/done.png",
+	"images/checked.png",
+	"images/done.png",
 	
-	GAMEDATA_DIR "images/cheese_drop.png",
-	GAMEDATA_DIR "images/sprinkles_drop.png",
+	"images/cheese_drop.png",
+	"images/sprinkles_drop.png",
 	
-	GAMEDATA_DIR "images/topping_1_1_dropped.png",
-	GAMEDATA_DIR "images/topping_1_2_dropped.png",
-	GAMEDATA_DIR "images/topping_1_3_dropped.png",
-	GAMEDATA_DIR "images/topping_2_1_dropped.png",
-	GAMEDATA_DIR "images/topping_2_2_dropped.png",
-	GAMEDATA_DIR "images/topping_2_3_dropped.png",
-	GAMEDATA_DIR "images/topping_3_1_dropped.png",
-	GAMEDATA_DIR "images/topping_3_2_dropped.png",
-	GAMEDATA_DIR "images/topping_3_3_dropped.png",
-	GAMEDATA_DIR "images/topping_4_1_dropped.png",
-	GAMEDATA_DIR "images/topping_4_2_dropped.png",
-	GAMEDATA_DIR "images/topping_4_3_dropped.png",
-	GAMEDATA_DIR "images/topping_5_1_dropped.png",
-	GAMEDATA_DIR "images/topping_5_2_dropped.png",
-	GAMEDATA_DIR "images/topping_5_3_dropped.png",
-	GAMEDATA_DIR "images/topping_6_1_dropped.png",
-	GAMEDATA_DIR "images/topping_6_2_dropped.png",
-	GAMEDATA_DIR "images/topping_6_3_dropped.png",
-	GAMEDATA_DIR "images/topping_7_1_dropped.png",
-	GAMEDATA_DIR "images/topping_7_2_dropped.png",
-	GAMEDATA_DIR "images/topping_7_3_dropped.png",
-	GAMEDATA_DIR "images/topping_8_1_dropped.png",
-	GAMEDATA_DIR "images/topping_8_2_dropped.png",
-	GAMEDATA_DIR "images/topping_8_3_dropped.png",
+	"images/topping_1_1_dropped.png",
+	"images/topping_1_2_dropped.png",
+	"images/topping_1_3_dropped.png",
+	"images/topping_2_1_dropped.png",
+	"images/topping_2_2_dropped.png",
+	"images/topping_2_3_dropped.png",
+	"images/topping_3_1_dropped.png",
+	"images/topping_3_2_dropped.png",
+	"images/topping_3_3_dropped.png",
+	"images/topping_4_1_dropped.png",
+	"images/topping_4_2_dropped.png",
+	"images/topping_4_3_dropped.png",
+	"images/topping_5_1_dropped.png",
+	"images/topping_5_2_dropped.png",
+	"images/topping_5_3_dropped.png",
+	"images/topping_6_1_dropped.png",
+	"images/topping_6_2_dropped.png",
+	"images/topping_6_3_dropped.png",
+	"images/topping_7_1_dropped.png",
+	"images/topping_7_2_dropped.png",
+	"images/topping_7_3_dropped.png",
+	"images/topping_8_1_dropped.png",
+	"images/topping_8_2_dropped.png",
+	"images/topping_8_3_dropped.png",
 	
-	GAMEDATA_DIR "images/close_up.png",
-	GAMEDATA_DIR "images/close_over.png",
-	GAMEDATA_DIR "images/close_press.png",
+	"images/close_up.png",
+	"images/close_over.png",
+	"images/close_press.png",
 	
-	GAMEDATA_DIR "images/boton_1_up.png",
-	GAMEDATA_DIR "images/boton_1_over.png",
-	GAMEDATA_DIR "images/boton_1_over.png",
+	"images/boton_1_up.png",
+	"images/boton_1_over.png",
+	"images/boton_1_over.png",
 	
-	GAMEDATA_DIR "images/boton_2_up.png",
-	GAMEDATA_DIR "images/boton_2_over.png",
-	GAMEDATA_DIR "images/boton_2_over.png",
+	"images/boton_2_up.png",
+	"images/boton_2_over.png",
+	"images/boton_2_over.png",
 	
-	GAMEDATA_DIR "images/boton_3_up.png",
-	GAMEDATA_DIR "images/boton_3_over.png",
-	GAMEDATA_DIR "images/boton_3_over.png",
+	"images/boton_3_up.png",
+	"images/boton_3_over.png",
+	"images/boton_3_over.png",
 };
 
 enum {
@@ -459,12 +456,12 @@ enum {
 };
 
 const char *images_intro_new_names [NUM_INTRO_NEW_IMAGES] = {
-	GAMEDATA_DIR "images/intro_new_background.png",
-	GAMEDATA_DIR "images/intro_new_penguin.png",
-	GAMEDATA_DIR "images/intro_new_top.png",
-	GAMEDATA_DIR "images/intro_new_candy_lever.png",
+	"images/intro_new_background.png",
+	"images/intro_new_penguin.png",
+	"images/intro_new_top.png",
+	"images/intro_new_candy_lever.png",
 	
-	GAMEDATA_DIR "images/intro_new_explain.png"
+	"images/intro_new_explain.png"
 };
 
 enum {
@@ -475,8 +472,8 @@ enum {
 };
 
 const char *images_intro_old_names [NUM_INTRO_OLD_IMAGES] = {
-	GAMEDATA_DIR "images/intro_old_background.png",
-	GAMEDATA_DIR "images/intro_old_candy_lever.png",
+	"images/intro_old_background.png",
+	"images/intro_old_candy_lever.png",
 };
 
 enum {
@@ -494,21 +491,21 @@ enum {
 };
 
 const char *sound_names[NUM_SOUNDS] = {
-	GAMEDATA_DIR "sounds/caching.wav",
-	GAMEDATA_DIR "sounds/sauce.wav",
-	GAMEDATA_DIR "sounds/hotsauce.wav",
-	GAMEDATA_DIR "sounds/topping.wav",
-	GAMEDATA_DIR "sounds/overflow.wav",
-	GAMEDATA_DIR "sounds/throw.wav",
+	"sounds/caching.wav",
+	"sounds/sauce.wav",
+	"sounds/hotsauce.wav",
+	"sounds/topping.wav",
+	"sounds/overflow.wav",
+	"sounds/throw.wav",
 	
-	GAMEDATA_DIR "sounds/sauce1.wav",
-	GAMEDATA_DIR "sounds/sauce2.wav",
+	"sounds/sauce1.wav",
+	"sounds/sauce2.wav",
 };
 
-#define MUS_106 GAMEDATA_DIR "music/music_106.ogg"
-#define MUS_270 GAMEDATA_DIR "music/music_270.ogg"
-#define MUS_344 GAMEDATA_DIR "music/music_344.ogg"
-#define MUS_385 GAMEDATA_DIR "music/music_385.ogg"
+#define MUS_106 "music/music_106.ogg"
+#define MUS_270 "music/music_270.ogg"
+#define MUS_344 "music/music_344.ogg"
+#define MUS_385 "music/music_385.ogg"
 
 /* Codigos de salida */
 enum {
@@ -529,10 +526,10 @@ enum {
 
 /* Nombres de los fondos finales */
 const char *images_end_names [NUM_ENDINGS] = {
-	GAMEDATA_DIR "images/ending_1.png",
-	GAMEDATA_DIR "images/ending_2.png",
-	GAMEDATA_DIR "images/ending_3.png",
-	GAMEDATA_DIR "images/ending_4.png"
+	"images/ending_1.png",
+	"images/ending_2.png",
+	"images/ending_3.png",
+	"images/ending_4.png"
 };
 
 /* Listar los ingredientes */
@@ -756,9 +753,11 @@ CPStampHandle *stamp_handle;
 int main (int argc, char *argv[]) {
 	int fin;
 	
+	initSystemPaths (argv[0]);
+	
 	/* Inicializar l18n */
 	setlocale (LC_ALL, "");
-	bindtextdomain (PACKAGE, LOCALEDIR);
+	bindtextdomain (PACKAGE, l10n_path);
 	
 	textdomain (PACKAGE);
 	
@@ -1466,7 +1465,7 @@ int game_loop (int *fin) {
 	Topping toppings[20];
 	int topping_count = 0;
 	int splat_queue_start = 0, splat_queue_end = 0;
-	int g;
+	int g, i;
 	int pizzaspeed, speedboost, handicap = 0, conveyorbelt = 0;
 	int image;
 	int sauce_state, sauce_timer;
@@ -1944,75 +1943,26 @@ int game_loop (int *fin) {
 		}
 		
 		SDL_SetClipRect (screen, NULL);
+		
+		i = (candy_mode ? IMG_SPRINKLES_BOX : IMG_CHEESE_BOX);
 		/* Dibujar la caja de queso o sprinkles */
 		rect.x = 188;
 		rect.y = 187;
-		rect.w = images[IMG_CHEESE_BOX]->w;
-		rect.h = images[IMG_CHEESE_BOX]->h;
+		rect.w = images[i]->w;
+		rect.h = images[i]->h;
 		
-		if (candy_mode) {
-			SDL_BlitSurface (images[IMG_SPRINKLES_BOX], NULL, screen, &rect);
-		} else {
-			SDL_BlitSurface (images[IMG_CHEESE_BOX], NULL, screen, &rect);
-		}
+		SDL_BlitSurface (images[i], NULL, screen, &rect);
 		
 		/* Dibujar las cajas de ingredientes */
-		if (candy_mode) {
-			rect.x = 349;
-			rect.y = 273 - images[IMG_TOPPING_5_BOX]->h;
-			rect.w = images[IMG_TOPPING_5_BOX]->w;
-			rect.h = images[IMG_TOPPING_5_BOX]->h;
+		i = (candy_mode ? IMG_TOPPING_5_BOX : IMG_TOPPING_1_BOX);
+		for (g = 0; g < 4; g++) {
+			rect.x = 349 + (g * 102);
+			rect.y = 273 - images[i]->h;
+			rect.w = images[i]->w;
+			rect.h = images[i]->h;
 			
-			SDL_BlitSurface (images[IMG_TOPPING_5_BOX], NULL, screen, &rect);
-			
-			rect.x = 451;
-			rect.y = 273 - images[IMG_TOPPING_6_BOX]->h;
-			rect.w = images[IMG_TOPPING_6_BOX]->w;
-			rect.h = images[IMG_TOPPING_6_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_6_BOX], NULL, screen, &rect);
-			
-			rect.x = 553;
-			rect.y = 273 - images[IMG_TOPPING_7_BOX]->h;
-			rect.w = images[IMG_TOPPING_7_BOX]->w;
-			rect.h = images[IMG_TOPPING_7_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_7_BOX], NULL, screen, &rect);
-			
-			rect.x = 655;
-			rect.y = 273 - images[IMG_TOPPING_8_BOX]->h;
-			rect.w = images[IMG_TOPPING_8_BOX]->w;
-			rect.h = images[IMG_TOPPING_8_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_8_BOX], NULL, screen, &rect);
-		} else {
-			rect.x = 349;
-			rect.y = 273 - images[IMG_TOPPING_1_BOX]->h;
-			rect.w = images[IMG_TOPPING_1_BOX]->w;
-			rect.h = images[IMG_TOPPING_1_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_1_BOX], NULL, screen, &rect);
-			
-			rect.x = 451;
-			rect.y = 273 - images[IMG_TOPPING_2_BOX]->h;
-			rect.w = images[IMG_TOPPING_2_BOX]->w;
-			rect.h = images[IMG_TOPPING_2_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_2_BOX], NULL, screen, &rect);
-			
-			rect.x = 553;
-			rect.y = 273 - images[IMG_TOPPING_3_BOX]->h;
-			rect.w = images[IMG_TOPPING_3_BOX]->w;
-			rect.h = images[IMG_TOPPING_3_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_3_BOX], NULL, screen, &rect);
-			
-			rect.x = 655;
-			rect.y = 273 - images[IMG_TOPPING_4_BOX]->h;
-			rect.w = images[IMG_TOPPING_4_BOX]->w;
-			rect.h = images[IMG_TOPPING_4_BOX]->h;
-			
-			SDL_BlitSurface (images[IMG_TOPPING_4_BOX], NULL, screen, &rect);
+			SDL_BlitSurface (images[i], NULL, screen, &rect);
+			i++;
 		}
 		
 		if (hand >= SAUCE_NORMAL && hand <= SAUCE_PINK && mousedown && (handposy + 100 >= pizza.y && handposy + 100 < pizza.y + images[IMG_PIZZA_BASE_CLEAR]->h && handposx >= pizza.x && handposx < pizza.x + images[IMG_PIZZA_BASE_CLEAR]->w)) {
@@ -2264,16 +2214,13 @@ int game_loop (int *fin) {
 				SDL_BlitSurface (images[IMG_PIZZA_SHADOW], NULL, screen, &rect);
 			
 				if (pizza.cheese_placed != NONE) {
+					i = (candy_mode ? IMG_PIZZA_SPRINKLES : IMG_PIZZA_CHEESE);
 					rect.x = pizza.x;
 					rect.y = pizza.y;
-					rect.w = images[IMG_PIZZA_CHEESE]->w;
-					rect.h = images[IMG_PIZZA_CHEESE]->h;
+					rect.w = images[i]->w;
+					rect.h = images[i]->h;
 				
-					if (pizza.cheese_placed == CHEESE) {
-						SDL_BlitSurface (images[IMG_PIZZA_CHEESE], NULL, screen, &rect);
-					} else {
-						SDL_BlitSurface (images[IMG_PIZZA_SPRINKLES], NULL, screen, &rect);
-					}
+					SDL_BlitSurface (images[i], NULL, screen, &rect);
 				}
 			
 				for (g = 0; g < topping_count; g++) {
@@ -2295,16 +2242,17 @@ int game_loop (int *fin) {
 			
 			if (image > 190 && pizza.sauce_placed != NONE) {
 				if (use_sound && pizza_overflow == 0) Mix_PlayChannel (1, sounds[SND_OVERFLOW], 0);
+				image = IMG_PIZZA_OVERFLOW_SAUCE + (pizza.sauce_placed - SAUCE_NORMAL);
 				rect.x = pizza.x - 40;
 				rect.y = pizza.y - 15;
-				rect.w = images[IMG_PIZZA_OVERFLOW_SAUCE]->w / 7;
-				rect.h = images[IMG_PIZZA_OVERFLOW_SAUCE]->h;
+				rect.w = images[image]->w / 7;
+				rect.h = images[image]->h;
 				
 				rect2.x = pizza_overflow * rect.w;
 				rect2.y = 0;
 				rect2.w = rect.w;
 				rect2.h = rect.h;
-				image = IMG_PIZZA_OVERFLOW_SAUCE + (pizza.sauce_placed - SAUCE_NORMAL);
+				
 				SDL_BlitSurface (images[image], &rect2, screen, &rect);
 				
 				if (pizza_overflow < 6) {
@@ -2754,6 +2702,7 @@ void setup (void) {
 	int g;
 	TTF_Font *temp;
 	SDL_Color negro;
+	char buffer_file[8192];
 	
 	/* Inicializar el Video SDL */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -2764,7 +2713,8 @@ void setup (void) {
 		exit (1);
 	}
 	
-	image = IMG_Load (GAMEDATA_DIR "images/icon.png");
+	sprintf (buffer_file, "%simages/icon.png", systemdata_path);
+	image = IMG_Load (buffer_file);
 	if (image) {
 		SDL_WM_SetIcon (image, NULL);
 		SDL_FreeSurface (image);
@@ -2801,14 +2751,15 @@ void setup (void) {
 	}
 
 	for (g = 0; g < NUM_IMAGES; g++) {
-		image = IMG_Load (images_names[g]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_names[g]);
+		image = IMG_Load (buffer_file);
 		
 		if (image == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_names[g], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2826,14 +2777,15 @@ void setup (void) {
 		/* Cargar el viejo intro */
 		/* La carga es muy simple, 2 imágenes */
 		for (g = 0; g < NUM_INTRO_OLD_IMAGES; g++) {
-			image = IMG_Load (images_intro_old_names[g]);
+			sprintf (buffer_file, "%s%s", systemdata_path, images_intro_old_names[g]);
+			image = IMG_Load (buffer_file);
 		
 			if (image == NULL) {
 				fprintf (stderr,
 					_("Failed to load data file:\n"
 					"%s\n"
 					"The error returned by SDL is:\n"
-					"%s\n"), images_intro_old_names[g], SDL_GetError());
+					"%s\n"), buffer_file, SDL_GetError());
 				SDL_Quit ();
 				exit (1);
 			}
@@ -2843,15 +2795,15 @@ void setup (void) {
 		}
 	} else {
 		/* Cargar el nuevo intro */
-		
-		image2 = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_PENGUIN]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_intro_new_names [IMG_INTRO_NEW_PENGUIN]);
+		image2 = IMG_Load (buffer_file);
 		
 		if (image2 == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_PENGUIN], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2867,13 +2819,14 @@ void setup (void) {
 		
 		SDL_FreeSurface (color);
 		
-		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_BACKGROUND]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_intro_new_names [IMG_INTRO_NEW_BACKGROUND]);
+		image = IMG_Load (buffer_file);
 		if (image == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_BACKGROUND], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2888,13 +2841,14 @@ void setup (void) {
 		
 		SDL_FreeSurface (image2);
 		
-		image2 = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_TOP]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_intro_new_names [IMG_INTRO_NEW_TOP]);
+		image2 = IMG_Load (buffer_file);
 		if (image2 == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_TOP], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2906,26 +2860,28 @@ void setup (void) {
 		
 		images_intro_new [IMG_INTRO_NEW_BACKGROUND] = image;
 		
-		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_CANDY]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_intro_new_names [IMG_INTRO_NEW_CANDY]);
+		image = IMG_Load (buffer_file);
 		if (image == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_CANDY], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
 		
 		images_intro_new [IMG_INTRO_NEW_CANDY] = image;
 		
-		image = IMG_Load (images_intro_new_names [IMG_INTRO_NEW_EXPLAIN]);
+		sprintf (buffer_file, "%s%s", systemdata_path, images_intro_new_names [IMG_INTRO_NEW_EXPLAIN]);
+		image = IMG_Load (buffer_file);
 		if (image == NULL) {
 			fprintf (stderr,
 				_("Failed to load data file:\n"
 				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), images_intro_new_names [IMG_INTRO_NEW_EXPLAIN], SDL_GetError());
+				"%s\n"), buffer_file, SDL_GetError());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2935,14 +2891,15 @@ void setup (void) {
 	
 	if (use_sound) {
 		for (g = 0; g < NUM_SOUNDS; g++) {
-			sounds[g] = Mix_LoadWAV (sound_names [g]);
+			sprintf (buffer_file, "%s%s", systemdata_path, sound_names[g]);
+			sounds[g] = Mix_LoadWAV (buffer_file);
 			
 			if (sounds[g] == NULL) {
 				fprintf (stderr,
 					_("Failed to load data file:\n"
 					"%s\n"
 					"The error returned by SDL is:\n"
-					"%s\n"), sound_names [g], SDL_GetError ());
+					"%s\n"), buffer_file, SDL_GetError ());
 				SDL_Quit ();
 				exit (1);
 			}
@@ -2952,20 +2909,22 @@ void setup (void) {
 		g = RANDOM (12);
 		
 		if (g >= 0 && g <= 3) {
-			music = Mix_LoadMUS (MUS_106);
+			sprintf (buffer_file, "%s%s", systemdata_path, MUS_106);
 		} else if (g >= 4 && g <= 7) {
-			music = Mix_LoadMUS (MUS_270);
+			sprintf (buffer_file, "%s%s", systemdata_path, MUS_270);
 		} else if (g >= 8 && g <= 10) {
-			music = Mix_LoadMUS (MUS_344);
+			sprintf (buffer_file, "%s%s", systemdata_path, MUS_344);
 		} else {
-			music = Mix_LoadMUS (MUS_385);
+			sprintf (buffer_file, "%s%s", systemdata_path, MUS_385);
 		}
+		music = Mix_LoadMUS (buffer_file);
 		
 		if (music == NULL) {
 			fprintf (stderr,
-				_("Failed to load a music file.\n"
+				_("Failed to load a music file:\n"
+				"%s\n"
 				"The error returned by SDL is:\n"
-				"%s\n"), SDL_GetError ());
+				"%s\n"), buffer_file, SDL_GetError ());
 			SDL_Quit ();
 			exit (1);
 		}
@@ -2981,7 +2940,8 @@ void setup (void) {
 	}
 	
 	/* La 10 y 12 son para los nombres de las pizzas */
-	ttf10_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 10);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	ttf10_burbank_bold = TTF_OpenFont (buffer_file, 10);
 	
 	if (!ttf10_burbank_bold) {
 		fprintf (stderr,
@@ -2992,7 +2952,8 @@ void setup (void) {
 		exit (1);
 	}
 	
-	ttf12_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 12);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	ttf12_burbank_bold = TTF_OpenFont (buffer_file, 12);
 	
 	if (!ttf12_burbank_bold) {
 		fprintf (stderr,
@@ -3007,8 +2968,9 @@ void setup (void) {
 	
 	if (intro == 0) {
 		/* Tipografia exclusiva para el intro viejo */
-		ttf16_acme = TTF_OpenFont (GAMEDATA_DIR "acmeexplosive.ttf", 16);
-		ttf20_acme = TTF_OpenFont (GAMEDATA_DIR "acmeexplosive.ttf", 20);
+		sprintf (buffer_file, "%s%s", systemdata_path, "acmeexplosive.ttf");
+		ttf16_acme = TTF_OpenFont (buffer_file, 16);
+		ttf20_acme = TTF_OpenFont (buffer_file, 20);
 		
 		if (!ttf16_acme || !ttf20_acme) {
 			fprintf (stderr,
@@ -3020,7 +2982,8 @@ void setup (void) {
 		}
 	} else {
 		/* Tipografia exclusiva para el intro nuevo */
-		ttf18_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 18);
+		sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+		ttf18_burbank_bold = TTF_OpenFont (buffer_file, 18);
 	
 		if (!ttf18_burbank_bold) {
 			fprintf (stderr,
@@ -3033,8 +2996,9 @@ void setup (void) {
 		
 		/* Se cierra en el intro nuevo */
 		
-		ttf28_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 28);
-		ttf14_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanks.ttf", 14);
+		ttf28_burbank_bold = TTF_OpenFont (buffer_file, 28);
+		sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
+		ttf14_burbank_bold = TTF_OpenFont (buffer_file, 14);
 		
 		if (!ttf28_burbank_bold || !ttf14_burbank_bold) {
 			fprintf (stderr,
@@ -3047,8 +3011,8 @@ void setup (void) {
 		
 		/* Ambas se cierran en el intro nuevo */
 	}
-	
-	ttf9_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 9);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	ttf9_burbank_bold = TTF_OpenFont (buffer_file, 9);
 	
 	if (!ttf9_burbank_bold) {
 		fprintf (stderr,
@@ -3065,7 +3029,8 @@ void setup (void) {
 	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("PIZZAS LEFT"), negro);
 	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("MISTAKES"), negro);
 	
-	ttf13_burbank_bold = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 13);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	ttf13_burbank_bold = TTF_OpenFont (buffer_file, 13);
 	
 	if (!ttf13_burbank_bold) {
 		fprintf (stderr,
@@ -3079,8 +3044,8 @@ void setup (void) {
 	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, _("COINS"), negro);
 	
 	/* La ttf9 y ttf13 no se cierran, se usan para la comanda */
-	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 38);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
+	temp = TTF_OpenFont (buffer_file, 38);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3097,7 +3062,8 @@ void setup (void) {
 	
 	TTF_CloseFont (temp);
 	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 20);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	temp = TTF_OpenFont (buffer_file, 20);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3113,7 +3079,8 @@ void setup (void) {
 	
 	TTF_CloseFont (temp);
 	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 16);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	temp = TTF_OpenFont (buffer_file, 16);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3247,80 +3214,105 @@ void setup_texts (void) {
 		SDL_FreeSurface (images[IMG_CHEESE_BOX]);
 		SDL_FreeSurface (images[IMG_CHEESE_HAND]);
 		
+		images[IMG_PIZZA_CHEESE] = images[IMG_CHEESE_BOX] = images[IMG_CHEESE_HAND] = NULL;
+		
 		SDL_FreeSurface (images[IMG_SAUCE]);
 		SDL_FreeSurface (images[IMG_SPLAT_SAUCE]);
 		SDL_FreeSurface (images[IMG_HOT_SAUCE]);
 		SDL_FreeSurface (images[IMG_SPLAT_HOT]);
 		
+		images[IMG_SAUCE] = images[IMG_SPLAT_SAUCE] = images[IMG_HOT_SAUCE] = images[IMG_SPLAT_HOT] = NULL;
+		
 		for (g = IMG_TOPPING_1_BOX; g <= IMG_TOPPING_4_BOX; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_SAUCE_SQUASH_1; g <= IMG_SAUCE_SQUASH_6; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_HOT_SQUASH_1; g <= IMG_HOT_SQUASH_8; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_HAND_TOPPING_1_1; g <= IMG_HAND_TOPPING_4_3; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_TOPPING_1_1; g <= IMG_TOPPING_4_3; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_SAUCE]);
 		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_HOT]);
 		
-		SDL_FreeSurface (images[IMG_ORDER_TOPPING]);
+		images[IMG_PIZZA_OVERFLOW_SAUCE] = images[IMG_PIZZA_OVERFLOW_HOT] = NULL;
 		
+		SDL_FreeSurface (images[IMG_ORDER_TOPPING]);
 		SDL_FreeSurface (images[IMG_CHEESE_DROPPED]);
+		
+		images[IMG_ORDER_TOPPING] = images[IMG_CHEESE_DROPPED] = NULL;
 		
 		for (g = IMG_TOPPING_1_1_DROPPED; g <= IMG_TOPPING_4_3_DROPPED; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 	} else {
 		SDL_FreeSurface (images[IMG_PIZZA_SPRINKLES]);
 		SDL_FreeSurface (images[IMG_SPRINKLES_BOX]);
 		SDL_FreeSurface (images[IMG_SPRINKLES_HAND]);
 		
+		images[IMG_PIZZA_SPRINKLES] = images[IMG_SPRINKLES_BOX] = images[IMG_SPRINKLES_HAND] = NULL;
+		
 		SDL_FreeSurface (images[IMG_CHOCOLATE]);
 		SDL_FreeSurface (images[IMG_SPLAT_CHOCO]);
 		SDL_FreeSurface (images[IMG_PINK_ICING]);
 		SDL_FreeSurface (images[IMG_SPLAT_PINK]);
 		
+		images[IMG_CHOCOLATE] = images[IMG_SPLAT_CHOCO] = images[IMG_PINK_ICING] = images[IMG_SPLAT_PINK] = NULL;
 		for (g = IMG_TOPPING_5_BOX; g <= IMG_TOPPING_8_BOX; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_CHOCO_SQUASH_1; g <= IMG_CHOCO_SQUASH_6; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_PINK_SQUASH_1; g <= IMG_PINK_SQUASH_6; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_HAND_TOPPING_5_1; g <= IMG_HAND_TOPPING_8_3; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		for (g = IMG_TOPPING_5_1; g <= IMG_TOPPING_8_3; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 		
 		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_CHOCO]);
 		SDL_FreeSurface (images[IMG_PIZZA_OVERFLOW_PINK]);
 		
-		SDL_FreeSurface (images[IMG_ORDER_TOPPING_CANDY]);
+		images[IMG_PIZZA_OVERFLOW_CHOCO] = images[IMG_PIZZA_OVERFLOW_PINK] = NULL;
 		
+		SDL_FreeSurface (images[IMG_ORDER_TOPPING_CANDY]);
 		SDL_FreeSurface (images[IMG_SPRINKLES_DROPPED]);
+		
+		images[IMG_ORDER_TOPPING_CANDY] = images[IMG_SPRINKLES_DROPPED] = NULL;
 		
 		for (g = IMG_TOPPING_5_1_DROPPED; g <= IMG_TOPPING_8_3_DROPPED; g++) {
 			SDL_FreeSurface (images[g]);
+			images[g] = NULL;
 		}
 	}
 }
@@ -3331,23 +3323,26 @@ void setup_ending (int fin) {
 	SDL_Color blanco, negro;
 	SDL_Rect rect;
 	char buffer[10];
+	char buffer_file[8192];
 	
 	blanco.r = blanco.g = blanco.b = 0xFF;
 	negro.r = negro.g = negro.b = 0;
 	
-	image = IMG_Load (images_end_names [fin]);
+	sprintf (buffer_file, "%s%s", systemdata_path, images_end_names [fin]);
+	image = IMG_Load (buffer_file);
 		
 	if (image == NULL) {
 		fprintf (stderr,
 			_("Failed to load data file:\n"
 			"%s\n"
 			"The error returned by SDL is:\n"
-			"%s\n"), images_end_names [fin], SDL_GetError());
+			"%s\n"), buffer_file, SDL_GetError());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbankbgbk.ttf", 30);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
+	temp = TTF_OpenFont (buffer_file, 30);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3452,7 +3447,8 @@ void setup_ending (int fin) {
 	SDL_BlitSurface (text, NULL, image, &rect);
 	SDL_FreeSurface (text);
 	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 16);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	temp = TTF_OpenFont (buffer_file, 16);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3491,7 +3487,8 @@ void setup_ending (int fin) {
 	
 	TTF_CloseFont (temp);
 	
-	temp = TTF_OpenFont (GAMEDATA_DIR "burbanksb.ttf", 20);
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
+	temp = TTF_OpenFont (buffer_file, 20);
 	
 	if (!temp) {
 		fprintf (stderr,
@@ -3735,18 +3732,19 @@ void dibujar_comanda (Pizza *pizza, int orden, int candy_mode, int pizzas_hechas
 	
 	/* Dibujar los ingredientes abajo, en la comanda */
 	if (orden > 1) {
+		g = IMG_ORDER_TOPPING;
+		if (candy_mode) g = IMG_ORDER_TOPPING_CANDY;
+		
 		rect.x = 391;
 		rect.y = 106;
-		rect.w = images[IMG_ORDER_TOPPING]->w / 11;
-		rect.h = images[IMG_ORDER_TOPPING]->h;
+		rect.w = images[g]->w / 11;
+		rect.h = images[g]->h;
 		
 		rect2.x = rect.w * ((orden / 2) - 1);
 		rect2.y = 0;
 		rect2.w = rect.w;
 		rect2.h = rect.h;
 		
-		g = IMG_ORDER_TOPPING;
-		if (candy_mode) g = IMG_ORDER_TOPPING_CANDY;
 		SDL_BlitSurface (images[g], &rect2, screen, &rect);
 	}
 	
