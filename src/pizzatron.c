@@ -777,41 +777,46 @@ int main (int argc, char *argv[]) {
 	cp_button_start ();
 	
 	/* Registrar las estampas */
-	c = CPStamp_Open (stamp_handle, STAMP_TYPE_GAME, "Pizzatron", "pizzatron");
+	c = CPStamp_Open (stamp_handle, STAMP_TYPE_GAME, gettext_noop ("Pizzatron"), "pizzatron");
+	
+	CPStamp_SetLocale (c, PACKAGE, l10n_path);
+	char buffer_file[8192];
+	sprintf (buffer_file, "%simages/stamps", systemdata_path);
+	CPStamp_SetResourceDir (c, buffer_file);
 	
 	if (c == NULL) {
 		printf (_("Failed to init the substamp system\n"));
 	}
 	
 	if (!CPStamp_IsRegistered (c, 392)) {
-		CPStamp_Register (c, 392, "Food Fiasco", "Make a mess of the kitchen with 3 wrong pizzas", "images/stamps/392.png", STAMP_TYPE_GAME, STAMP_EASY);
+		CPStamp_Register (c, 392, gettext_noop ("Food Fiasco"), gettext_noop ("Make a mess of the kitchen with 3 wrong pizzas"), "images/stamps/392.png", STAMP_TYPE_GAME, STAMP_EASY);
 	}
 	if (!CPStamp_IsRegistered (c, 394)) {
-		CPStamp_Register (c, 394, "Just Dessert", "Play Pizzatron in Candy Mode", "images/stamps/394.png", STAMP_TYPE_GAME, STAMP_EASY);
+		CPStamp_Register (c, 394, gettext_noop ("Just Dessert"), gettext_noop ("Play Pizzatron in Candy Mode"), "images/stamps/394.png", STAMP_TYPE_GAME, STAMP_EASY);
 	}
 	if (!CPStamp_IsRegistered (c, 396)) {
-		CPStamp_Register (c, 396, "Chef's Hat", "Make 20 pizzas without any mistakes", "images/stamps/396.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+		CPStamp_Register (c, 396, gettext_noop ("Chef's Hat"), gettext_noop ("Make 20 pizzas without any mistakes"), "images/stamps/396.png", STAMP_TYPE_GAME, STAMP_NORMAL);
 	}
 	if (!CPStamp_IsRegistered (c, 398)) {
-		CPStamp_Register (c, 398, "Spice Sea", "Make 3 hot sauce and shrimp pizzas to order", "images/stamps/398.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+		CPStamp_Register (c, 398, gettext_noop ("Spice Sea"), gettext_noop ("Make 3 hot sauce and shrimp pizzas to order"), "images/stamps/398.png", STAMP_TYPE_GAME, STAMP_NORMAL);
 	}
 	if (!CPStamp_IsRegistered (c, 400)) {
-		CPStamp_Register (c, 400, "Cocoa Beans", "Make 3 jellybean and chocolate pizzas to order", "images/stamps/400.png", STAMP_TYPE_GAME, STAMP_NORMAL);
+		CPStamp_Register (c, 400, gettext_noop ("Cocoa Beans"), gettext_noop ("Make 3 jellybean and chocolate pizzas to order"), "images/stamps/400.png", STAMP_TYPE_GAME, STAMP_NORMAL);
 	}
 	if (!CPStamp_IsRegistered (c, 402)) {
-		CPStamp_Register (c, 402, "Fiery Squids", "Make 3 hot sauce and squid pizzas to order", "images/stamps/402.png", STAMP_TYPE_GAME, STAMP_HARD);
+		CPStamp_Register (c, 402, gettext_noop ("Fiery Squids"), gettext_noop ("Make 3 hot sauce and squid pizzas to order"), "images/stamps/402.png", STAMP_TYPE_GAME, STAMP_HARD);
 	}
 	if (!CPStamp_IsRegistered (c, 404)) {
-		CPStamp_Register (c, 404, "Candy Land", "Make 3 pink sauce and marshmallow pizzas to order", "images/stamps/404.png", STAMP_TYPE_GAME, STAMP_HARD);
+		CPStamp_Register (c, 404, gettext_noop ("Candy Land"), gettext_noop ("Make 3 pink sauce and marshmallow pizzas to order"), "images/stamps/404.png", STAMP_TYPE_GAME, STAMP_HARD);
 	}
 	if (!CPStamp_IsRegistered (c, 406)) {
-		CPStamp_Register (c, 406, "Pizza Chef", "Make 30 pizzas without any mistakes", "images/stamps/406.png", STAMP_TYPE_GAME, STAMP_HARD);
+		CPStamp_Register (c, 406, gettext_noop ("Pizza Chef"), gettext_noop ("Make 30 pizzas without any mistakes"), "images/stamps/406.png", STAMP_TYPE_GAME, STAMP_HARD);
 	}
 	if (!CPStamp_IsRegistered (c, 408)) {
-		CPStamp_Register (c, 408, "Pizza Master", "Make 40 pizzas without any mistakes", "images/stamps/408.png", STAMP_TYPE_GAME, STAMP_EXTREME);
+		CPStamp_Register (c, 408, gettext_noop ("Pizza Master"), gettext_noop ("Make 40 pizzas without any mistakes"), "images/stamps/408.png", STAMP_TYPE_GAME, STAMP_EXTREME);
 	}
 	if (!CPStamp_IsRegistered (c, 410)) {
-		CPStamp_Register (c, 410, "Dessert Chef", "Make 40 candy pizzas without any mistakes", "images/stamps/410.png", STAMP_TYPE_GAME, STAMP_EXTREME);
+		CPStamp_Register (c, 410, gettext_noop ("Dessert Chef"), gettext_noop ("Make 40 candy pizzas without any mistakes"), "images/stamps/410.png", STAMP_TYPE_GAME, STAMP_EXTREME);
 	}
 	
 	candy_mode = 0;

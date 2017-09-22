@@ -1,6 +1,6 @@
-AC_INIT([Pizzatron], [0.9.4], [], [pizzatron])
+AC_INIT([Pizzatron], [0.9.5], [], [pizzatron])
 
-AC_REVISION([Revision 3])
+AC_REVISION([Revision 4])
 
 AC_CONFIG_AUX_DIR([build-aux])
 
@@ -59,7 +59,7 @@ SDL_VERSION=1.2.14
 SDL_IMAGE_VERSION=1.2.10
 SDL_TTF_VERSION=2.0.11
 SDL_MIXER_VERSION=1.2.12
-CPSTAMP_VERSION=0.9.5
+CPSTAMP_VERSION=0.9.7
 
 if test "x$MACOSX" = xyes; then
 	AC_MSG_WARN([*******************************************************])
