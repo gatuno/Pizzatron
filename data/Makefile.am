@@ -188,7 +188,39 @@ nobase_dist_gamedata_DATA = images/background.png \
 	burbanksb.ttf \
 	burbanks.ttf \
 	burbankbgbk.ttf \
-	acmeexplosive.ttf
+	acmeexplosive.ttf \
+	images/de/chocolate.png \
+	images/de/chocolate_squash_01.png \
+	images/de/chocolate_squash_02.png \
+	images/de/chocolate_squash_03.png \
+	images/de/chocolate_squash_04.png \
+	images/de/chocolate_squash_05.png \
+	images/de/chocolate_squash_06.png \
+	images/de/hot_sauce.png \
+	images/de/hot_sauce_squash_01.png \
+	images/de/hot_sauce_squash_02.png \
+	images/de/hot_sauce_squash_03.png \
+	images/de/hot_sauce_squash_04.png \
+	images/de/hot_sauce_squash_05.png \
+	images/de/hot_sauce_squash_06.png \
+	images/de/hot_sauce_squash_07.png \
+	images/de/hot_sauce_squash_08.png \
+	images/es/hot_sauce.png \
+	images/es/hot_sauce_squash_01.png \
+	images/es/hot_sauce_squash_02.png \
+	images/es/hot_sauce_squash_03.png \
+	images/es/hot_sauce_squash_04.png \
+	images/es/hot_sauce_squash_05.png \
+	images/es/hot_sauce_squash_06.png \
+	images/es/hot_sauce_squash_07.png \
+	images/es/hot_sauce_squash_08.png \
+	images/fr/chocolate.png \
+	images/fr/chocolate_squash_01.png \
+	images/fr/chocolate_squash_02.png \
+	images/fr/chocolate_squash_03.png \
+	images/fr/chocolate_squash_04.png \
+	images/fr/chocolate_squash_05.png \
+	images/fr/chocolate_squash_06.png
 
 # Instalar los archivos .desktop e iconos
 applicationsdir = $(datadir)/applications

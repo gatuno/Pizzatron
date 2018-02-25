@@ -708,6 +708,7 @@ int game_end (int);
 void setup (void);
 void setup_texts (void);
 void setup_ending (int fin);
+void setup_locale_images (void);
 SDL_Surface * set_video_mode(unsigned);
 void place_pizza_and_order (Pizza *, int, int *, int *);
 void dibujar_comanda (Pizza *, int, int, int, int, int, int);
@@ -1461,7 +1462,7 @@ int game_loop (int *fin) {
 	int map;
 	SDLKey key;
 	
-	int handposx2, handposx1, handposx, handposy2, handposy1, handposy, first_motion; /* Para calcular los desplazamientos del mouse */
+	int handposx2, handposx1, handposx, handposy2, handposy1, handposy; /* Para calcular los desplazamientos del mouse */
 	int strengthY, strengthX;
 	int mousedown;
 	
@@ -1517,21 +1518,29 @@ int game_loop (int *fin) {
 	do {
 		last_time = SDL_GetTicks ();
 		
-		first_motion = 1;
+		handposy2 = handposy1;
+		handposy1 = handposy;
+		
+		handposx2 = handposx1;
+		handposx1 = handposx;
+		
+		strengthY = (handposy2 - handposy + 60) / 3;
+		if (strengthY > 40) {
+			strengthY = 40;
+		} else if (strengthY < -20) {
+			strengthY = -20;
+		}
+		strengthX = (handposx2 - handposx) / 3;
+		if (strengthX > 30) {
+			strengthX = 30;
+		} else if (strengthX < -30) {
+			strengthX = -30;
+		}
 		
 		while (SDL_PollEvent(&event) > 0) {
 			switch (event.type) {
 				case SDL_MOUSEMOTION:
 					map = map_button_in_game (event.motion.x, event.motion.y);
-					
-					if (first_motion) {
-						handposy2 = handposy1;
-						handposy1 = handposy;
-		
-						handposx2 = handposx1;
-						handposx1 = handposx;
-						first_motion = 0;
-					}
 					
 					handposx = event.motion.x;
 					handposy = event.motion.y;
@@ -2773,6 +2782,8 @@ void setup (void) {
 		/* TODO: Mostrar la carga de porcentaje */
 	}
 	
+	setup_locale_images ();
+	
 	srand ((unsigned int) getpid ());
 	
 	intro = RANDOM(10);
@@ -3532,6 +3543,169 @@ void setup_ending (int fin) {
 	
 	TTF_CloseFont (ttf12_burbank_bold);
 	image_background_ending = image;
+}
+
+void setup_locale_images (void) {
+	SDL_Surface *local_images[9], *image;
+	char buffer_file[8192];
+	char *full_locale;
+	char locale_country[128];
+	char locale_lang[128];
+	int g, h;
+	int loaded;
+	
+	int choc_images[] = {IMG_CHOCOLATE, IMG_CHOCO_SQUASH_1, IMG_CHOCO_SQUASH_2, IMG_CHOCO_SQUASH_3, IMG_CHOCO_SQUASH_4, IMG_CHOCO_SQUASH_5, IMG_CHOCO_SQUASH_6};
+	int hot_images[] = {IMG_HOT_SAUCE,IMG_HOT_SQUASH_1, IMG_HOT_SQUASH_2, IMG_HOT_SQUASH_3, IMG_HOT_SQUASH_4, IMG_HOT_SQUASH_5, IMG_HOT_SQUASH_6, IMG_HOT_SQUASH_7, IMG_HOT_SQUASH_8};
+	
+	char *choc_names[] = {
+		"chocolate.png",
+		"chocolate_squash_01.png",
+		"chocolate_squash_02.png",
+		"chocolate_squash_03.png",
+		"chocolate_squash_04.png",
+		"chocolate_squash_05.png",
+		"chocolate_squash_06.png",
+	};
+	
+	char *hot_names[] = {
+		"hot_sauce.png",
+		"hot_sauce_squash_01.png",
+		"hot_sauce_squash_02.png",
+		"hot_sauce_squash_03.png",
+		"hot_sauce_squash_04.png",
+		"hot_sauce_squash_05.png",
+		"hot_sauce_squash_06.png",
+		"hot_sauce_squash_07.png",
+		"hot_sauce_squash_08.png"
+	};
+	
+	/* Generar la cadena de texto de la locale */
+	full_locale = setlocale (LC_ALL, "");
+	
+	if (full_locale == NULL) return;
+	
+	g = 0;
+	h = 0;
+	while (full_locale[g] != 0 && full_locale[g] != '.' && full_locale[g] != '@') {
+		locale_country[h] = full_locale[g];
+		g++;
+		h++;
+	}
+	locale_country[h] = 0;
+	
+	g = h = 0;
+	while (full_locale[g] != 0 && full_locale[g] != '.' && full_locale[g] != '@' && full_locale[g] != '_') {
+		locale_lang[h] = full_locale[g];
+		g++;
+		h++;
+	}
+	locale_lang[h] = 0;
+	
+	/* Intentar cargar la imagen correspondiente en el locale para las botellas de chocolate */
+	h = 1;
+	for (g = 0; g < 7; g++) {
+		sprintf (buffer_file, "%simages/%s/%s", systemdata_path, locale_country, choc_names[g]);
+		image = IMG_Load (buffer_file);
+		
+		if (image == NULL) {
+			h = 0;
+			
+			/* Revertir las imágenes posiblemente cargadas */
+			while (g > 0) {
+				SDL_FreeSurface (local_images[g - 1]);
+				g--;
+			}
+			
+			break;
+		}
+		
+		local_images[g] = image;
+	}
+	
+	if (h == 0) {
+		h = 1;
+		/* Intentar cargar las imágenes con solo el lenguaje */
+		for (g = 0; g < 7; g++) {
+			sprintf (buffer_file, "%simages/%s/%s", systemdata_path, locale_lang, choc_names[g]);
+			image = IMG_Load (buffer_file);
+		
+			if (image == NULL) {
+				h = 0;
+			
+				/* Revertir las imágenes posiblemente cargadas */
+				while (g > 0) {
+					SDL_FreeSurface (local_images[g - 1]);
+					g--;
+				}
+			
+				break;
+			}
+		
+			local_images[g] = image;
+		}
+	}
+	
+	/* Si todas las imágenes fueron cargadas, sustituir las imágenes en el arreglo global */
+	if (h == 1) {
+		for (g = 0; g < 7; g++) {
+			SDL_FreeSurface (images[choc_images[g]]);
+			
+			images[choc_images[g]] = local_images[g];
+		}
+	}
+	
+	/* Intentar lo mismo con la botella de salsa picante */
+	h = 1;
+	for (g = 0; g < 9; g++) {
+		sprintf (buffer_file, "%simages/%s/%s", systemdata_path, locale_country, hot_names[g]);
+		image = IMG_Load (buffer_file);
+		
+		if (image == NULL) {
+			h = 0;
+			
+			/* Revertir las imágenes posiblemente cargadas */
+			while (g > 0) {
+				SDL_FreeSurface (local_images[g - 1]);
+				g--;
+			}
+			
+			break;
+		}
+		
+		local_images[g] = image;
+	}
+	
+	if (h == 0) {
+		h = 1;
+		/* Intentar cargar las imágenes con solo el lenguaje */
+		for (g = 0; g < 9; g++) {
+			sprintf (buffer_file, "%simages/%s/%s", systemdata_path, locale_lang, hot_names[g]);
+			image = IMG_Load (buffer_file);
+		
+			if (image == NULL) {
+				h = 0;
+			
+				/* Revertir las imágenes posiblemente cargadas */
+				while (g > 0) {
+					SDL_FreeSurface (local_images[g - 1]);
+					g--;
+				}
+			
+				break;
+			}
+		
+			local_images[g] = image;
+		}
+	}
+	
+	/* Si todas las imágenes fueron cargadas, sustituir las imágenes en el arreglo global */
+	if (h == 1) {
+		for (g = 0; g < 9; g++) {
+			SDL_FreeSurface (images[hot_images[g]]);
+			
+			images[hot_images[g]] = local_images[g];
+		}
+	}
 }
 
 void place_pizza_and_order (Pizza *p, int candy_mode, int *pizzas_hechas, int *orden) {
