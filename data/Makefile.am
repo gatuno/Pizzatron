@@ -256,4 +256,20 @@ EXTRA_DIST = \
 	desktop/64x64/pizzatron.png \
 	desktop/128x128/pizzatron.png \
 	desktop/256x256/pizzatron.png \
-	pizzatron.ico
+	pizzatron.ico \
+	images/blank/chocolate.png \
+	images/blank/chocolate_squash_01.png \
+	images/blank/chocolate_squash_02.png \
+	images/blank/chocolate_squash_03.png \
+	images/blank/chocolate_squash_04.png \
+	images/blank/chocolate_squash_05.png \
+	images/blank/chocolate_squash_06.png \
+	images/blank/hot_sauce.png \
+	images/blank/hot_sauce_squash_01.png \
+	images/blank/hot_sauce_squash_02.png \
+	images/blank/hot_sauce_squash_03.png \
+	images/blank/hot_sauce_squash_04.png \
+	images/blank/hot_sauce_squash_05.png \
+	images/blank/hot_sauce_squash_06.png \
+	images/blank/hot_sauce_squash_07.png \
+	images/blank/hot_sauce_squash_08.png

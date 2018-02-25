@@ -758,7 +758,7 @@ int main (int argc, char *argv[]) {
 	
 	/* Inicializar l18n */
 	setlocale (LC_ALL, "");
-	bindtextdomain (PACKAGE, l10n_path);
+	bindtextdomain (PACKAGE, get_l10n_path ());
 	
 	textdomain (PACKAGE);
 	
@@ -780,9 +780,9 @@ int main (int argc, char *argv[]) {
 	/* Registrar las estampas */
 	c = CPStamp_Open (stamp_handle, STAMP_TYPE_GAME, gettext_noop ("Pizzatron"), "pizzatron");
 	
-	CPStamp_SetLocale (c, PACKAGE, l10n_path);
+	CPStamp_SetLocale (c, PACKAGE, get_l10n_path ());
 	char buffer_file[8192];
-	sprintf (buffer_file, "%simages/stamps", systemdata_path);
+	sprintf (buffer_file, "%simages/stamps", get_systemdata_path ());
 	CPStamp_SetResourceDir (c, buffer_file);
 	
 	if (c == NULL) {
@@ -2717,6 +2717,7 @@ void setup (void) {
 	TTF_Font *temp;
 	SDL_Color negro;
 	char buffer_file[8192];
+	char *systemdata_path = get_systemdata_path ();
 	
 	/* Inicializar el Video SDL */
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
@@ -2755,6 +2756,8 @@ void setup (void) {
 	}
 	if (use_sound) {
 		/* Inicializar el sonido */
+		Mix_Init (MIX_INIT_OGG);
+		
 		if (Mix_OpenAudio (22050, AUDIO_S16, 2, 4096) < 0) {
 			fprintf (stdout,
 				_("Warning: Can't initialize the SDL Mixer library\n"));
@@ -3340,6 +3343,7 @@ void setup_ending (int fin) {
 	SDL_Rect rect;
 	char buffer[10];
 	char buffer_file[8192];
+	char *systemdata_path = get_systemdata_path ();
 	
 	blanco.r = blanco.g = blanco.b = 0xFF;
 	negro.r = negro.g = negro.b = 0;
@@ -3553,6 +3557,7 @@ void setup_locale_images (void) {
 	char locale_lang[128];
 	int g, h;
 	int loaded;
+	char *systemdata_path = get_systemdata_path ();
 	
 	int choc_images[] = {IMG_CHOCOLATE, IMG_CHOCO_SQUASH_1, IMG_CHOCO_SQUASH_2, IMG_CHOCO_SQUASH_3, IMG_CHOCO_SQUASH_4, IMG_CHOCO_SQUASH_5, IMG_CHOCO_SQUASH_6};
 	int hot_images[] = {IMG_HOT_SAUCE,IMG_HOT_SQUASH_1, IMG_HOT_SQUASH_2, IMG_HOT_SQUASH_3, IMG_HOT_SQUASH_4, IMG_HOT_SQUASH_5, IMG_HOT_SQUASH_6, IMG_HOT_SQUASH_7, IMG_HOT_SQUASH_8};
