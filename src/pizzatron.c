@@ -265,6 +265,11 @@ enum {
 	IMG_BUTTON_3_OVER,
 	IMG_BUTTON_3_DOWN,
 	
+	IMG_ENDING_1,
+	IMG_ENDING_2,
+	IMG_ENDING_3,
+	IMG_ENDING_4,
+	
 	NUM_IMAGES
 };
 
@@ -442,6 +447,11 @@ const char *images_names[NUM_IMAGES] = {
 	"images/boton_3_up.png",
 	"images/boton_3_over.png",
 	"images/boton_3_over.png",
+	
+	"images/ending_1.png",
+	"images/ending_2.png",
+	"images/ending_3.png",
+	"images/ending_4.png"
 };
 
 enum {
@@ -522,14 +532,6 @@ enum {
 	END_PERFECT,
 	
 	NUM_ENDINGS
-};
-
-/* Nombres de los fondos finales */
-const char *images_end_names [NUM_ENDINGS] = {
-	"images/ending_1.png",
-	"images/ending_2.png",
-	"images/ending_3.png",
-	"images/ending_4.png"
 };
 
 /* Listar los ingredientes */
@@ -736,17 +738,19 @@ int order_screen_timer;
 int order_screen_done;
 int pizzas_hechas = 0, score = 0, tips = 0;
 
+SDL_RWops *ttf_acme, *ttf_burbank_bgbk, *ttf_burbank_s, *ttf_burbank_sb;
+
 /* La 10 y 12 se usan para renderizar los nombres de las pizzas */
 /* La 12 se utiliza en la pantalla de ending */
 TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
 /* La 9 y 13 se usan para la comanda */
 TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
 
-/* La 18 para el intro nuevo y las acme para el intro viejo */
-TTF_Font *ttf18_burbank_bold, *ttf16_acme, *ttf20_acme;
+/* Las acme para el intro viejo */
+TTF_Font *ttf16_acme, *ttf20_acme;
 
-/* La 28 se usa para el intro nuevo */
-TTF_Font *ttf28_burbank_bold, *ttf14_burbank_bold;
+/* La 3 tipografias se usan para el intro nuevo */
+TTF_Font *ttf18_burbank_bold, *ttf28_burbank_bold, *ttf14_burbank_bold;
 
 CPStampCategory *c;
 CPStampHandle *stamp_handle;
@@ -2714,7 +2718,7 @@ void setup (void) {
 	SDL_Surface *image, *color, *image2;
 	SDL_Rect rect;
 	int g;
-	TTF_Font *temp;
+	TTF_Font *temp1, *temp2, *temp3;
 	SDL_Color negro;
 	char buffer_file[8192];
 	char *systemdata_path = get_systemdata_path ();
@@ -2949,7 +2953,6 @@ void setup (void) {
 		}
 	}
 
-	/* Cargar las tipografias */
 	if (TTF_Init () < 0) {
 		fprintf (stderr,
 			_("Error: Can't initialize the SDL TTF library\n"
@@ -2957,90 +2960,129 @@ void setup (void) {
 		SDL_Quit ();
 		exit (1);
 	}
+	/* Abrir los archivos TTF como SDL_RWOPS */
 	
 	/* La 10 y 12 son para los nombres de las pizzas */
 	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	ttf10_burbank_bold = TTF_OpenFont (buffer_file, 10);
+	ttf_burbank_sb = SDL_RWFromFile(buffer_file, "rb");
 	
-	if (!ttf10_burbank_bold) {
+	if (ttf_burbank_sb == NULL) {
 		fprintf (stderr,
 			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
+			"%s\n"), SDL_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	ttf12_burbank_bold = TTF_OpenFont (buffer_file, 12);
-	
-	if (!ttf12_burbank_bold) {
+	sprintf (buffer_file, "%s%s", systemdata_path, "acmeexplosive.ttf");
+	ttf_acme = SDL_RWFromFile(buffer_file, "rb");
+	if (ttf_acme == NULL) {
 		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
+			_("Failed to load font file 'Acme Explosive'\n"
 			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
+			"%s\n"), SDL_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
 	
-	/* Se cierran cuando se renderizan los nombres */
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
+	ttf_burbank_bgbk = SDL_RWFromFile(buffer_file, "rb");
+	
+	if (ttf_burbank_bgbk == NULL) {
+		fprintf (stderr,
+			_("Failed to load font file 'Burbank Big Regular'\n"
+			"The error returned by SDL is:\n"
+			"%s\n"), SDL_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
+	ttf_burbank_s = SDL_RWFromFile(buffer_file, "rb");
+	
+	if (ttf_burbank_s == NULL) {
+		fprintf (stderr,
+			_("Failed to load font file 'Burbank Small Bold'\n"
+			"The error returned by SDL is:\n"
+			"%s\n"), SDL_GetError ());
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	/* Ahora, cargar todas las tipografías */
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	ttf10_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 10);
+	
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	ttf12_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 12);
+	
+	if (!ttf10_burbank_bold || !ttf12_burbank_bold) {
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	/* ttf10 y ttf12 se cierran cuando se renderizan los nombres */
 	
 	if (intro == 0) {
 		/* Tipografia exclusiva para el intro viejo */
-		sprintf (buffer_file, "%s%s", systemdata_path, "acmeexplosive.ttf");
-		ttf16_acme = TTF_OpenFont (buffer_file, 16);
-		ttf20_acme = TTF_OpenFont (buffer_file, 20);
+		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
+		ttf16_acme = TTF_OpenFontRW (ttf_acme, 0, 16);
+		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
+		ttf20_acme = TTF_OpenFontRW (ttf_acme, 0, 20);
 		
 		if (!ttf16_acme || !ttf20_acme) {
-			fprintf (stderr,
-				_("Failed to load font file 'Acme Explosive'\n"
-				"The error returned by SDL is:\n"
-				"%s\n"), TTF_GetError ());
 			SDL_Quit ();
 			exit (1);
 		}
+		SDL_RWclose (ttf_acme);
 	} else {
-		/* Tipografia exclusiva para el intro nuevo */
-		sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-		ttf18_burbank_bold = TTF_OpenFont (buffer_file, 18);
+		/* Tipografias exclusiva para el intro nuevo */
+		SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+		ttf18_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 18);
 	
-		if (!ttf18_burbank_bold) {
-			fprintf (stderr,
-				_("Failed to load font file 'Burbank Small Bold'\n"
-				"The error returned by SDL is:\n"
-				"%s\n"), TTF_GetError ());
+		SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+		ttf28_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 28);
+		
+		SDL_RWseek (ttf_burbank_s, 0, RW_SEEK_SET);
+		ttf14_burbank_bold = TTF_OpenFontRW (ttf_burbank_s, 0, 14);
+		
+		if (!ttf18_burbank_bold || !ttf28_burbank_bold || !ttf14_burbank_bold) {
 			SDL_Quit ();
 			exit (1);
 		}
 		
-		/* Se cierra en el intro nuevo */
-		
-		ttf28_burbank_bold = TTF_OpenFont (buffer_file, 28);
-		sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
-		ttf14_burbank_bold = TTF_OpenFont (buffer_file, 14);
-		
-		if (!ttf28_burbank_bold || !ttf14_burbank_bold) {
-			fprintf (stderr,
-				_("Failed to load font file 'Burbank Small Bold'\n"
-				"The error returned by SDL is:\n"
-				"%s\n"), TTF_GetError ());
-			SDL_Quit ();
-			exit (1);
-		}
-		
-		/* Ambas se cierran en el intro nuevo */
+		/* Las 3 tipografías se cierran en el intro nuevo */
 	}
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	ttf9_burbank_bold = TTF_OpenFont (buffer_file, 9);
 	
-	if (!ttf9_burbank_bold) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	ttf9_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 9);
+	
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	ttf13_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 13);
+	
+	if (!ttf13_burbank_bold || !ttf9_burbank_bold) {
 		SDL_Quit ();
 		exit (1);
 	}
+	/* La ttf9 y ttf13 no se cierran, se usan para la comanda */
+	
+	SDL_RWseek (ttf_burbank_bgbk, 0, RW_SEEK_SET);
+	temp1 = TTF_OpenFontRW (ttf_burbank_bgbk, 0, 38);
+	
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	temp2 = TTF_OpenFontRW (ttf_burbank_sb, 0, 20);
+	
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	temp3 = TTF_OpenFontRW (ttf_burbank_sb, 0, 16);
+	
+	if (!temp1 || !temp2 || !temp3) {
+		SDL_Quit ();
+		exit (1);
+	}
+	
+	/* Renderizar todos los textos */
+	bind_textdomain_codeset (PACKAGE, "UTF-8");
 	
 	negro.r = negro.g = negro.b = 0;
 	
@@ -3048,76 +3090,25 @@ void setup (void) {
 	texts[TEXT_PIZZAS_LEFT] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("PIZZAS LEFT"), negro);
 	texts[TEXT_MISTAKES] = TTF_RenderUTF8_Blended (ttf9_burbank_bold, _("MISTAKES"), negro);
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	ttf13_burbank_bold = TTF_OpenFont (buffer_file, 13);
-	
-	if (!ttf13_burbank_bold) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	
 	texts[TEXT_COINS] = TTF_RenderUTF8_Blended (ttf13_burbank_bold, _("COINS"), negro);
 	
-	/* La ttf9 y ttf13 no se cierran, se usan para la comanda */
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
-	temp = TTF_OpenFont (buffer_file, 38);
+	texts[TEXT_DONE_LABEL] = TTF_RenderUTF8_Blended (temp1, _("DONE!"), negro);
 	
-	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Big Regular'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	/* Utilizar esta fuente para pre-renderizar el texto de "pizza completa" */
-	negro.r = negro.g = negro.b = 0;
+	texts[TEXT_5_COINS] = TTF_RenderUTF8_Blended (temp2, _("+5 COINS"), negro);
+	texts[TEXT_10_COINS] = TTF_RenderUTF8_Blended (temp2, _("+10 COINS"), negro);
 	
-	texts[TEXT_DONE_LABEL] = TTF_RenderUTF8_Blended (temp, _("DONE!"), negro);
+	texts[TEXT_TIP_10] = TTF_RenderUTF8_Blended (temp3, _("+10 TIP!"), negro);
+	texts[TEXT_TIP_15] = TTF_RenderUTF8_Blended (temp3, _("+15 TIP!"), negro);
+	texts[TEXT_TIP_20] = TTF_RenderUTF8_Blended (temp3, _("+20 TIP!"), negro);
+	texts[TEXT_TIP_25] = TTF_RenderUTF8_Blended (temp3, _("+25 TIP!"), negro);
+	texts[TEXT_TIP_30] = TTF_RenderUTF8_Blended (temp3, _("+30 TIP!"), negro);
+	texts[TEXT_TIP_35] = TTF_RenderUTF8_Blended (temp3, _("+35 TIP!"), negro);
 	
-	TTF_CloseFont (temp);
+	TTF_CloseFont (temp1);
+	TTF_CloseFont (temp2);
+	TTF_CloseFont (temp3);
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	temp = TTF_OpenFont (buffer_file, 20);
-	
-	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	
-	texts[TEXT_5_COINS] = TTF_RenderUTF8_Blended (temp, _("+5 COINS"), negro);
-	texts[TEXT_10_COINS] = TTF_RenderUTF8_Blended (temp, _("+10 COINS"), negro);
-	
-	TTF_CloseFont (temp);
-	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	temp = TTF_OpenFont (buffer_file, 16);
-	
-	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	
-	texts[TEXT_TIP_10] = TTF_RenderUTF8_Blended (temp, _("+10 TIP!"), negro);
-	texts[TEXT_TIP_15] = TTF_RenderUTF8_Blended (temp, _("+15 TIP!"), negro);
-	texts[TEXT_TIP_20] = TTF_RenderUTF8_Blended (temp, _("+20 TIP!"), negro);
-	texts[TEXT_TIP_25] = TTF_RenderUTF8_Blended (temp, _("+25 TIP!"), negro);
-	texts[TEXT_TIP_30] = TTF_RenderUTF8_Blended (temp, _("+30 TIP!"), negro);
-	texts[TEXT_TIP_35] = TTF_RenderUTF8_Blended (temp, _("+35 TIP!"), negro);
-	
-	TTF_CloseFont (temp);
+	SDL_RWclose (ttf_burbank_s);
 }
 
 void setup_texts (void) {
@@ -3342,33 +3333,16 @@ void setup_ending (int fin) {
 	SDL_Color blanco, negro;
 	SDL_Rect rect;
 	char buffer[10];
-	char buffer_file[8192];
-	char *systemdata_path = get_systemdata_path ();
 	
 	blanco.r = blanco.g = blanco.b = 0xFF;
 	negro.r = negro.g = negro.b = 0;
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, images_end_names [fin]);
-	image = IMG_Load (buffer_file);
-		
-	if (image == NULL) {
-		fprintf (stderr,
-			_("Failed to load data file:\n"
-			"%s\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), buffer_file, SDL_GetError());
-		SDL_Quit ();
-		exit (1);
-	}
+	image = images[IMG_ENDING_1 + fin];
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
-	temp = TTF_OpenFont (buffer_file, 30);
+	SDL_RWseek (ttf_burbank_bgbk, 0, RW_SEEK_SET);
+	temp = TTF_OpenFontRW (ttf_burbank_bgbk, 0, 30);
 	
 	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Big Regular'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -3467,14 +3441,10 @@ void setup_ending (int fin) {
 	SDL_BlitSurface (text, NULL, image, &rect);
 	SDL_FreeSurface (text);
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	temp = TTF_OpenFont (buffer_file, 16);
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	temp = TTF_OpenFontRW (ttf_burbank_sb, 0, 16);
 	
 	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -3507,14 +3477,10 @@ void setup_ending (int fin) {
 	
 	TTF_CloseFont (temp);
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanksb.ttf");
-	temp = TTF_OpenFont (buffer_file, 20);
+	SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
+	temp = TTF_OpenFontRW (ttf_burbank_sb, 0, 20);
 	
 	if (!temp) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), TTF_GetError ());
 		SDL_Quit ();
 		exit (1);
 	}
@@ -3546,6 +3512,9 @@ void setup_ending (int fin) {
 	TTF_CloseFont (temp);
 	
 	TTF_CloseFont (ttf12_burbank_bold);
+	SDL_RWclose (ttf_burbank_sb);
+	SDL_RWclose (ttf_burbank_bgbk);
+	
 	image_background_ending = image;
 }
 

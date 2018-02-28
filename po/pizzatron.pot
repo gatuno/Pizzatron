@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pizzatron 0.9.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-24 20:15-0600\n"
+"POT-Creation-Date: 2018-02-28 18:00-0600\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,156 +17,156 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/pizzatron.c:781
+#: src/pizzatron.c:785
 msgid "Pizzatron"
 msgstr ""
 
-#: src/pizzatron.c:789
+#: src/pizzatron.c:793
 #, c-format
 msgid "Failed to init the substamp system\n"
 msgstr ""
 
-#: src/pizzatron.c:793
+#: src/pizzatron.c:797
 msgid "Food Fiasco"
 msgstr ""
 
-#: src/pizzatron.c:793
+#: src/pizzatron.c:797
 msgid "Make a mess of the kitchen with 3 wrong pizzas"
 msgstr ""
 
-#: src/pizzatron.c:796
+#: src/pizzatron.c:800
 msgid "Just Dessert"
 msgstr ""
 
-#: src/pizzatron.c:796
+#: src/pizzatron.c:800
 msgid "Play Pizzatron in Candy Mode"
 msgstr ""
 
-#: src/pizzatron.c:799
+#: src/pizzatron.c:803
 msgid "Chef's Hat"
 msgstr ""
 
-#: src/pizzatron.c:799
+#: src/pizzatron.c:803
 msgid "Make 20 pizzas without any mistakes"
 msgstr ""
 
-#: src/pizzatron.c:802
+#: src/pizzatron.c:806
 msgid "Spice Sea"
 msgstr ""
 
-#: src/pizzatron.c:802
+#: src/pizzatron.c:806
 msgid "Make 3 hot sauce and shrimp pizzas to order"
 msgstr ""
 
-#: src/pizzatron.c:805
+#: src/pizzatron.c:809
 msgid "Cocoa Beans"
 msgstr ""
 
-#: src/pizzatron.c:805
+#: src/pizzatron.c:809
 msgid "Make 3 jellybean and chocolate pizzas to order"
 msgstr ""
 
-#: src/pizzatron.c:808
+#: src/pizzatron.c:812
 msgid "Fiery Squids"
 msgstr ""
 
-#: src/pizzatron.c:808
+#: src/pizzatron.c:812
 msgid "Make 3 hot sauce and squid pizzas to order"
 msgstr ""
 
-#: src/pizzatron.c:811
+#: src/pizzatron.c:815
 msgid "Candy Land"
 msgstr ""
 
-#: src/pizzatron.c:811
+#: src/pizzatron.c:815
 msgid "Make 3 pink sauce and marshmallow pizzas to order"
 msgstr ""
 
-#: src/pizzatron.c:814
+#: src/pizzatron.c:818
 msgid "Pizza Chef"
 msgstr ""
 
-#: src/pizzatron.c:814
+#: src/pizzatron.c:818
 msgid "Make 30 pizzas without any mistakes"
 msgstr ""
 
-#: src/pizzatron.c:817
+#: src/pizzatron.c:821
 msgid "Pizza Master"
 msgstr ""
 
-#: src/pizzatron.c:817
+#: src/pizzatron.c:821
 msgid "Make 40 pizzas without any mistakes"
 msgstr ""
 
-#: src/pizzatron.c:820
+#: src/pizzatron.c:824
 msgid "Dessert Chef"
 msgstr ""
 
-#: src/pizzatron.c:820
+#: src/pizzatron.c:824
 msgid "Make 40 candy pizzas without any mistakes"
 msgstr ""
 
-#: src/pizzatron.c:862
+#: src/pizzatron.c:866
 msgid "START"
 msgstr ""
 
-#: src/pizzatron.c:1005 src/pizzatron.c:1014
+#: src/pizzatron.c:1009 src/pizzatron.c:1018
 msgid "ORDERS"
 msgstr ""
 
-#: src/pizzatron.c:1023 src/pizzatron.c:1032
+#: src/pizzatron.c:1027 src/pizzatron.c:1036
 msgid "SAUCES"
 msgstr ""
 
-#: src/pizzatron.c:1041 src/pizzatron.c:1050
+#: src/pizzatron.c:1045 src/pizzatron.c:1054
 msgid "TOPPINGS"
 msgstr ""
 
-#: src/pizzatron.c:1060
+#: src/pizzatron.c:1064
 msgid ""
 "Make pizza to\n"
 "match the orders\n"
 "on the screen."
 msgstr ""
 
-#: src/pizzatron.c:1070
+#: src/pizzatron.c:1074
 msgid ""
 "Pick your sauce\n"
 "and spread it over\n"
 "the entire pizza."
 msgstr ""
 
-#: src/pizzatron.c:1080
+#: src/pizzatron.c:1084
 msgid ""
 "Drag toppings onto your\n"
 "pizza to match the order."
 msgstr ""
 
-#: src/pizzatron.c:1090 src/pizzatron.c:3177
+#: src/pizzatron.c:1094 src/pizzatron.c:3171
 msgid "CHEESE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:1099 src/pizzatron.c:3202
+#: src/pizzatron.c:1103 src/pizzatron.c:3196
 msgid "CHEESE"
 msgstr ""
 
-#: src/pizzatron.c:1108 src/pizzatron.c:3204
+#: src/pizzatron.c:1112 src/pizzatron.c:3198
 msgid "PIZZA SAUCE"
 msgstr ""
 
-#: src/pizzatron.c:1117 src/pizzatron.c:3208
+#: src/pizzatron.c:1121 src/pizzatron.c:3202
 msgid "5 SHRIMP"
 msgstr ""
 
-#: src/pizzatron.c:1276
+#: src/pizzatron.c:1280
 msgid "PLAY"
 msgstr ""
 
-#: src/pizzatron.c:1277
+#: src/pizzatron.c:1281
 msgid "INSTRUCTIONS"
 msgstr ""
 
-#: src/pizzatron.c:2724
+#: src/pizzatron.c:2729
 #, c-format
 msgid ""
 "Error: Can't initialize the video subsystem\n"
@@ -174,7 +174,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2743
+#: src/pizzatron.c:2748
 #, c-format
 msgid ""
 "Error: Can't setup 760x480 video mode.\n"
@@ -182,21 +182,21 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2752
+#: src/pizzatron.c:2757
 #, c-format
 msgid ""
 "Warning: Can't initialize the audio subsystem\n"
 "Continuing...\n"
 msgstr ""
 
-#: src/pizzatron.c:2760
+#: src/pizzatron.c:2767
 #, c-format
 msgid "Warning: Can't initialize the SDL Mixer library\n"
 msgstr ""
 
-#: src/pizzatron.c:2773 src/pizzatron.c:2801 src/pizzatron.c:2819
-#: src/pizzatron.c:2842 src/pizzatron.c:2864 src/pizzatron.c:2883
-#: src/pizzatron.c:2897 src/pizzatron.c:2915 src/pizzatron.c:3352
+#: src/pizzatron.c:2780 src/pizzatron.c:2808 src/pizzatron.c:2826
+#: src/pizzatron.c:2849 src/pizzatron.c:2871 src/pizzatron.c:2890
+#: src/pizzatron.c:2904 src/pizzatron.c:2922
 #, c-format
 msgid ""
 "Failed to load data file:\n"
@@ -205,7 +205,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2940
+#: src/pizzatron.c:2947
 #, c-format
 msgid ""
 "Failed to load a music file:\n"
@@ -214,17 +214,14 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2952
+#: src/pizzatron.c:2958
 #, c-format
 msgid ""
 "Error: Can't initialize the SDL TTF library\n"
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2964 src/pizzatron.c:2976 src/pizzatron.c:3006
-#: src/pizzatron.c:3021 src/pizzatron.c:3035 src/pizzatron.c:3053
-#: src/pizzatron.c:3086 src/pizzatron.c:3103 src/pizzatron.c:3471
-#: src/pizzatron.c:3511
+#: src/pizzatron.c:2971 src/pizzatron.c:3006
 #, c-format
 msgid ""
 "Failed to load font file 'Burbank Small Bold'\n"
@@ -232,7 +229,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:2993
+#: src/pizzatron.c:2982
 #, c-format
 msgid ""
 "Failed to load font file 'Acme Explosive'\n"
@@ -240,23 +237,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:3044
-msgid "PIZZAS MADE"
-msgstr ""
-
-#: src/pizzatron.c:3045
-msgid "PIZZAS LEFT"
-msgstr ""
-
-#: src/pizzatron.c:3046
-msgid "MISTAKES"
-msgstr ""
-
-#: src/pizzatron.c:3060 src/pizzatron.c:3434 src/pizzatron.c:3496
-msgid "COINS"
-msgstr ""
-
-#: src/pizzatron.c:3068 src/pizzatron.c:3365
+#: src/pizzatron.c:2994
 #, c-format
 msgid ""
 "Failed to load font file 'Burbank Big Regular'\n"
@@ -264,362 +245,378 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: src/pizzatron.c:3077
+#: src/pizzatron.c:3089
+msgid "PIZZAS MADE"
+msgstr ""
+
+#: src/pizzatron.c:3090
+msgid "PIZZAS LEFT"
+msgstr ""
+
+#: src/pizzatron.c:3091
+msgid "MISTAKES"
+msgstr ""
+
+#: src/pizzatron.c:3093 src/pizzatron.c:3412 src/pizzatron.c:3470
+msgid "COINS"
+msgstr ""
+
+#: src/pizzatron.c:3095
 msgid "DONE!"
 msgstr ""
 
-#: src/pizzatron.c:3093
+#: src/pizzatron.c:3097
 msgid "+5 COINS"
 msgstr ""
 
-#: src/pizzatron.c:3094
+#: src/pizzatron.c:3098
 msgid "+10 COINS"
 msgstr ""
 
-#: src/pizzatron.c:3110
+#: src/pizzatron.c:3100
 msgid "+10 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3111
+#: src/pizzatron.c:3101
 msgid "+15 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3112
+#: src/pizzatron.c:3102
 msgid "+20 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3113
+#: src/pizzatron.c:3103
 msgid "+25 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3114
+#: src/pizzatron.c:3104
 msgid "+30 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3115
+#: src/pizzatron.c:3105
 msgid "+35 TIP!"
 msgstr ""
 
-#: src/pizzatron.c:3132
+#: src/pizzatron.c:3126
 msgid "CHOCOLATE SPRINKLE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3133
+#: src/pizzatron.c:3127
 msgid "PINK ICING SPRINKLE"
 msgstr ""
 
-#: src/pizzatron.c:3134
+#: src/pizzatron.c:3128
 msgid "LIQUORICE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3135
+#: src/pizzatron.c:3129
 msgid "PINK LIQUORICE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3136
+#: src/pizzatron.c:3130
 msgid "CHOCOLATE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3137
+#: src/pizzatron.c:3131
 msgid "PINK CHOCOLATE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3138
+#: src/pizzatron.c:3132
 msgid "MARSHMALLOW PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3139
+#: src/pizzatron.c:3133
 msgid "PINK MARSHMALLOW PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3140
+#: src/pizzatron.c:3134
 msgid "JELLY BEAN PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3141
+#: src/pizzatron.c:3135
 msgid "PINK JELLY BEAN PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3142
+#: src/pizzatron.c:3136
 msgid "LIQUORICE-CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3143
+#: src/pizzatron.c:3137
 msgid "PINK LIQUORICE-CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3144
+#: src/pizzatron.c:3138
 msgid "MARSHMALLOW JELLY PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3145
+#: src/pizzatron.c:3139
 msgid "PINK MARSHMALLOW JELLY PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3146
+#: src/pizzatron.c:3140
 msgid "LIQUORICE MARSHMALLOW PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3147
+#: src/pizzatron.c:3141
 msgid "PINK LIQUORICE MARSHMALLOW PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3148
+#: src/pizzatron.c:3142
 msgid "JELLY CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3149
+#: src/pizzatron.c:3143
 msgid "PINK JELLY CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3150
+#: src/pizzatron.c:3144
 msgid "LIQUORICE JELLY PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3151
+#: src/pizzatron.c:3145
 msgid "PINK LIQUORICE JELLY PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3152
+#: src/pizzatron.c:3146
 msgid "MARSHMALLOW CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3153
+#: src/pizzatron.c:3147
 msgid "PINK MARSHMALLOW CHIP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3154
+#: src/pizzatron.c:3148
 msgid "CHOCOLATE SUGAR PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3155
+#: src/pizzatron.c:3149
 msgid "PINK SUGAR PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3157
+#: src/pizzatron.c:3151
 msgid "SPRINKLES"
 msgstr ""
 
-#: src/pizzatron.c:3159
+#: src/pizzatron.c:3153
 msgid "CHOCOLATE SAUCE"
 msgstr ""
 
-#: src/pizzatron.c:3160
+#: src/pizzatron.c:3154
 msgid "PINK ICING"
 msgstr ""
 
-#: src/pizzatron.c:3162
+#: src/pizzatron.c:3156
 msgid "5 LIQUORICE"
 msgstr ""
 
-#: src/pizzatron.c:3163
+#: src/pizzatron.c:3157
 msgid "5 CHOCOLATE CHIPS"
 msgstr ""
 
-#: src/pizzatron.c:3164
+#: src/pizzatron.c:3158
 msgid "5 MARSHMALLOWS"
 msgstr ""
 
-#: src/pizzatron.c:3165
+#: src/pizzatron.c:3159
 msgid "5 JELLY BEANS"
 msgstr ""
 
-#: src/pizzatron.c:3167
+#: src/pizzatron.c:3161
 msgid "2 LIQUORICE"
 msgstr ""
 
-#: src/pizzatron.c:3168
+#: src/pizzatron.c:3162
 msgid "2 CHOCOLATE CHIPS"
 msgstr ""
 
-#: src/pizzatron.c:3169
+#: src/pizzatron.c:3163
 msgid "2 MARSHMALLOWS"
 msgstr ""
 
-#: src/pizzatron.c:3170
+#: src/pizzatron.c:3164
 msgid "2 JELLY BEANS"
 msgstr ""
 
-#: src/pizzatron.c:3172
+#: src/pizzatron.c:3166
 msgid "1 LIQUORICE"
 msgstr ""
 
-#: src/pizzatron.c:3173
+#: src/pizzatron.c:3167
 msgid "1 CHOCOLATE CHIP"
 msgstr ""
 
-#: src/pizzatron.c:3174
+#: src/pizzatron.c:3168
 msgid "1 MARSHMALLOW"
 msgstr ""
 
-#: src/pizzatron.c:3175
+#: src/pizzatron.c:3169
 msgid "1 JELLY BEAN"
 msgstr ""
 
-#: src/pizzatron.c:3178
+#: src/pizzatron.c:3172
 msgid "HOT CHEESE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3179
+#: src/pizzatron.c:3173
 msgid "SEAWEED PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3180
+#: src/pizzatron.c:3174
 msgid "SPICY SEAWEED PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3181
+#: src/pizzatron.c:3175
 msgid "SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3182
+#: src/pizzatron.c:3176
 msgid "HOT SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3183
+#: src/pizzatron.c:3177
 msgid "SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3184
+#: src/pizzatron.c:3178
 msgid "SPICY SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3185
+#: src/pizzatron.c:3179
 msgid "FISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3186
+#: src/pizzatron.c:3180
 msgid "FLAMETHROWER FISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3187
+#: src/pizzatron.c:3181
 msgid "SEAWEED-SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3188
+#: src/pizzatron.c:3182
 msgid "HOT SEAWEED-SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3189
+#: src/pizzatron.c:3183
 msgid "FISH DISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3190
+#: src/pizzatron.c:3184
 msgid "HOT FISH DISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3191
+#: src/pizzatron.c:3185
 msgid "SEAWEED-SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3192
+#: src/pizzatron.c:3186
 msgid "HOT SEAWEED-SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3193
+#: src/pizzatron.c:3187
 msgid "FISH SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3194
+#: src/pizzatron.c:3188
 msgid "HOT FISH SHRIMP PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3195
+#: src/pizzatron.c:3189
 msgid "SEAWEED FISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3196
+#: src/pizzatron.c:3190
 msgid "HOT SEAWEED FISH PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3197
+#: src/pizzatron.c:3191
 msgid "SHRIMP SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3198
+#: src/pizzatron.c:3192
 msgid "HOT SHRIMP SQUID PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3199
+#: src/pizzatron.c:3193
 msgid "SUPREME PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3200
+#: src/pizzatron.c:3194
 msgid "SUPREME SIZZLE PIZZA"
 msgstr ""
 
-#: src/pizzatron.c:3205
+#: src/pizzatron.c:3199
 msgid "HOT SAUCE"
 msgstr ""
 
-#: src/pizzatron.c:3207
+#: src/pizzatron.c:3201
 msgid "5 SEAWEED"
 msgstr ""
 
-#: src/pizzatron.c:3209
+#: src/pizzatron.c:3203
 msgid "5 SQUID"
 msgstr ""
 
-#: src/pizzatron.c:3210
+#: src/pizzatron.c:3204
 msgid "5 FISH"
 msgstr ""
 
-#: src/pizzatron.c:3212
+#: src/pizzatron.c:3206
 msgid "2 SEAWEED"
 msgstr ""
 
-#: src/pizzatron.c:3213
+#: src/pizzatron.c:3207
 msgid "2 SHRIMP"
 msgstr ""
 
-#: src/pizzatron.c:3214
+#: src/pizzatron.c:3208
 msgid "2 SQUID"
 msgstr ""
 
-#: src/pizzatron.c:3215
+#: src/pizzatron.c:3209
 msgid "2 FISH"
 msgstr ""
 
-#: src/pizzatron.c:3217
+#: src/pizzatron.c:3211
 msgid "1 SEAWEED"
 msgstr ""
 
-#: src/pizzatron.c:3218
+#: src/pizzatron.c:3212
 msgid "1 SHRIMP"
 msgstr ""
 
-#: src/pizzatron.c:3219
+#: src/pizzatron.c:3213
 msgid "1 SQUID"
 msgstr ""
 
-#: src/pizzatron.c:3220
+#: src/pizzatron.c:3214
 msgid "1 FISH"
 msgstr ""
 
-#: src/pizzatron.c:3375
+#: src/pizzatron.c:3353
 msgid "PERFECT SCORE"
 msgstr ""
 
-#: src/pizzatron.c:3377
+#: src/pizzatron.c:3355
 msgid "SCORE"
 msgstr ""
 
-#: src/pizzatron.c:3399
+#: src/pizzatron.c:3377
 msgid "PIZZAS SOLD"
 msgstr ""
 
-#: src/pizzatron.c:3417
+#: src/pizzatron.c:3395
 msgid "SALES"
 msgstr ""
 
-#: src/pizzatron.c:3449
+#: src/pizzatron.c:3427
 msgid "TIPS"
 msgstr ""
 
-#: src/pizzatron.c:3479
+#: src/pizzatron.c:3453
 msgid "TOTAL"
 msgstr ""
 
-#: src/pizzatron.c:3520 src/pizzatron.c:3532
+#: src/pizzatron.c:3490 src/pizzatron.c:3502
 msgid "DONE"
 msgstr ""
