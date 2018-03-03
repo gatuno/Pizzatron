@@ -738,7 +738,7 @@ int order_screen_timer;
 int order_screen_done;
 int pizzas_hechas = 0, score = 0, tips = 0;
 
-SDL_RWops *ttf_acme, *ttf_burbank_bgbk, *ttf_burbank_s, *ttf_burbank_sb;
+SDL_RWops *ttf_burbank_bgbk, *ttf_burbank_sb;
 
 /* La 10 y 12 se usan para renderizar los nombres de las pizzas */
 /* La 12 se utiliza en la pantalla de ending */
@@ -2719,6 +2719,7 @@ void setup (void) {
 	SDL_Rect rect;
 	int g;
 	TTF_Font *temp1, *temp2, *temp3;
+	SDL_RWops *ttf_acme;
 	SDL_Color negro;
 	char buffer_file[8192];
 	char *systemdata_path = get_systemdata_path ();
@@ -2975,35 +2976,12 @@ void setup (void) {
 		exit (1);
 	}
 	
-	sprintf (buffer_file, "%s%s", systemdata_path, "acmeexplosive.ttf");
-	ttf_acme = SDL_RWFromFile(buffer_file, "rb");
-	if (ttf_acme == NULL) {
-		fprintf (stderr,
-			_("Failed to load font file 'Acme Explosive'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), SDL_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	
 	sprintf (buffer_file, "%s%s", systemdata_path, "burbankbgbk.ttf");
 	ttf_burbank_bgbk = SDL_RWFromFile(buffer_file, "rb");
 	
 	if (ttf_burbank_bgbk == NULL) {
 		fprintf (stderr,
 			_("Failed to load font file 'Burbank Big Regular'\n"
-			"The error returned by SDL is:\n"
-			"%s\n"), SDL_GetError ());
-		SDL_Quit ();
-		exit (1);
-	}
-	
-	sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
-	ttf_burbank_s = SDL_RWFromFile(buffer_file, "rb");
-	
-	if (ttf_burbank_s == NULL) {
-		fprintf (stderr,
-			_("Failed to load font file 'Burbank Small Bold'\n"
 			"The error returned by SDL is:\n"
 			"%s\n"), SDL_GetError ());
 		SDL_Quit ();
@@ -3025,17 +3003,27 @@ void setup (void) {
 	/* ttf10 y ttf12 se cierran cuando se renderizan los nombres */
 	
 	if (intro == 0) {
+		sprintf (buffer_file, "%s%s", systemdata_path, "acmeexplosive.ttf");
+		ttf_acme = SDL_RWFromFile(buffer_file, "rb");
+		if (ttf_acme == NULL) {
+			fprintf (stderr,
+				_("Failed to load font file 'Acme Explosive'\n"
+				"The error returned by SDL is:\n"
+				"%s\n"), SDL_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
+		
 		/* Tipografia exclusiva para el intro viejo */
 		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
 		ttf16_acme = TTF_OpenFontRW (ttf_acme, 0, 16);
 		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
-		ttf20_acme = TTF_OpenFontRW (ttf_acme, 0, 20);
+		ttf20_acme = TTF_OpenFontRW (ttf_acme, 1, 20);
 		
 		if (!ttf16_acme || !ttf20_acme) {
 			SDL_Quit ();
 			exit (1);
 		}
-		SDL_RWclose (ttf_acme);
 	} else {
 		/* Tipografias exclusiva para el intro nuevo */
 		SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
@@ -3044,10 +3032,19 @@ void setup (void) {
 		SDL_RWseek (ttf_burbank_sb, 0, RW_SEEK_SET);
 		ttf28_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 28);
 		
-		SDL_RWseek (ttf_burbank_s, 0, RW_SEEK_SET);
-		ttf14_burbank_bold = TTF_OpenFontRW (ttf_burbank_s, 0, 14);
+		sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
+		ttf14_burbank_bold = TTF_OpenFont (buffer_file, 14);
 		
-		if (!ttf18_burbank_bold || !ttf28_burbank_bold || !ttf14_burbank_bold) {
+		if (ttf14_burbank_bold == NULL) {
+			fprintf (stderr,
+				_("Failed to load font file 'Burbank Small'\n"
+				"The error returned by SDL is:\n"
+				"%s\n"), SDL_GetError ());
+			SDL_Quit ();
+			exit (1);
+		}
+		
+		if (!ttf18_burbank_bold || !ttf28_burbank_bold) {
 			SDL_Quit ();
 			exit (1);
 		}
@@ -3107,8 +3104,6 @@ void setup (void) {
 	TTF_CloseFont (temp1);
 	TTF_CloseFont (temp2);
 	TTF_CloseFont (temp3);
-	
-	SDL_RWclose (ttf_burbank_s);
 }
 
 void setup_texts (void) {
