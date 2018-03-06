@@ -53,6 +53,12 @@ bundle:
 	cp $(top_builddir)/data/images/*.png $(bundle_name)/Contents/Resources/data/images
 	mkdir -p $(bundle_name)/Contents/Resources/data/images/stamps
 	cp $(top_builddir)/data/images/stamps/*.png $(bundle_name)/Contents/Resources/data/images/stamps
+	mkdir -p $(bundle_name)/Contents/Resources/data/images/es
+	cp $(top_builddir)/data/images/es/*.png $(bundle_name)/Contents/Resources/data/images/es
+	mkdir -p $(bundle_name)/Contents/Resources/data/images/de
+	cp $(top_builddir)/data/images/de/*.png $(bundle_name)/Contents/Resources/data/images/de
+	mkdir -p $(bundle_name)/Contents/Resources/data/images/fr
+	cp $(top_builddir)/data/images/fr/*.png $(bundle_name)/Contents/Resources/data/images/fr
 	mkdir -p $(bundle_name)/Contents/Resources/data/music
 	cp $(top_builddir)/data/music/* $(bundle_name)/Contents/Resources/data/music
 	mkdir -p $(bundle_name)/Contents/Resources/data/sounds
@@ -70,7 +76,7 @@ bundle:
 bundle-fw: bundle
 	cp pizzatron $(bundle_name)/Contents/MacOS/pizzatron
 	mkdir  $(bundle_name)/Contents/Frameworks
-	for i in SDL SDL_mixer SDL_image SDL_ttf ; do \
+	for i in SDL SDL_mixer SDL_image SDL_ttf CPStamp; do \
 	  cp -a /Library/Frameworks/$${i}.framework $(bundle_name)/Contents/Frameworks/; \
 	done
 	strip $(bundle_name)/Contents/MacOS/pizzatron
