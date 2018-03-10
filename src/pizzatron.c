@@ -738,7 +738,7 @@ int order_screen_timer;
 int order_screen_done;
 int pizzas_hechas = 0, score = 0, tips = 0;
 
-SDL_RWops *ttf_burbank_bgbk, *ttf_burbank_sb;
+SDL_RWops *ttf_burbank_bgbk, *ttf_burbank_sb, *ttf_acme;
 
 /* La 10 y 12 se usan para renderizar los nombres de las pizzas */
 /* La 12 se utiliza en la pantalla de ending */
@@ -747,10 +747,10 @@ TTF_Font *ttf10_burbank_bold, *ttf12_burbank_bold;
 TTF_Font *ttf9_burbank_bold, *ttf13_burbank_bold;
 
 /* Las acme para el intro viejo */
-TTF_Font *ttf16_acme, *ttf20_acme;
+TTF_Font *ttf20_acme;
 
 /* La 3 tipografias se usan para el intro nuevo */
-TTF_Font *ttf18_burbank_bold, *ttf28_burbank_bold, *ttf14_burbank_bold;
+TTF_Font *ttf18_burbank_bold, *ttf28_burbank_bold, *ttf14_burbank_small;
 
 CPStampCategory *c;
 CPStampHandle *stamp_handle;
@@ -868,7 +868,7 @@ int game_intro_old (void) {
 	SDL_BlitSurface (images_intro_old [IMG_INTRO_OLD_BACKGROUND], NULL, screen, NULL);
 	
 	TTF_CloseFont (ttf20_acme);
-	TTF_CloseFont (ttf16_acme);
+	SDL_RWclose (ttf_acme);
 	
 	/* Dibujar el boton de cierre */
 	rect.x = 721; rect.y = 9;
@@ -1061,7 +1061,7 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	SDL_FreeSurface (text);
 	
 	/* Texto debajo de las ordenes */
-	text = draw_text (ttf14_burbank_bold, _("Make pizza to\nmatch the orders\non the screen."), negro, ALIGN_LEFT, 0);
+	text = draw_text (ttf14_burbank_small, _("Make pizza to\nmatch the orders\non the screen."), negro, ALIGN_LEFT, 0);
 	rect.x = 24;
 	rect.y = 80;
 	rect.w = text->w;
@@ -1071,7 +1071,7 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	SDL_FreeSurface (text);
 	
 	/* Texto debajo de las salsas */
-	text = draw_text (ttf14_burbank_bold, _("Pick your sauce\nand spread it over\nthe entire pizza."), negro, ALIGN_LEFT, 0);
+	text = draw_text (ttf14_burbank_small, _("Pick your sauce\nand spread it over\nthe entire pizza."), negro, ALIGN_LEFT, 0);
 	rect.x = 560;
 	rect.y = 147;
 	rect.w = text->w;
@@ -1081,7 +1081,7 @@ int game_intro_new_explain (SDL_Surface *play_text) {
 	SDL_FreeSurface (text);
 	
 	/* Texto de los ingredientes */
-	text = draw_text (ttf14_burbank_bold, _("Drag toppings onto your\npizza to match the order."), negro, ALIGN_LEFT, 0);
+	text = draw_text (ttf14_burbank_small, _("Drag toppings onto your\npizza to match the order."), negro, ALIGN_LEFT, 0);
 	rect.x = 516;
 	rect.y = 239;
 	rect.w = text->w;
@@ -1453,7 +1453,7 @@ int game_intro_new (void) {
 	
 	TTF_CloseFont (ttf18_burbank_bold);
 	TTF_CloseFont (ttf28_burbank_bold);
-	TTF_CloseFont (ttf14_burbank_bold);
+	TTF_CloseFont (ttf14_burbank_small);
 	
 	return done;
 }
@@ -2587,6 +2587,8 @@ int game_loop (int *fin) {
 	SDL_FreeSurface (splat_surface);
 	SDL_FreeSurface (splat_surface2);
 	
+	TTF_CloseFont (ttf9_burbank_bold);
+	TTF_CloseFont (ttf13_burbank_bold);
 	Mix_HaltChannel (-1);
 	return done;
 }
@@ -2719,7 +2721,6 @@ void setup (void) {
 	SDL_Rect rect;
 	int g;
 	TTF_Font *temp1, *temp2, *temp3;
-	SDL_RWops *ttf_acme;
 	SDL_Color negro;
 	char buffer_file[8192];
 	char *systemdata_path = get_systemdata_path ();
@@ -3016,11 +3017,9 @@ void setup (void) {
 		
 		/* Tipografia exclusiva para el intro viejo */
 		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
-		ttf16_acme = TTF_OpenFontRW (ttf_acme, 0, 16);
-		SDL_RWseek (ttf_acme, 0, RW_SEEK_SET);
-		ttf20_acme = TTF_OpenFontRW (ttf_acme, 1, 20);
+		ttf20_acme = TTF_OpenFontRW (ttf_acme, 0, 20);
 		
-		if (!ttf16_acme || !ttf20_acme) {
+		if (!ttf20_acme) {
 			SDL_Quit ();
 			exit (1);
 		}
@@ -3033,9 +3032,9 @@ void setup (void) {
 		ttf28_burbank_bold = TTF_OpenFontRW (ttf_burbank_sb, 0, 28);
 		
 		sprintf (buffer_file, "%s%s", systemdata_path, "burbanks.ttf");
-		ttf14_burbank_bold = TTF_OpenFont (buffer_file, 14);
+		ttf14_burbank_small = TTF_OpenFont (buffer_file, 14);
 		
-		if (ttf14_burbank_bold == NULL) {
+		if (ttf14_burbank_small == NULL) {
 			fprintf (stderr,
 				_("Failed to load font file 'Burbank Small'\n"
 				"The error returned by SDL is:\n"
@@ -3211,7 +3210,7 @@ void setup_texts (void) {
 	
 	/* La 10 y la 12 ya no son necesarias */
 	TTF_CloseFont (ttf10_burbank_bold);
-	//TTF_CloseFont (ttf12_burbank_bold); /* Se utiliza otra vez en el ending, por lo tanto, no se cierra */
+	/* La ttf12_burbank se utiliza otra vez en el ending, por lo tanto, no se cierra */
 	
 	/* Cerrar las imágenes que no son necesarias */
 	if (candy_mode) {
